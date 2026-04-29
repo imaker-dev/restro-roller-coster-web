@@ -26,9 +26,7 @@ import StatusBadge from "../../layout/StatusBadge";
 import NoDataFound from "../../layout/NoDataFound";
 import { handleResponse } from "../../utils/helpers";
 
-// const BASE_URL = window.location.origin;
-const BASE_URL =
-  "https://completing-allocated-hispanic-chassis.trycloudflare.com";
+const BASE_URL = window.location.origin;
 
 // ─── Copy button ──────────────────────────────────────────────────────────────
 function CopyBtn({ text }) {

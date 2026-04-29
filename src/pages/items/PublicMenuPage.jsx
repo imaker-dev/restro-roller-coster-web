@@ -55,6 +55,7 @@ import toast from "react-hot-toast";
 import { getDeviceId } from "../../utils/deviceId";
 import SessionScreen from "../../partial/self-order/SessionScreen";
 import CartScreen from "../../partial/self-order/CartScreen";
+import SearchBar from "../../components/SearchBar";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // UTILITIES
@@ -760,11 +761,11 @@ function OrderStatusScreen({
                     <OrderBadge value={item.status} size="sm" />
                   </div>
 
-                    {item.specialInstructions && (
-                        <p className="text-xs text-primary-500 mt-1 italic">
-                          "{item.specialInstructions}"
-                        </p>
-                      )}
+                  {item.specialInstructions && (
+                    <p className="text-xs text-primary-500 mt-1 italic">
+                      "{item.specialInstructions}"
+                    </p>
+                  )}
 
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center gap-3 text-xs text-[#8E8E93]">
@@ -931,7 +932,7 @@ export default function PublicMenuPage() {
     currentOrderStatus,
 
     isSavingCart,
-    isPlacingSelfOrder
+    isPlacingSelfOrder,
   } = useSelector((s) => s.publicMenu);
 
   const isValidUrl = outlet && table;
@@ -1142,6 +1143,7 @@ export default function PublicMenuPage() {
                 </p>
               </div>
             </div>
+            
             {/* Order Status */}
             {currentOrderStatus?.hasOrder && (
               <button
@@ -1186,7 +1188,12 @@ export default function PublicMenuPage() {
           {/* Search row */}
           <div className="px-4 pb-2.5">
             <div className="flex items-center gap-2">
-              <div className="relative flex-1">
+              {/* <SearchBar
+                onSearch={(value) => setSearch(value)}
+                className="w-full bg-white/[0.08] border border-white/[0.07] rounded-xl pl-9 pr-8 py-2 text-white text-sm placeholder-white/25 outline-none focus:border-white/20 transition-colors"
+              /> */}
+
+              {/* <div className="relative flex-1">
                 <Search
                   size={14}
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30"
@@ -1208,7 +1215,8 @@ export default function PublicMenuPage() {
                     <X size={13} className="text-white/40" />
                   </button>
                 )}
-              </div>
+              </div> */}
+
               {/* Veg filter */}
               <button
                 onClick={() =>
@@ -1244,6 +1252,7 @@ export default function PublicMenuPage() {
                   }
                 />
               </button>
+
               {/* View toggle */}
               <div className="flex bg-white/[0.07] rounded-xl p-0.5 gap-0.5 shrink-0">
                 {["list", "grid"].map((v) => (
@@ -1317,7 +1326,7 @@ export default function PublicMenuPage() {
                   </h2>
                 </div>
                 {viewMode === "grid" ? (
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
                     {(cat.items || []).map((item) => (
                       <GridCard
                         key={item.id}
@@ -1373,7 +1382,7 @@ export default function PublicMenuPage() {
                 {filteredItems.length} dishes
               </p>
               {viewMode === "grid" ? (
-                <div className="grid lg:grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {filteredItems.map((item) => (
                     <GridCard
                       key={item.id}
@@ -1497,7 +1506,7 @@ export default function PublicMenuPage() {
           setScreen("success");
         }}
         token={qrSessionToken}
-        loading={(isSavingCart || isPlacingSelfOrder)}
+        loading={isSavingCart || isPlacingSelfOrder}
       />
     );
   }

@@ -115,7 +115,7 @@ function CartScreen({
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] flex flex-col">
+    <div className="min-h-[100dvh] bg-[#FAF8F5] flex flex-col">
       {/* Header */}
       <div className="bg-[#0F0F0F] px-4 py-3 flex items-center gap-3 sticky top-0 z-20">
         <button
@@ -134,7 +134,7 @@ function CartScreen({
 
       <div className="w-full max-w-3xl mx-auto">
         {cart.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+          <div className="flex-1 flex flex-col items-center justify-center px-6 text-center py-16">
             <div className="w-20 h-20 bg-[#F0EDE8] rounded-full flex items-center justify-center mb-4">
               <ShoppingBag size={30} className="text-black/20" />
             </div>

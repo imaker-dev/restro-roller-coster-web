@@ -5,7 +5,7 @@ import {
   startSelfOrderSession,
   updateSelfOrderCustomerInfo,
 } from "../../redux/slices/publicMenuSlice";
-import { AlertCircle, ArrowRight, Phone, User, Utensils } from "lucide-react";
+import { AlertCircle, ArrowRight, Loader2, Phone, User, Utensils } from "lucide-react";
 
 function SessionScreen({
   outletId,
@@ -56,11 +56,11 @@ function SessionScreen({
   };
 
   return (
-    <div className="min-h-screen bg-[#0F0F0F] flex flex-col items-center justify-center px-5 py-10">
+    <div className="min-h-[100dvh] bg-[#0F0F0F] flex flex-col items-center justify-center px-5 py-10">
       {/* Brand mark */}
       <div className="mb-8 text-center">
-        <div className="w-16 h-16 bg-primary-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-[0_8px_32px_rgba(232,76,30,0.4)]">
-          <Utensils size={28} className="text-white" />
+        <div className="mb-4">
+          <img src="/Images/Logo.svg" alt="" className="w-48 lg:w-60" />
         </div>
         <p className="text-white/40 text-sm font-medium tracking-wider uppercase">
           Scan & Order
@@ -95,7 +95,7 @@ function SessionScreen({
               }}
               placeholder="e.g. Rahul Sharma"
               maxLength={40}
-              className="w-full bg-white/[0.06] border border-white/[0.08] rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 outline-none focus:border-primary-500/60 transition-colors"
+              className="w-full form-input bg-white/[0.06] border border-white/[0.08] pl-10 pr-4  text-white text-sm placeholder-white/20 outline-none focus:border-primary-500/60 transition-colors"
             />
           </div>
           {errors.name && (
@@ -123,7 +123,7 @@ function SessionScreen({
                 setErrors((p) => ({ ...p, phone: "" }));
               }}
               placeholder="10-digit mobile"
-              className="w-full bg-white/[0.06] border border-white/[0.08] rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 outline-none focus:border-primary-500/60 transition-colors"
+              className="w-full form-input bg-white/[0.06] border border-white/[0.08] pl-10 pr-4 text-white text-sm placeholder-white/20 outline-none focus:border-primary-500/60 transition-colors"
             />
           </div>
           {errors.phone && (
@@ -136,13 +136,13 @@ function SessionScreen({
         <button
           onClick={handleStart}
           disabled={loading}
-          className="w-full bg-primary-500 text-white font-bold text-sm py-3.5 rounded-xl flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(232,76,30,0.35)] hover:bg-primary-600 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="btn w-full bg-primary-500 text-white hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? (
-            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            <Loader2 className="animate-spin" size={16}/>
           ) : (
             <>
-              Start Ordering <ArrowRight size={16} />
+              Start Ordering <ArrowRight size={16} className="ml-2" />
             </>
           )}
         </button>
