@@ -1,0 +1,52 @@
+{
+  "name": "roller-coster",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fancyapps/ui": "^6.1.10",
+    "@headlessui/react": "^2.2.9",
+    "@reduxjs/toolkit": "^2.11.2",
+    "@tailwindcss/vite": "^4.1.18",
+    "@tippyjs/react": "^4.2.6",
+    "axios": "^1.13.4",
+    "clsx": "^2.1.1",
+    "file-saver": "^2.0.5",
+    "formik": "^2.4.9",
+    "lodash": "^4.17.23",
+    "lucide-react": "^0.563.0",
+    "react": "^19.2.0",
+    "react-date-range": "^2.0.1",
+    "react-dom": "^19.2.0",
+    "react-dropzone": "^14.4.0",
+    "react-easy-crop": "^5.5.6",
+    "react-hot-toast": "^2.6.0",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.13.0",
+    "react-toastify": "^11.0.5",
+    "react-transition-group": "^4.4.5",
+    "recharts": "^3.7.0",
+    "socket.io-client": "^4.8.3",
+    "tailwind-merge": "^3.4.1",
+    "tailwindcss": "^4.1.18",
+    "tippy.js": "^6.3.7",
+    "yup": "^1.7.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react-swc": "^4.2.2",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "vite": "^7.2.4"
+  }
+}

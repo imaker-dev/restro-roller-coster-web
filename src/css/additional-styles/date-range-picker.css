@@ -1,0 +1,63 @@
+/* Additional styles for CustomDateRangePicker component */
+
+/* Ensure the date range picker renders properly */
+.rdrCalendarWrapper {
+  display: inline-flex !important;
+  width: auto !important;
+}
+
+.rdrDateRangePickerWrapper {
+  display: inline-flex !important;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .rdrCalendarWrapper {
+    width: 100% !important;
+  }
+  
+  .rdrMonth {
+    width: 100% !important;
+  }
+  
+  .rdrMonthAndYearWrapper {
+    padding-top: 0 !important;
+  }
+}
+
+/* Ensure months display side by side on desktop */
+@media (min-width: 768px) {
+  .rdrMonths.rdrMonthsHorizontal {
+    display: flex !important;
+    flex-direction: row !important;
+  }
+}
+
+/* Fix any potential z-index issues */
+.rdrDateRangePickerWrapper {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ensure proper spacing */
+.rdrMonth {
+  padding: 0 0.833em;
+}
+
+
+.rdrMonthAndYearWrapper {
+  height: auto;
+  padding-top: 10px;
+}
+
+/* Make sure the calendar is visible */
+.rdrCalendarWrapper,
+.rdrDateRangePickerWrapper,
+.rdrDateDisplayWrapper,
+/* .rdrMonthAndYearWrapper, */
+.rdrMonths,
+.rdrMonth {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
