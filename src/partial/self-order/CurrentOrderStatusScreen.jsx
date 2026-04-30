@@ -1,7 +1,14 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // ORDER STATUS SCREEN
 
-import { AlertCircle, ChevronLeft, Receipt, Trash2 } from "lucide-react";
+import {
+  AlertCircle,
+  ChevronLeft,
+  Info,
+  Receipt,
+  Trash2,
+  X,
+} from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -236,7 +243,7 @@ function CurrentOrderStatusScreen({
       </div>
 
       {/* Cancel Order Modal */}
-      {showCancelModal && (
+      {/* {showCancelModal && (
         <div className="fixed inset-0 z-50 flex items-end justify-center">
           <div
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
@@ -296,6 +303,65 @@ function CurrentOrderStatusScreen({
                 )}
               </button>
             </div>
+          </div>
+        </div>
+      )} */}
+
+      {showCancelModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setShowCancelModal(false)}
+          />
+          <div className="relative w-full max-w-sm bg-white rounded-2xl shadow-2xl p-6 animate-[scaleIn_0.3s_cubic-bezier(0.32,0.72,0,1)]">
+            {/* Close Button */}
+            <button
+              onClick={() => setShowCancelModal(false)}
+              className="absolute top-4 right-4 w-8 h-8 bg-[#F2F2F7] rounded-full flex items-center justify-center hover:bg-[#E5E5EA] transition-colors"
+            >
+              <X size={16} className="text-[#8E8E93]" />
+            </button>
+
+            {/* Icon */}
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 rounded-full bg-[#FFF3CD] flex items-center justify-center">
+                <Info size={32} className="text-[#FFB800]" />
+              </div>
+            </div>
+
+            {/* Content */}
+            <h3 className="text-lg font-bold text-[#1C1C1E] text-center mb-2">
+              Need to Cancel?
+            </h3>
+            <p className="text-sm text-[#6C6C70] text-center mb-2">
+              To cancel this order, please visit the counter and speak with our
+              cashier or staff member.
+            </p>
+            <p className="text-xs text-[#8E8E93] text-center mb-6">
+              They'll help you process the cancellation quickly.
+            </p>
+
+            {/* Divider */}
+            <div className="h-px bg-[#F2F2F7] mb-4" />
+
+            {/* Contact Info */}
+            <div className="bg-[#FAF8F5] rounded-xl p-3 mb-6">
+              <div className="flex items-center gap-2 text-sm text-[#3A3A3C]">
+                <Info size={16} className="text-primary-500 shrink-0" />
+                <span>Show this order number to staff:</span>
+              </div>
+              <p className="text-lg font-bold text-[#1C1C1E] mt-1.5 text-center tracking-wider">
+                #{order?.orderNumber}
+              </p>
+            </div>
+
+            {/* Action Button */}
+            <button
+              onClick={() => setShowCancelModal(false)}
+              className="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold text-sm py-3.5 rounded-xl"
+            >
+              Got it, Thanks
+            </button>
           </div>
         </div>
       )}
