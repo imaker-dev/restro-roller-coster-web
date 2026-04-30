@@ -70,7 +70,12 @@ const AllUsersPage = () => {
       sortable: true,
       render: (row) => (
         <div className="flex items-center gap-3 max-w-[240px]">
-          <UserAvatar name={row.name} src={row.avatarUrl} className="sm" />
+          <UserAvatar
+            name={row.name}
+            src={row.avatarUrl}
+            className="sm"
+            verified={row.isVerified}
+          />
 
           <div className="flex flex-col min-w-0">
             <span className="text-slate-800 font-semibold truncate">
@@ -79,9 +84,6 @@ const AllUsersPage = () => {
 
             <div className="flex items-center gap-2 text-xs text-slate-500">
               <span>{row.employeeCode}</span>
-              {row.isVerified && (
-                <span className="text-emerald-600 font-medium">• Verified</span>
-              )}
             </div>
           </div>
         </div>

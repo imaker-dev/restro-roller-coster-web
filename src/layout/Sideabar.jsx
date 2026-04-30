@@ -1,12 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-
 import SidebarLinkGroup from "./SidebarLinkGroup";
 import { navConfig } from "../config/nav-config";
-import { ChevronDown, ChevronRight, ChevronsLeft } from "lucide-react";
+import { ChevronRight, ChevronsLeft, Search, X, Command } from "lucide-react";
 import { hasAccess } from "../utils/accessControl";
 import { useSelector } from "react-redux";
 import Tooltip from "../components/Tooltip";
+import { LOGO, LOGO_ICON } from "../constants";
 
 function Sidebar({
   sidebarOpen,
@@ -15,9 +15,7 @@ function Sidebar({
   setSidebarExpanded,
 }) {
   const { meData } = useSelector((state) => state.auth);
-
   const userId = meData?.id;
-
   const userRole = meData?.roles[0]?.slug;
   const userPermissions = meData?.permissions || [];
 
@@ -26,20 +24,53 @@ function Sidebar({
 
   const trigger = useRef(null);
   const sidebar = useRef(null);
+  const searchInputRef = useRef(null);
 
   const [isMobile, setIsMobile] = React.useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+      setIsMobile(window.innerWidth < 1024);
     };
-
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const effectiveExpanded = isMobile ? true : sidebarExpanded;
+
+  // Auto-expand sidebar when searching
+  useEffect(() => {
+    if (isSearchVisible && !sidebarExpanded && !isMobile) {
+      setSidebarExpanded(true);
+    }
+  }, [isSearchVisible]);
+
+  // Focus search input when visible
+  useEffect(() => {
+    if (isSearchVisible && searchInputRef.current) {
+      setTimeout(() => searchInputRef.current?.focus(), 200);
+    }
+  }, [isSearchVisible]);
+
+  // Keyboard shortcut
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsSearchVisible(true);
+      }
+      if (e.key === 'Escape' && isSearchVisible) {
+        setIsSearchVisible(false);
+        setSearchQuery("");
+      }
+    };
+    
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isSearchVisible]);
 
   // close on click outside
   useEffect(() => {
@@ -67,7 +98,6 @@ function Sidebar({
     return () => document.removeEventListener("keydown", keyHandler);
   });
 
-  // Helper function to determine if an item is active
   const isItemActive = (item) => {
     if (item.path) {
       return pathname === item.path || pathname.startsWith(`${item.path}/`);
@@ -84,83 +114,141 @@ function Sidebar({
     setSidebarOpen(false);
   }, [pathname]);
 
-  const filteredNavConfig = navConfig
-    .map((group) => {
-      const filteredItems = group.items
-        .map((item) => {
-          // CHILDREN CASE
-          if (item.children) {
-            const parentAllowed = hasAccess({
-              userRole,
-              userPermissions,
-
-              userId,
-              path: item.path,
-
-              roles: item.roles,
-              permissions: item.permissions,
-              public: item.public, // ADD THIS
-            });
-
-            if (!parentAllowed) return null;
-
-            const children = item.children.filter((child) =>
-              hasAccess({
+  const filteredNavConfig = useMemo(() => {
+    return navConfig
+      .map((group) => {
+        const filteredItems = group.items
+          .map((item) => {
+            if (item.children) {
+              const parentAllowed = hasAccess({
                 userRole,
                 userPermissions,
-
                 userId,
-                path: child.path,
+                path: item.path,
+                roles: item.roles,
+                permissions: item.permissions,
+                public: item.public,
+              });
 
-                roles: child.roles,
-                permissions: child.permissions,
-                public: child.public, // ADD THIS
-              }),
-            );
+              if (!parentAllowed) return null;
 
-            return children.length ? { ...item, children } : null;
-          }
+              const children = item.children.filter((child) =>
+                hasAccess({
+                  userRole,
+                  userPermissions,
+                  userId,
+                  path: child.path,
+                  roles: child.roles,
+                  permissions: child.permissions,
+                  public: child.public,
+                }),
+              );
 
-          // NORMAL ITEM
-          return hasAccess({
-            userRole,
-            userPermissions,
-            
-            userId,
-            path: item.path,
+              return children.length ? { ...item, children } : null;
+            }
 
-            roles: item.roles,
-            permissions: item.permissions,
-            public: item.public, // ADD THIS
+            return hasAccess({
+              userRole,
+              userPermissions,
+              userId,
+              path: item.path,
+              roles: item.roles,
+              permissions: item.permissions,
+              public: item.public,
+            })
+              ? item
+              : null;
           })
-            ? item
-            : null;
-        })
-        .filter(Boolean);
+          .filter(Boolean);
 
-      return filteredItems.length ? { ...group, items: filteredItems } : null;
-    })
-    .filter(Boolean);
+        return filteredItems.length ? { ...group, items: filteredItems } : null;
+      })
+      .filter(Boolean);
+  }, [userRole, userPermissions, userId]);
+
+  const searchedNavConfig = useMemo(() => {
+    if (!searchQuery.trim()) return filteredNavConfig;
+
+    const query = searchQuery.toLowerCase().trim();
+    
+    return filteredNavConfig
+      .map((group) => {
+        const searchedItems = group.items
+          .map((item) => {
+            if (item.children) {
+              const matchingChildren = item.children.filter(
+                (child) =>
+                  child.name.toLowerCase().includes(query) ||
+                  child.path?.toLowerCase().includes(query)
+              );
+
+              const parentMatches = item.name.toLowerCase().includes(query);
+
+              if (parentMatches || matchingChildren.length > 0) {
+                return {
+                  ...item,
+                  children: parentMatches ? item.children : matchingChildren,
+                  _searchHighlight: true,
+                };
+              }
+              return null;
+            }
+
+            if (
+              item.name.toLowerCase().includes(query) ||
+              item.path?.toLowerCase().includes(query)
+            ) {
+              return { ...item, _searchHighlight: true };
+            }
+            return null;
+          })
+          .filter(Boolean);
+
+        return searchedItems.length ? { ...group, items: searchedItems } : null;
+      })
+      .filter(Boolean);
+  }, [filteredNavConfig, searchQuery]);
+
+  const highlightMatch = (text) => {
+    if (!searchQuery.trim() || !isSearchVisible) return text;
+    
+    const regex = new RegExp(`(${searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    const parts = text.split(regex);
+    
+    return parts.map((part, i) => 
+      regex.test(part) ? (
+        <span key={i} className="text-gray-900 font-semibold bg-amber-100/80 rounded px-0.5">
+          {part}
+        </span>
+      ) : (
+        part
+      )
+    );
+  };
 
   return (
     <div className="min-w-fit relative">
+      {/* Collapse Button */}
       <div className="hidden xl:block absolute -right-3 top-6 z-40">
         <Tooltip
           content={sidebarExpanded ? "Collapse sidebar" : "Expand sidebar"}
           position="right"
         >
           <button
-            onClick={() => setSidebarExpanded(!sidebarExpanded)}
+            onClick={() => {
+              setSidebarExpanded(!sidebarExpanded);
+              if (!sidebarExpanded) {
+                setIsSearchVisible(false);
+                setSearchQuery("");
+              }
+            }}
             className="p-1 group relative flex items-center justify-center rounded-full bg-white border border-gray-200 shadow hover:shadow-lg hover:bg-gray-50 transition-all duration-200"
           >
             <span className="sr-only">Toggle sidebar</span>
-
             <ChevronsLeft
-              className={`
-          w-3.5 h-3.5 text-gray-600
-          transition-transform duration-300 ease-in-out
-          ${!sidebarExpanded ? "rotate-180" : ""}
-        `}
+              className={`w-3.5 h-3.5 text-gray-600 transition-transform duration-300 ease-in-out ${
+                !sidebarExpanded ? "rotate-180" : ""
+              }`}
             />
           </button>
         </Tooltip>
@@ -184,21 +272,71 @@ function Sidebar({
         } ${effectiveExpanded ? "w-64" : "xl:w-20"}`}
       >
         {/* Sidebar header */}
-        <div className="bg-white px-4 border-b border-gray-200 sticky top-0 z-10 h-16">
+        <div className="bg-white px-4 border-b border-gray-200 sticky top-0 z-10">
           {/* Logo */}
           <NavLink
             end
             to="/"
             className={`flex items-center ${effectiveExpanded ? "justify-start" : "justify-center"} h-16`}
           >
-            {effectiveExpanded && (
-              <img src="/Images/Logo.svg" alt="" className="w-40" />
-            )}
-            {!effectiveExpanded && (
-              <img src="/Images/logo-icon.png" className="w-8" />
+            {effectiveExpanded ? (
+              <img src={LOGO} alt="" className="w-40" />
+            ) : (
+              <img src={LOGO_ICON} className="w-8" />
             )}
           </NavLink>
+
+
         </div>
+                    {/* Search Area */}
+          {effectiveExpanded && (
+            <div className="px-4 py-2">
+              {!isSearchVisible ? (
+                <button
+                  onClick={() => setIsSearchVisible(true)}
+                  className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-500 
+                    hover:text-gray-700 rounded-lg hover:bg-gray-100 transition-colors group"
+                >
+                  <Search className="w-4 h-4" />
+                  <span className="flex-1 text-left">Search</span>
+                  <kbd className="text-[10px] font-medium text-gray-400 bg-gray-100 group-hover:bg-gray-200 px-1.5 py-0.5 rounded transition-colors">
+                    ⌘K
+                  </kbd>
+                </button>
+              ) : (
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Search menus..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-9 pr-8 py-1.5 text-sm border border-gray-200 rounded-md
+                      focus:outline-none focus:border-gray-300
+                      placeholder:text-gray-300"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-8 top-1/2 -translate-y-1/2 p-0.5 rounded hover:bg-gray-100"
+                    >
+                      <X className="w-3.5 h-3.5 text-gray-400" />
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      setIsSearchVisible(false);
+                      setSearchQuery("");
+                    }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 hover:text-gray-600"
+                  >
+                    ESC
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
 
         {/* Links */}
         <div
@@ -206,233 +344,248 @@ function Sidebar({
             effectiveExpanded ? "" : "space-y-4"
           }`}
         >
-          {filteredNavConfig.map((group) => (
-            <div key={group.title}>
-              {/* Group title */}
-              <h3
-                className={`text-[10px] font-semibold uppercase text-gray-500 mb-2 transition-all duration-200 ${
-                  effectiveExpanded
-                    ? "opacity-100"
-                    : "text-center opacity-60 px-0"
-                }`}
-              >
-                {effectiveExpanded ? (
-                  group.title
-                ) : (
-                  <span className="block w-full text-center">•••</span>
-                )}
-              </h3>
+          {isSearchVisible && searchQuery && searchedNavConfig.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-sm text-gray-500">No results found</p>
+              <p className="text-xs text-gray-400 mt-1">Try a different search term</p>
+            </div>
+          ) : (
+            searchedNavConfig.map((group) => (
+              <div key={group.title}>
+                <h3
+                  className={`text-[10px] font-semibold uppercase text-gray-500 mb-2 transition-all duration-200 ${
+                    effectiveExpanded
+                      ? "opacity-100"
+                      : "text-center opacity-60 px-0"
+                  }`}
+                >
+                  {effectiveExpanded ? (
+                    group.title
+                  ) : (
+                    <span className="block w-full text-center">•••</span>
+                  )}
+                </h3>
 
-              <ul
-                className={`${effectiveExpanded ? "space-y-1" : "space-y-2"}`}
-              >
-                {group.items.map((item) => {
-                  const isActive = isItemActive(item);
-                  const iconClass = isActive
-                    ? "text-primary-500"
-                    : "text-gray-500";
+                <ul className={`${effectiveExpanded ? "space-y-1" : "space-y-2"}`}>
+                  {group.items.map((item) => {
+                    const isActive = isItemActive(item);
+                    const iconClass = isActive
+                      ? "text-primary-500"
+                      : "text-gray-500";
 
-                  if (item.children) {
-                    return (
-                      <SidebarLinkGroup
-                        key={item.name}
-                        activecondition={isActive}
-                        sidebarExpanded={effectiveExpanded}
-                        itemName={item.name}
-                      >
-                        {(handleClick, open) => (
-                          <div className="bg-red-100group relative">
-                            <Tooltip
-                              content={item.name}
-                              position="right"
-                              disabled={effectiveExpanded || isMobile}
-                            >
-                              <a
-                                href="#0"
-                                className={`block truncate transition-all duration-200 rounded-md p-2.5 ${
-                                  isActive
-                                    ? "bg-primary-100 text-primary-600"
-                                    : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                                } ${effectiveExpanded ? "" : "flex justify-center"}`}
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  if (!effectiveExpanded && !isMobile) {
-                                    setSidebarExpanded(true);
-                                  }
-                                  handleClick();
-                                }}
+                    if (item.children) {
+                      return (
+                        <SidebarLinkGroup
+                          key={item.name}
+                          activecondition={isActive}
+                          sidebarExpanded={effectiveExpanded}
+                          itemName={item.name}
+                          defaultOpen={item._searchHighlight && !!searchQuery}
+                        >
+                          {(handleClick, open) => (
+                            <div className="group relative">
+                              <Tooltip
+                                content={item.name}
+                                position="right"
+                                disabled={effectiveExpanded || isMobile}
                               >
-                                <div
-                                  className={`flex items-center ${
-                                    effectiveExpanded
-                                      ? "justify-between"
-                                      : "justify-center"
-                                  }`}
+                                <a
+                                  href="#0"
+                                  className={`block truncate transition-all duration-200 rounded-md p-2.5 ${
+                                    isActive
+                                      ? "bg-primary-100 text-primary-600"
+                                      : item._searchHighlight && searchQuery
+                                      ? "bg-gray-100"
+                                      : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                  } ${effectiveExpanded ? "" : "flex justify-center"}`}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    if (!effectiveExpanded && !isMobile) {
+                                      setSidebarExpanded(true);
+                                    }
+                                    handleClick();
+                                  }}
                                 >
                                   <div
                                     className={`flex items-center ${
                                       effectiveExpanded
-                                        ? ""
-                                        : "justify-center w-full"
+                                        ? "justify-between"
+                                        : "justify-center"
                                     }`}
                                   >
-                                    <item.icon
-                                      className={`shrink-0 h-4 w-4 ${iconClass} transition-colors duration-200`}
-                                    />
+                                    <div
+                                      className={`flex items-center ${
+                                        effectiveExpanded
+                                          ? ""
+                                          : "justify-center w-full"
+                                      }`}
+                                    >
+                                      <item.icon
+                                        className={`shrink-0 h-4 w-4 ${iconClass} transition-colors duration-200`}
+                                      />
+
+                                      {effectiveExpanded && (
+                                        <span className="text-sm font-semibold ml-3 transition-opacity duration-200">
+                                          {highlightMatch(item.name)}
+                                        </span>
+                                      )}
+                                    </div>
 
                                     {effectiveExpanded && (
-                                      <span className="text-sm font-semibold ml-3 transition-opacity duration-200">
-                                        {item.name}
-                                      </span>
+                                      <div className="flex shrink-0 ml-2">
+                                        <div
+                                          className={`flex items-center justify-center h-5 w-5 rounded-full transition-all duration-200 ${
+                                            open
+                                              ? "bg-primary-200 text-primary-600"
+                                              : "bg-gray-100 text-gray-500 group-hover:bg-gray-200"
+                                          }`}
+                                        >
+                                          <ChevronRight
+                                            className={`h-3 w-3 transition-transform duration-300 ease-in-out ${
+                                              open ? "rotate-90" : ""
+                                            }`}
+                                            strokeWidth={2.5}
+                                          />
+                                        </div>
+                                      </div>
                                     )}
                                   </div>
+                                </a>
+                              </Tooltip>
 
-                                  {effectiveExpanded && (
-                                    <div className="flex shrink-0 ml-2">
-                                      <div
-                                        className={`flex items-center justify-center h-5 w-5 rounded-full transition-all duration-200 ${
-                                          open
-                                            ? "bg-primary-200 text-primary-600"
-                                            : "bg-gray-100 text-gray-500 group-hover:bg-gray-200"
-                                        }`}
+                              {/* Submenu */}
+                              {effectiveExpanded && (
+                                <ul
+                                  className={`pl-6 mt-2 space-y-2 overflow-hidden transition-all duration-300 ease-in-out ${
+                                    open
+                                      ? "max-h-[500px] opacity-100"
+                                      : "max-h-0 opacity-0"
+                                  }`}
+                                >
+                                  {item.children.map((child) => {
+                                    const isChildActive = pathname === child.path;
+                                    return (
+                                      <li
+                                        key={child.name}
+                                        className="flex items-center gap-2"
                                       >
-                                        <ChevronRight
-                                          className={`h-3 w-3 transition-transform duration-300 ease-in-out ${
-                                            open ? "rotate-90" : ""
-                                          }`}
-                                          strokeWidth={2.5}
-                                        />
-                                      </div>
-                                    </div>
-                                  )}
-                                </div>
-                              </a>
-                            </Tooltip>
+                                        <span className="relative block w-2 h-2">
+                                          {isChildActive && (
+                                            <span className="absolute inset-0 rounded-full bg-primary-400 opacity-75 animate-ping"></span>
+                                          )}
+                                          <span
+                                            className={`absolute w-1.5 h-1.5 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${
+                                              isChildActive
+                                                ? "bg-primary-500"
+                                                : "bg-gray-400"
+                                            }`}
+                                          ></span>
+                                        </span>
 
-                            {/* Submenu */}
-                            {effectiveExpanded && (
-                              <ul
-                                className={`pl-6 mt-2 space-y-2 overflow-hidden transition-all duration-300 ease-in-out ${
-                                  open
-                                    ? "max-h-[500px] opacity-100"
-                                    : "max-h-0 opacity-0"
-                                }`}
-                              >
-                                {item.children.map((child) => {
-                                  const isChildActive = pathname === child.path;
-                                  //  || pathname.startsWith(`${child.path}/`);
-                                  return (
-                                    <li
-                                      key={child.name}
-                                      className="flex items-center gap-2"
-                                    >
-                                      <span className="relative block w-2 h-2">
-                                        {/* Glow */}
-                                        {isChildActive && (
-                                          <span className="absolute inset-0 rounded-full bg-primary-400 opacity-75 animate-ping"></span>
-                                        )}
-
-                                        {/* Main Dot */}
-                                        <span
-                                          className={`absolute w-1.5 h-1.5 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${
+                                        <NavLink
+                                          end
+                                          to={child.path}
+                                          onClick={() => {
+                                            setIsSearchVisible(false);
+                                            setSearchQuery("");
+                                          }}
+                                          className={`block py-1 transition duration-150 truncate text-xs ${
                                             isChildActive
-                                              ? "bg-primary-500"
-                                              : "bg-gray-400"
+                                              ? "text-primary-500"
+                                              : "text-gray-600 hover:text-gray-900"
                                           }`}
-                                        ></span>
-                                      </span>
-
-                                      <NavLink
-                                        end
-                                        to={child.path}
-                                        className={`block py-1 transition duration-150 truncate text-xs ${
-                                          isChildActive
-                                            ? "text-primary-500"
-                                            : "text-gray-600 hover:text-gray-900"
-                                        }`}
-                                      >
-                                        {child.name}
-                                      </NavLink>
-                                    </li>
-                                  );
-                                })}
-                              </ul>
-                            )}
-                          </div>
-                        )}
-                      </SidebarLinkGroup>
-                    );
-                  } else {
-                    return (
-                      <Tooltip
-                        key={item.name}
-                        content={item.name}
-                        position="right"
-                        disabled={effectiveExpanded || isMobile}
-                      >
-                        <li
-                          className={`p-2.5 mb-0.5 last:mb-0 transition-all duration-200 ${
-                            isActive ? "bg-primary-100" : ""
-                          } ${
-                            effectiveExpanded
-                              ? "rounded-sm"
-                              : "rounded-lg mx-1 hover:bg-gray-100"
-                          }`}
+                                        >
+                                          {highlightMatch(child.name)}
+                                        </NavLink>
+                                      </li>
+                                    );
+                                  })}
+                                </ul>
+                              )}
+                            </div>
+                          )}
+                        </SidebarLinkGroup>
+                      );
+                    } else {
+                      return (
+                        <Tooltip
+                          key={item.name}
+                          content={item.name}
+                          position="right"
+                          disabled={effectiveExpanded || isMobile}
                         >
-                          <NavLink
-                            end
-                            to={item.path}
-                            className={`group relative block text-gray-800 truncate transition duration-150 ${
+                          <li
+                            className={`p-2.5 mb-0.5 last:mb-0 transition-all duration-200 ${
                               isActive
-                                ? "text-primary-500 hover:text-primary-600"
-                                : "hover:text-gray-900"
+                                ? "bg-primary-100"
+                                : item._searchHighlight && searchQuery
+                                ? "bg-gray-100"
+                                : ""
                             } ${
                               effectiveExpanded
-                                ? ""
-                                : "flex items-center justify-center"
+                                ? "rounded-sm"
+                                : "rounded-lg mx-1 hover:bg-gray-100"
                             }`}
                           >
-                            <div
-                              className={`flex items-center ${
+                            <NavLink
+                              end
+                              to={item.path}
+                              onClick={() => {
+                                setIsSearchVisible(false);
+                                setSearchQuery("");
+                              }}
+                              className={`group relative block text-gray-800 truncate transition duration-150 ${
+                                isActive
+                                  ? "text-primary-500 hover:text-primary-600"
+                                  : "hover:text-gray-900"
+                              } ${
                                 effectiveExpanded
-                                  ? "justify-between"
-                                  : "justify-center"
+                                  ? ""
+                                  : "flex items-center justify-center"
                               }`}
                             >
                               <div
                                 className={`flex items-center ${
                                   effectiveExpanded
-                                    ? "grow"
-                                    : "justify-center w-full"
+                                    ? "justify-between"
+                                    : "justify-center"
                                 }`}
                               >
-                                <item.icon
-                                  className={`shrink-0 h-4 w-4 ${iconClass} transition-colors duration-200`}
-                                />
+                                <div
+                                  className={`flex items-center ${
+                                    effectiveExpanded
+                                      ? "grow"
+                                      : "justify-center w-full"
+                                  }`}
+                                >
+                                  <item.icon
+                                    className={`shrink-0 h-4 w-4 ${iconClass} transition-colors duration-200`}
+                                  />
 
-                                {effectiveExpanded && (
-                                  <span className="text-sm font-semibold ml-3 transition-opacity duration-200">
-                                    {item.name}
-                                  </span>
+                                  {effectiveExpanded && (
+                                    <span className="text-sm font-semibold ml-3 transition-opacity duration-200">
+                                      {highlightMatch(item.name)}
+                                    </span>
+                                  )}
+                                </div>
+                                {effectiveExpanded && item.badge && (
+                                  <div className="flex flex-shrink-0 ml-2">
+                                    <span className="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-primary-500 px-2 rounded transition-all duration-200">
+                                      {item.badge}
+                                    </span>
+                                  </div>
                                 )}
                               </div>
-                              {effectiveExpanded && item.badge && (
-                                <div className="flex flex-shrink-0 ml-2">
-                                  <span className="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-primary-500 px-2 rounded transition-all duration-200">
-                                    {item.badge}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                          </NavLink>
-                        </li>
-                      </Tooltip>
-                    );
-                  }
-                })}
-              </ul>
-            </div>
-          ))}
+                            </NavLink>
+                          </li>
+                        </Tooltip>
+                      );
+                    }
+                  })}
+                </ul>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>

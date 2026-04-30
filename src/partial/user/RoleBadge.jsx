@@ -9,11 +9,18 @@ import {
   Martini,
 } from "lucide-react";
 import Tooltip from "../../components/Tooltip";
+import { formatText } from "../../utils/utils";
 
 /**
  * Role Variant Configuration
  */
 const ROLE_VARIANTS = {
+  super_admin: {
+    bg: "bg-yellow-50",
+    text: "text-yellow-700",
+    dot: "bg-yellow-500",
+    icon: Crown,
+  },
   admin: {
     bg: "bg-rose-50",
     text: "text-rose-700",
@@ -97,31 +104,29 @@ export default function RoleBadge({
   const sizeClass = SIZES[size] || SIZES.md;
   const Icon = config.icon;
 
-  const label = normalized.charAt(0).toUpperCase() + normalized.slice(1);
-
   return (
-    <Tooltip content={`Assigned role ${label}`}> 
-    <span
-      role="status"
-      aria-label={label}
-      className={`
+    <Tooltip content={`Assigned role ${formatText(role)}`}>
+      <span
+        role="status"
+        aria-label={formatText(role)}
+        className={`
         inline-flex items-center rounded-md font-medium
         ${sizeClass}
         ${config.bg} ${config.text}
         ${className}
       `}
-    >
-      {showDot && (
-        <span
-          className={`h-1.5 w-1.5 rounded-full ${config.dot}`}
-          aria-hidden="true"
-        />
-      )}
+      >
+        {showDot && (
+          <span
+            className={`h-1.5 w-1.5 rounded-full ${config.dot}`}
+            aria-hidden="true"
+          />
+        )}
 
-      {showIcon && <Icon className="w-3.5 h-3.5 opacity-80" />}
+        {showIcon && <Icon className="w-3.5 h-3.5 opacity-80" />}
 
-      {label}
-    </span>
+        {formatText(role)}
+      </span>
     </Tooltip>
   );
 }

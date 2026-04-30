@@ -38,6 +38,7 @@ import outsideCollectionSlice from './redux/slices/outsideCollectionSlice';
 import registrationSlice from './redux/slices/registrationSlice';
 import publicMenuSlice from './redux/slices/publicMenuSlice';
 import qrSlice from './redux/slices/qrSlice';
+import adminSlice from './redux/slices/adminSlice';
 
 
 const reducer = {
@@ -80,6 +81,7 @@ const reducer = {
   registration:registrationSlice,
   publicMenu: publicMenuSlice,
   qr:qrSlice,
+  admin:adminSlice,
 };
 
 const store = configureStore({

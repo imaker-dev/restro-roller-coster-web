@@ -1,3 +1,4 @@
+import { Check } from "lucide-react";
 import React from "react";
 
 function getColorFromName(name = "") {
@@ -33,24 +34,32 @@ export default function UserAvatar({
   url,
   name = "",
   status = false,
+  verified = false,
   size = "md",
   className = "",
   rounded = true,
   preview = false,
 }) {
-const sizes = {
-  sm: "w-8 h-8 text-[11px]",
-  md: "w-10 h-10 text-sm",
-  lg: "w-12 h-12 text-base", 
-  xl: "w-16 h-16 text-lg",   
-};
+  const sizes = {
+    sm: "w-8 h-8 text-[11px]",
+    md: "w-10 h-10 text-sm",
+    lg: "w-12 h-12 text-base",
+    xl: "w-16 h-16 text-lg",
+  };
 
-const dotSizes = {
-  sm: "w-2 h-2 border",
-  md: "w-2.5 h-2.5 border-2",
-  lg: "w-3 h-3 border-2",
-  xl: "w-3.5 h-3.5 border-2",
-};
+  const dotSizes = {
+    sm: "w-2 h-2 border",
+    md: "w-2.5 h-2.5 border-2",
+    lg: "w-3 h-3 border-2",
+    xl: "w-3.5 h-3.5 border-2",
+  };
+
+  const badgeSizes = {
+    sm: "w-3 h-3 text-[8px]",
+    md: "w-4 h-4 text-[10px]",
+    lg: "w-5 h-5 text-[11px]",
+    xl: "w-6 h-6 text-xs",
+  };
 
   function getInitials(name = "") {
     if (!name) return "?";
@@ -103,6 +112,20 @@ const dotSizes = {
           </div>
         )}
       </div>
+      {verified && (
+        <span
+          className={`
+            absolute -top-1 -right-1
+            ${badgeSizes[size]}
+            flex items-center justify-center
+            bg-emerald-500 text-white rounded-full
+            border-2 border-white shadow
+          `}
+          title="Verified"
+        >
+          <Check className="w-[70%] h-[70%] stroke-[3]" />
+        </span>
+      )}
 
       {/* ✅ ONLINE DOT */}
       {status && (

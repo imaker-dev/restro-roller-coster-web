@@ -11,6 +11,7 @@ export const LOGO = "/Images/Logo.svg";
 export const LOGO_ICON = "/Images/logo-icon.png";
 
 export const ROLES = {
+  MASTER: "master",
   SUPER_ADMIN: "super_admin",
   ADMIN: "admin",
   MANAGER: "manager",
