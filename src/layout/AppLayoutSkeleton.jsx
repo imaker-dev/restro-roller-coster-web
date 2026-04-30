@@ -1,5 +1,6 @@
 import React from "react";
 import Shimmer from "./Shimmer";
+import { LOGO } from "../constants";
 
 export default function AppLayoutSkeleton() {
   return (
@@ -95,7 +96,7 @@ function ContentSkeleton() {
 
             {/* Animated Logo */}
             <img
-              src="/Images/Logo.svg"
+              src={LOGO}
               alt="logo"
               className="relative w-28 sm:w-36 md:w-44 lg:w-52 animate-pulse"
             />

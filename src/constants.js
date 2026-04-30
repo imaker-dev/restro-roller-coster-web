@@ -7,6 +7,9 @@ export const TOKEN_KEYS = {
   DEVICE_ID: "_k_dev_93f2c11", 
 };
 
+export const LOGO = "/Images/Logo.svg";
+export const LOGO_ICON = "/Images/logo-icon.png";
+
 export const ROLES = {
   SUPER_ADMIN: "super_admin",
   ADMIN: "admin",

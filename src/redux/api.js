@@ -50,6 +50,7 @@ axiosInstance.interceptors.response.use(
         "The user belonging to this token no longer exists",
         "Invalid or expired session",
         "This order is no longer active. Please start a new session",
+        "Session verification failed",
       ];
 
       if (logoutErrors.includes(errorMessage)) {
