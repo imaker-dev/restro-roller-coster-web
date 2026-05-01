@@ -6,7 +6,7 @@ export default false
       message: "You are Offline. Please turn on the internet",
     }
   : {
-      getAllUsersApi: (page = 1, limit = 10, search, outletId) => {
+      getAllUsersApi: ({page = 1, limit = 10, search, outletId}) => {
         const params = cleanParams({
           page,
           limit,

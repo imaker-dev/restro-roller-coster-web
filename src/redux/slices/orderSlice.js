@@ -19,7 +19,7 @@ export const fetchAllOrders = createAsyncThunk(
     hasOpenItems,
     hasNcItems,
   }) => {
-    const res = await OrderServices.getAllOrdersApi(
+    const res = await OrderServices.getAllOrdersApi({
       outletId,
       page,
       limit,
@@ -32,7 +32,7 @@ export const fetchAllOrders = createAsyncThunk(
       sortOrder,
       hasOpenItems,
       hasNcItems,
-    );
+    });
     return res.data;
   },
 );

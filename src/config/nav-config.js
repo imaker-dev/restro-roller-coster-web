@@ -45,6 +45,12 @@ export const navConfig = [
         roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER],
       },
       {
+        name: "Outlet Dashboard",
+        icon: Building2,
+        path: ROUTE_PATHS.OUTLET_DASHBOARD,
+        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
+      },
+      {
         name: "Kitchen Dashboard",
         icon: Home,
         path: ROUTE_PATHS.HOME,
@@ -321,18 +327,6 @@ export const navConfig = [
     roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
     items: [
       {
-        name: "Registration Requests",
-        icon: ClipboardList,
-        path: ROUTE_PATHS.REGISTRATION_REQUESTS,
-        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
-      },
-      {
-        name: "Token Generation Logs",
-        icon: Activity,
-        path: ROUTE_PATHS.TOKEN_GENERATION_LOGS,
-        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
-      },
-      {
         name: "Outlets / Restaurants",
         icon: Building2,
         path: ROUTE_PATHS.ALL_OUTLETS,
@@ -350,12 +344,6 @@ export const navConfig = [
         path: ROUTE_PATHS.ALL_USERS,
         roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER],
       },
-      {
-        name: "Super Admins",
-        icon: Users,
-        path: ROUTE_PATHS.ALL_SUPER_ADMINS,
-        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
-      },
     ],
   },
 
@@ -369,11 +357,42 @@ export const navConfig = [
         path: ROUTE_PATHS.ALL_SETTINGS,
         roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
       },
+    ],
+  },
+
+  {
+    title: "Master Control",
+    roles: [ROLES.MASTER],
+    items: [
+      {
+        name: "Registration Requests",
+        icon: ClipboardList,
+        path: ROUTE_PATHS.REGISTRATION_REQUESTS,
+        roles: [ROLES.MASTER],
+      },
+      {
+        name: "Token Generation Logs",
+        icon: Activity,
+        path: ROUTE_PATHS.TOKEN_GENERATION_LOGS,
+        roles: [ROLES.MASTER],
+      },
+      {
+        name: "Super Admins",
+        icon: Users,
+        path: ROUTE_PATHS.ALL_SUPER_ADMINS,
+        roles: [ROLES.MASTER],
+      },
       {
         name: "App Versions",
         icon: Smartphone,
         path: ROUTE_PATHS.ALL_VERSIONS,
-        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
+        roles: [ROLES.MASTER],
+      },
+      {
+        name: "Support",
+        icon: Headphones,
+        path: ROUTE_PATHS.SUPPORT_CHAT,
+        roles: [ROLES.MASTER],
       },
     ],
   },
@@ -387,12 +406,6 @@ export const navConfig = [
         path: ROUTE_PATHS.GUIDE,
         public: true,
         roles: null,
-      },
-      {
-        name: "Support",
-        icon: Headphones,
-        path: ROUTE_PATHS.SUPPORT_CHAT,
-        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
       },
     ],
   },

@@ -15,6 +15,12 @@ import { formatText } from "../../utils/utils";
  * Role Variant Configuration
  */
 const ROLE_VARIANTS = {
+  master: {
+    bg: "bg-purple-50",
+    text: "text-purple-700",
+    dot: "bg-purple-600",
+    icon: Crown,
+  },
   super_admin: {
     bg: "bg-yellow-50",
     text: "text-yellow-700",
@@ -94,6 +100,7 @@ export default function RoleBadge({
   showIcon = true,
   className = "",
 }) {
+  console.log(role)
   if (!role) {
     return <span className="text-xs text-slate-400">—</span>;
   }

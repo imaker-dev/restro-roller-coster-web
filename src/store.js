@@ -39,6 +39,7 @@ import registrationSlice from './redux/slices/registrationSlice';
 import publicMenuSlice from './redux/slices/publicMenuSlice';
 import qrSlice from './redux/slices/qrSlice';
 import adminSlice from './redux/slices/adminSlice';
+import superAdminDashboardSlice from './redux/slices/superAdminDashboardSlice';
 
 
 const reducer = {
@@ -82,6 +83,7 @@ const reducer = {
   publicMenu: publicMenuSlice,
   qr:qrSlice,
   admin:adminSlice,
+  superAdminDashboard:superAdminDashboardSlice,
 };
 
 const store = configureStore({

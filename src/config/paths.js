@@ -1,6 +1,7 @@
 export const ROUTE_PATHS = {
   // Dashboard & Core
   HOME: "/",
+  OUTLET_DASHBOARD: "/outlet-dashboard",
   ORDER_DISPLAY: "/order-display",
   GUIDE: "/guide",
 

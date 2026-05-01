@@ -55,6 +55,7 @@ const AllOrdersPage = () => {
   const { columns, actions: rowActions } = getOrderTableConfig(navigate);
 
   const fetchOrders = () => {
+    if (!outletId) return;
     const { status, orderType, paymentStatus, hasOpenItems, hasNcItems } =
       filters || {};
 

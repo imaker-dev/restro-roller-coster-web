@@ -206,7 +206,7 @@ const AllRegistrationRequestPage = () => {
         <PageHeader title={"All Requests"} showBackButton />
 
         <SmartTable
-          title="Items"
+          title="Requests"
           totalcount={pagination?.total}
           data={registrations}
           columns={columns}

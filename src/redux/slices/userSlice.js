@@ -5,7 +5,7 @@ import UserServices from "../services/UserServices";
 export const fetchAllUsers = createAsyncThunk(
   "/fetch/outlets",
   async ({ page,limit,search,outletId }) => {
-    const res = await UserServices.getAllUsersApi(page, limit, search,outletId);
+    const res = await UserServices.getAllUsersApi({page, limit, search,outletId});
     return res.data;
   },
 );

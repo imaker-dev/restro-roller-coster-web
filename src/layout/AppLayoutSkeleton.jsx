@@ -71,8 +71,9 @@ function HeaderSkeleton() {
 
           {/* Right */}
           <div className="flex items-center gap-3">
-            <Shimmer width="32px" height="32px" rounded="full" />
-            <Shimmer width="32px" height="32px" rounded="full" />
+            <Shimmer width="80
+            px" height="32px" rounded="md" />
+            {/* <Shimmer width="32px" height="32px" rounded="full" /> */}
             <Shimmer width="1px" height="24px" />
             <Shimmer width="36px" height="36px" rounded="full" />
           </div>

@@ -39,12 +39,14 @@ const AllUsersPage = () => {
   const { data, pagination } = allUsers || {};
 
   const fetchUsers = () => {
+    if (!outletId) return;
+
     dispatch(
       fetchAllUsers({
+        outletId,
         search: searchTerm,
         page: currentPage,
         limit: itemsPerPage,
-        outletId,
       }),
     );
   };

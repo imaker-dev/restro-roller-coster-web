@@ -6,7 +6,7 @@ export default false
       message: "You are Offline. Please turn on the internet",
     }
   : {
-      getAllOrdersApi: (
+      getAllOrdersApi: ({
         outletId,
         page,
         limit,
@@ -18,7 +18,7 @@ export default false
         sortBy,
         sortOrder,
         hasOpenItems,
-        hasNcItems,
+        hasNcItems,}
       ) => {
         const params = cleanParams({
           page,

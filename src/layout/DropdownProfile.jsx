@@ -7,6 +7,7 @@ import PermissionGuard from "../guard/PermissionGuard";
 import { ROLES } from "../constants";
 import UserAvatar from "../components/UserAvatar";
 import { ROUTE_PATHS } from "../config/paths";
+import RoleBadge from "../partial/user/RoleBadge";
 
 function DropdownProfile({ align, onLogoutClick }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -90,15 +91,11 @@ function DropdownProfile({ align, onLogoutClick }) {
             <div className="text-xs text-slate-500  italic mb-1">
               {meData?.email || "No Email"}
             </div>
-
-            {meData?.roles?.[0]?.name && (
-              <span className="shrink-0 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-primary-100 text-primary-600 border border-primary-100">
-                {meData.roles[0].name}
-              </span>
-            )}
+            <RoleBadge role={meData?.roles?.[0]?.slug} />
+            
           </div>
           <ul>
-            <PermissionGuard roles={[ROLES.SUPER_ADMIN,ROLES.ADMIN]}>
+            <PermissionGuard roles={[ROLES.SUPER_ADMIN, ROLES.ADMIN]}>
               <li>
                 <Link
                   className="font-medium text-sm text-primary hover:text-primary-600  flex items-center py-1 px-3"

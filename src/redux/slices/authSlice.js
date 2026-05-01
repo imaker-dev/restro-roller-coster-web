@@ -53,6 +53,7 @@ const authSlice = createSlice({
     meData: null,
     outlets: [],
     outletId: storedOutlet ? Number(storedOutlet) : null,
+    hasOutlet:false,
     loginSource: localStorage.getItem(TOKEN_KEYS.LOGIN_SOURCE) || "web",
   },
   reducers: {
@@ -119,6 +120,7 @@ const authSlice = createSlice({
 
         const outlets = action.payload.data.outlets || [];
         state.outlets = outlets;
+        state.hasOutlet = Array.isArray(outlets) && outlets.length > 0;
 
         state.outletId = resolveOutlet(outlets);
       })

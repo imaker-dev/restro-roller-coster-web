@@ -97,13 +97,14 @@ import TokenActivationLogsPage from "../pages/registration-request/TokenActivati
 import TablesQrPage from "../pages/tables/TablesQrPage";
 import AllSuperAdminsPage from "../pages/admins/AllSuperAdminsPage";
 import AddSuperAdminPage from "../pages/admins/AddSuperAdminPage";
+import SuperAdminDashboard from "../pages/dashboard/SuperAdminDashboard";
 
 const routeConfig = [
   {
     path: ROUTE_PATHS.HOME,
     elements: {
-      [ROLES.MASTER]: Dashboard,
-      [ROLES.SUPER_ADMIN]: Dashboard,
+      [ROLES.MASTER]: SuperAdminDashboard,
+      [ROLES.SUPER_ADMIN]: SuperAdminDashboard,
       [ROLES.ADMIN]: Dashboard,
       [ROLES.MANAGER]: Dashboard,
       [ROLES.KITCHEN]: OrderDashboard,
@@ -111,6 +112,7 @@ const routeConfig = [
     },
     roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER, ROLES.KITCHEN, ROLES.BARTENDER],
   },
+  {path: ROUTE_PATHS.OUTLET_DASHBOARD, element: Dashboard, roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],},
 
   { path: ROUTE_PATHS.ORDER_DISPLAY, element: OrderDisplayPage, roles: [ROLES.BARTENDER, ROLES.KITCHEN] },
 
