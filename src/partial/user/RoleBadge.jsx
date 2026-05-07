@@ -100,7 +100,7 @@ export default function RoleBadge({
   showIcon = true,
   className = "",
 }) {
-  console.log(role)
+
   if (!role) {
     return <span className="text-xs text-slate-400">—</span>;
   }

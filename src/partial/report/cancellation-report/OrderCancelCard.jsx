@@ -2,7 +2,6 @@ import {
   AlertTriangle,
   ArrowRight,
   Clock,
-  IndianRupee,
   User,
   XCircle,
 } from "lucide-react";
@@ -12,6 +11,7 @@ import { formatNumber } from "../../../utils/numberFormatter";
 import OrderBadge from "../../order/OrderBadge";
 import { Link } from "react-router-dom";
 import { ROUTE_PATHS } from "../../../config/paths";
+import { CURRENCY } from "../../../constants";
 
 // ─── Order cancellation card ──────────────────────────────────────────────────
 export default function OrderCancelCard({ item }) {
@@ -60,7 +60,7 @@ export default function OrderCancelCard({ item }) {
               value={item.reason || "—"}
             />
             <MetaPill
-              icon={IndianRupee}
+              icon={CURRENCY.ICON}
               label="Amount"
               value={formatNumber(item.total_amount, true)}
               highlight

@@ -15,7 +15,6 @@ import {
   RotateCcw,
   Tag,
   ShoppingCart,
-  IndianRupee,
   TrendingUp,
   ArrowUp,
 } from "lucide-react";
@@ -31,6 +30,7 @@ import { downloadBlob } from "../../utils/blob";
 import SearchBar from "../../components/SearchBar";
 import { ROUTE_PATHS } from "../../config/paths";
 import Pagination from "../../components/Pagination";
+import { CURRENCY } from "../../constants";
 
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 const DiscountReportPage = () => {
@@ -318,7 +318,7 @@ const DiscountReportPage = () => {
       title: "Total Discount",
       value: formatNumber(summary?.totalDiscountAmount, true),
       subtitle: "Total given",
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       color: "rose",
     },
     {

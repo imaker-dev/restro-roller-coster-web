@@ -16,10 +16,10 @@ import {
 import LoadingOverlay from "../../components/LoadingOverlay";
 import NoDataFound from "../../layout/NoDataFound";
 import MetricPanel from "../../partial/report/daily-sales-report/MetricPanel";
+import { formatNumber } from "../../utils/numberFormatter";
 
 /* ─── helpers ─────────────────────────────────────────────────────────────── */
-const inr = (v) =>
-  `₹${parseFloat(v ?? 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const inr = (v) => formatNumber(v,true);
 
 /* ─── Row for summary breakdown ───────────────────────────────────────────── */
 function BreakdownRow({

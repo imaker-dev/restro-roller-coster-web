@@ -13,6 +13,13 @@ const TOKEN_VARIANTS = {
     icon: Zap,
     label: "Activation",
   },
+    offline_activation: {
+    bg: "bg-orange-50",
+    text: "text-orange-700",
+    dot: "bg-orange-500",
+    icon: Zap,
+    label: "Offline Activation",
+  },
 
   upgrade: {
     bg: "bg-blue-50",

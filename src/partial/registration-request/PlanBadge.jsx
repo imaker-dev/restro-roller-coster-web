@@ -21,6 +21,14 @@ const PLAN_VARIANTS = {
     icon: Crown,
     label: "Pro",
   },
+  
+  offline_annual: {
+    bg: "bg-orange-50",
+    text: "text-orange-700",
+    dot: "bg-orange-500",
+    icon: Crown,
+    label: "Offline Annual",
+  },
 
   default: {
     bg: "bg-slate-100",
@@ -68,9 +76,7 @@ const PlanBadge = ({
         `}
       >
         {showDot && (
-          <span
-            className={`h-1.5 w-1.5 rounded-full ${config.dot}`}
-          />
+          <span className={`h-1.5 w-1.5 rounded-full ${config.dot}`} />
         )}
 
         {showIcon && <Icon className="w-3.5 h-3.5 opacity-80" />}

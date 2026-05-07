@@ -2,10 +2,10 @@ import React from "react";
 import ModalBasic from "../../components/ModalBasic";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { IndianRupee, Loader2 } from "lucide-react";
+import {  Loader2 } from "lucide-react";
 import { InputField } from "../../components/fields/InputField";
 import { SelectField } from "../../components/fields/SelectField";
-import { FOOD_TYPES } from "../../constants";
+import { CURRENCY, FOOD_TYPES } from "../../constants";
 import InfoCard from "../../components/InfoCard";
 
 const validationSchema = Yup.object({
@@ -96,7 +96,7 @@ const AddonItemModal = ({
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.price && formik.errors.price}
-          icon={IndianRupee}
+          icon={CURRENCY.ICON}
         />
 
         {/* ITEM TYPE */}

@@ -1,17 +1,11 @@
-import {
-  Eye,
-  FileText,
-  History,
-  Pencil,
-  ReceiptIndianRupee,
-  Split,
-} from "lucide-react";
+import { Eye, FileText, History, Pencil, Split } from "lucide-react";
 import ActionMenu from "../../components/ActionMenu";
 import StatusBadge from "../../layout/StatusBadge";
 import TableStatusBadge from "./TableStatusBadge";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import DynamicTableShape from "./DynamicTableShape";
+import { formatNumber } from "../../utils/numberFormatter";
 
 const TableCard = ({
   table,
@@ -140,7 +134,7 @@ const TableCard = ({
             <p>Guest: {table.guest_name || "-"}</p>
             <p>Guests Count: {table.guest_count}</p>
             <p>Order #: {table.order_number}</p>
-            <p>Total: ₹{table.total_amount}</p>
+            <p>Total: {formatNumber(table.total_amount, true)}</p>
           </div>
         )}
       </div>

@@ -98,6 +98,12 @@ import TablesQrPage from "../pages/tables/TablesQrPage";
 import AllSuperAdminsPage from "../pages/admins/AllSuperAdminsPage";
 import AddSuperAdminPage from "../pages/admins/AddSuperAdminPage";
 import SuperAdminDashboard from "../pages/dashboard/SuperAdminDashboard";
+import AllSubscriptionsListPage from "../pages/subscriptions/AllSubscriptionsListPage";
+import SubscriptionGlobalPricingPage from "../pages/subscriptions/SubscriptionGlobalPricingPage";
+import SuperAdminSubcriptionPricingPage from "../pages/subscriptions/SuperAdminSubcriptionPricingPage";
+import AddRegistrationRequestPage from "../pages/registration-request/AddRegistrationRequestPage";
+import AllTaxComponentsPage from "../pages/settings/taxes/AllTaxComponentsPage";
+import AllTaxTypesPage from "../pages/settings/taxes/AllTaxTypesPage";
 
 const routeConfig = [
   {
@@ -181,6 +187,7 @@ const routeConfig = [
   { path: ROUTE_PATHS.OUTLET_ADD, element: AddOutletPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
   { path: ROUTE_PATHS.OUTLET_DELETE, element: OutletDeletePage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
   { path: ROUTE_PATHS.REGISTRATION_REQUESTS, element: AllRegistrationRequestPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
+  { path: ROUTE_PATHS.REGISTRATION_REQUESTS_ADD, element: AddRegistrationRequestPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
   { path: ROUTE_PATHS.TOKEN_GENERATION_LOGS, element: TokenActivationLogsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
 
   // Menu Management
@@ -194,6 +201,8 @@ const routeConfig = [
   { path: ROUTE_PATHS.MENU_ITEMS_BULK_ADD_SUMMARY, element: BulkUploadSummaryPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.ALL_ADDONS_GROUPS, element: AllAddonsGroup, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.ALL_ADDONS_ITEMS, element: AllAddonItemsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
+  { path: ROUTE_PATHS.ALL_TAX_TYPES, element: AllTaxTypesPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN] },
+  { path: ROUTE_PATHS.ALL_TAX_COMPONENTS, element: AllTaxComponentsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN] },
   { path: ROUTE_PATHS.ALL_TAX_GROUPS, element: AllTaxGroupsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN] },
   { path: ROUTE_PATHS.TAX_GROUPS_DETAILS, element: TaxGroupDetailsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN] },
 
@@ -216,6 +225,12 @@ const routeConfig = [
   { path: ROUTE_PATHS.TABLE_KOT, element: TableKotPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.ALL_CUSTOMERS, element: AllCustomersPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.CUSTOMER_DETAILS, element: CustomerDetailsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
+  
+  
+  //Subscriptions
+  { path: ROUTE_PATHS.SUBSCRIPTION_LIST, element: AllSubscriptionsListPage, roles: [ROLES.MASTER] },
+  { path: ROUTE_PATHS.SUBSCRIPTION_GLOBAL_PRICING, element: SubscriptionGlobalPricingPage, roles: [ROLES.MASTER] },
+  { path: ROUTE_PATHS.SUPER_ADMIN_SUBSCRIPTION_PRICING, element: SuperAdminSubcriptionPricingPage, roles: [ROLES.MASTER] },
 
   // System
   { path: ROUTE_PATHS.ALL_SETTINGS, element: AllSettingsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN] },

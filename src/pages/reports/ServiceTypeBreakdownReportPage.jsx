@@ -10,7 +10,6 @@ import {
   BarChart3,
   Download,
   Tag,
-  ReceiptIndianRupee,
   RotateCcw,
 } from "lucide-react";
 import { formatNumber } from "../../utils/numberFormatter";
@@ -20,6 +19,7 @@ import { formatFileDate } from "../../utils/dateFormatter";
 import { handleResponse } from "../../utils/helpers";
 import { downloadBlob } from "../../utils/blob";
 import { exportServiceTypeBreakdownReport } from "../../redux/slices/exportReportSlice";
+import { CURRENCY } from "../../constants";
 
 /* ---------------- Color Mapping (Safe for Tailwind) ---------------- */
 const colorMap = {
@@ -144,7 +144,7 @@ const ServiceTypeBreakdownReportPage = () => {
     {
       title: "Tax Collected",
       value: formatNumber(summary?.tax_amount, true),
-      icon: ReceiptIndianRupee,
+      icon: CURRENCY.ICON,
       color: "purple",
     },
     {

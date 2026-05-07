@@ -1,18 +1,29 @@
-export function formatNumber(num, showRupee = false, decimals) {
+import { CURRENCY } from "../constants";
+
+export function formatNumber(num, showCurrency = false, decimals = null) {
   const parsed = Number(num);
 
-  if (isNaN(parsed)) {
-    return showRupee
-      ? `₹${Number(0).toFixed(decimals)}`
-      : Number(0).toFixed(decimals);
+  const safeNumber = isNaN(parsed) ? 0 : parsed;
+
+  const options = {};
+
+  // Apply decimals only if explicitly passed
+  if (decimals !== null) {
+    options.minimumFractionDigits = decimals;
+    options.maximumFractionDigits = decimals;
   }
 
-  const formattedNumber = parsed.toLocaleString("en-IN", {
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
-  });
+  if (showCurrency) {
+    return new Intl.NumberFormat(CURRENCY.LOCALE || "en-IN", {
+      style: "currency",
+      currency: CURRENCY.CODE || "INR",
+      ...options,
+    }).format(safeNumber);
+  }
 
-  return showRupee ? `₹${formattedNumber}` : formattedNumber;
+  return new Intl.NumberFormat(CURRENCY.LOCALE || "en-IN", options).format(
+    safeNumber,
+  );
 }
 
 // Safe number conversion

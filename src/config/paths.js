@@ -76,6 +76,8 @@ export const ROUTE_PATHS = {
   MENU_MEDIA_QR_CODES: "/menu-media/qr-codes",
   ALL_ADDONS_GROUPS: "/addons",
   ALL_ADDONS_ITEMS: "/addons/item",
+  ALL_TAX_TYPES: "/tax-types",
+  ALL_TAX_COMPONENTS: "/tax-components",
   ALL_TAX_GROUPS: "/tax-groups",
   TAX_GROUPS_DETAILS: "/tax-groups/details",
 
@@ -105,8 +107,16 @@ export const ROUTE_PATHS = {
   USER_ADD: "/users/add",
   ALL_SUPER_ADMINS: "/super-admins",
   SUPER_ADMIN_ADD: "/super-admins/add",
-  REGISTRATION_REQUESTS:"/registration-requests",
+  REGISTRATION_REQUESTS: "/registration-requests",
+  REGISTRATION_REQUESTS_ADD: "/registration-requests/add",
   TOKEN_GENERATION_LOGS: "/token-generation-logs",
+
+  // SUBSCRIPTIONS
+  SUBSCRIPTION_DASHBOARD: "/subscriptions",
+  SUBSCRIPTION_GLOBAL_PRICING: "/global-pricing",
+  SUPER_ADMIN_SUBSCRIPTION_PRICING: "/super-admin-pricing",
+  OUTLET_PRICING: "/outlet-pricing",
+  SUBSCRIPTION_LIST: "/subscription-list",
 
   // System
   ALL_SETTINGS: "/settings",

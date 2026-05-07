@@ -9,16 +9,28 @@ import {
 import Pagination from "../../components/Pagination";
 import SmartTable from "../../components/SmartTable";
 import { formatDate } from "../../utils/dateFormatter";
-import { CheckCircle, Edit2, Eye, Verified, XCircle } from "lucide-react";
+import {
+  CheckCircle,
+  Edit2,
+  Eye,
+  Plus,
+  RotateCcw,
+  Verified,
+  XCircle,
+} from "lucide-react";
 import { handleResponse } from "../../utils/helpers";
 import ModalBasic from "../../components/ModalBasic";
 import RegistrationActionModal from "../../partial/registration-request/RegistrationActionModal";
 import RegistrationStatusBadge from "../../partial/registration-request/RegistrationStatusBadge";
 import ActivateSubscriptionModal from "../../partial/registration-request/ActivateSubscriptionModal";
 import PlanBadge from "../../partial/registration-request/PlanBadge";
+import { useNavigate } from "react-router-dom";
+import { ROUTE_PATHS } from "../../config/paths";
+import RegistrationDetailsDrawer from "../../partial/registration-request/RegistrationDetailsDrawer";
 
 const AllRegistrationRequestPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     isFetchingAllRequests,
     allRegistrationRequests,
@@ -28,6 +40,11 @@ const AllRegistrationRequestPage = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  const [drawerState, setDrawerState] = useState({
+    open: false,
+    row: null,
+  });
 
   const [actionState, setActionState] = useState({
     open: false,
@@ -52,6 +69,23 @@ const AllRegistrationRequestPage = () => {
   useEffect(() => {
     fetchRequests();
   }, [currentPage, itemsPerPage]);
+
+  const actions = [
+    {
+      label: "Add New Request",
+      type: "primary",
+      icon: Plus,
+      onClick: () => navigate(ROUTE_PATHS.REGISTRATION_REQUESTS_ADD),
+    },
+    {
+      label: "Refresh",
+      type: "refresh",
+      icon: RotateCcw,
+      onClick: fetchRequests,
+      loading: isFetchingAllRequests,
+      loadingText: "Refreshing...",
+    },
+  ];
 
   const columns = [
     {
@@ -131,6 +165,12 @@ const AllRegistrationRequestPage = () => {
 
   const rowActions = [
     {
+      label: "View Details",
+      icon: Eye,
+      color: "slate",
+      onClick: (row) => setDrawerState({ open: true, row }),
+    },
+    {
       label: "Approve",
       icon: CheckCircle,
       color: "green",
@@ -182,28 +222,22 @@ const AllRegistrationRequestPage = () => {
     );
   };
 
-  const handleActivateSubscription = async (formData) => {
+  const handleActivateSubscription = async ({ values, resetForm }) => {
     const { row } = subscriptionModal;
 
     if (!row) return;
 
-    const values = {
-      restaurant: formData.restaurant,
-      email: formData.email,
-      phone: formData.phone,
-      password: formData.password,
-    };
-
     await handleResponse(dispatch(generateActivationToken(values)), () => {
       fetchRequests();
       setSubscriptionModal({ open: false, row: null });
+      resetForm();
     });
   };
 
   return (
     <>
       <div className="space-y-6">
-        <PageHeader title={"All Requests"} showBackButton />
+        <PageHeader title={"All Requests"} actions={actions} showBackButton />
 
         <SmartTable
           title="Requests"
@@ -228,6 +262,12 @@ const AllRegistrationRequestPage = () => {
           }}
         />
       </div>
+
+      <RegistrationDetailsDrawer
+        isOpen={drawerState.open}
+        onClose={() => setDrawerState({ open: false, row: null })}
+        outlet={drawerState.row}
+      />
 
       <RegistrationActionModal
         actionState={actionState}

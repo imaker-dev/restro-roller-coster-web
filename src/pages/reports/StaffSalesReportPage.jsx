@@ -7,7 +7,6 @@ import SmartTable from "../../components/SmartTable";
 import { formatNumber } from "../../utils/numberFormatter";
 import {
   Download,
-  IndianRupee,
   RotateCcw,
   ShoppingCart,
   TrendingUp,
@@ -19,6 +18,7 @@ import { formatFileDate } from "../../utils/dateFormatter";
 import { handleResponse } from "../../utils/helpers";
 import { exportStaffSalesReport } from "../../redux/slices/exportReportSlice";
 import { downloadBlob } from "../../utils/blob";
+import { CURRENCY } from "../../constants";
 
 const StaffSalesReportPage = () => {
   const dispatch = useDispatch();
@@ -46,7 +46,7 @@ const StaffSalesReportPage = () => {
       title: "Total Sales",
       value: formatNumber(summary?.total_sale, true),
       subtitle: "Gross revenue",
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       color: "green",
     },
     {

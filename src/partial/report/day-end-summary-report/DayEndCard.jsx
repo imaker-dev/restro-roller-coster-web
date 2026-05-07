@@ -10,7 +10,6 @@ import {
   Smartphone,
   ShoppingBag,
   AlertTriangle,
-  ReceiptIndianRupee,
   UtensilsCrossed,
   Wallet,
   Tag,
@@ -21,6 +20,7 @@ import {
 import PaymentBar from "../PaymentBreakdownBar";
 import { copyToClipboard } from "../../../utils/copyToClipboard";
 import { formatText } from "../../../utils/utils";
+import { CURRENCY } from "../../../constants";
 
 const weekday = (d) =>
   new Date(d).toLocaleDateString("en-IN", { weekday: "short" });
@@ -316,7 +316,7 @@ function DayEndCard({ day }) {
           {/* ── PAYMENT MODES ── */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <SectionLabel icon={ReceiptIndianRupee} label="Payment Modes" />
+              <SectionLabel icon={CURRENCY.ICON} label="Payment Modes" />
             </div>
 
             <div className="bg-gray-50 rounded-xl px-3 py-2.5 space-y-2.5">

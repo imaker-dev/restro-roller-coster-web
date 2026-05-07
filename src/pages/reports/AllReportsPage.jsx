@@ -9,8 +9,6 @@ import {
   Percent,
   PieChart,
   Monitor,
-  BadgeIndianRupee,
-  ReceiptIndianRupee,
   XCircle,
   BarChart3,
   ArrowUpRight,
@@ -21,6 +19,7 @@ import {
 import PageHeader from "../../layout/PageHeader";
 import SearchBar from "../../components/SearchBar";
 import { ROUTE_PATHS } from "../../config/paths";
+import { CURRENCY } from "../../constants";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const GROUPS = [
@@ -85,7 +84,7 @@ const GROUPS = [
       {
         name: "Discount",
         path: ROUTE_PATHS.REPORTS_DISCOUNT,
-        icon: BadgeIndianRupee,
+        icon: CURRENCY.ICON,
         desc: "Discounts applied to orders",
       },
       {
@@ -124,13 +123,13 @@ const GROUPS = [
       {
         name: "Due Report",
         path: ROUTE_PATHS.REPORTS_DUE,
-        icon: BadgeIndianRupee,
+        icon: CURRENCY.ICON,
         desc: "Outstanding customer balances",
       },
       {
         name: "No Charge Report",
         path: ROUTE_PATHS.REPORTS_NC,
-        icon: ReceiptIndianRupee,
+        icon: CURRENCY.ICON,
         desc: "Complimentary & no-charge items",
       },
       {

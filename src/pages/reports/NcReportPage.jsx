@@ -9,7 +9,6 @@ import StatCard from "../../components/StatCard";
 import { formatNumber, pct } from "../../utils/numberFormatter";
 import { formatDate, formatFileDate } from "../../utils/dateFormatter";
 import {
-  BadgeIndianRupee,
   CalendarDays,
   MessageCircleWarning,
   UserCog,
@@ -31,6 +30,7 @@ import MetricPanel from "../../partial/report/daily-sales-report/MetricPanel";
 import { exportNcReport } from "../../redux/slices/exportReportSlice";
 import { downloadBlob } from "../../utils/blob";
 import { handleResponse } from "../../utils/helpers";
+import { CURRENCY } from "../../constants";
 
 /* ─── constants ───────────────────────────────────────────────────────────── */
 const DOT_COLORS = [
@@ -717,7 +717,7 @@ const NcReportPage = () => {
       label: "Total NC Amount",
       value: formatNumber(summary?.totalNCAmount, true),
       sub: "Combined order + item NC",
-      icon: BadgeIndianRupee,
+      icon: CURRENCY.ICON,
       color: "red",
     },
     {

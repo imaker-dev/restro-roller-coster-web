@@ -128,7 +128,7 @@ const PaymentBifurcation = ({ data, loading = false, dateRange }) => {
                   {p.percentage > 0 ? `${p.percentage}%` : "—"}
                 </span> */}
                   <span className="text-xs font-black text-gray-900 w-28 text-right tabular-nums">
-                    {p.amount > 0 ? formatNumber(p.amount, true) : "₹0"}
+                    {p.amount > 0 ? formatNumber(p.amount, true) : "0"}
                   </span>
                 </div>
               </div>

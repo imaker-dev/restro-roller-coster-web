@@ -19,6 +19,7 @@ import CurrentOrderStatusScreen from "../../partial/self-order/CurrentOrderStatu
 import ItemDetailSheet from "../../partial/self-order/ItemDetailSheet";
 import { AlertCircle } from "lucide-react";
 import MenuContentScreen from "../../partial/self-order/MenuContentScreen";
+import { TOKEN_KEYS } from "../../constants";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONSTANTS
@@ -185,6 +186,8 @@ function useMenuFiltering(publicMenuData) {
   };
 }
 
+
+
 // ─────────────────────────────────────────────────────────────────────────────
 // MAIN COMPONENT
 // ─────────────────────────────────────────────────────────────────────────────
@@ -297,6 +300,11 @@ export default function PublicMenuPage() {
       setScreen(updates.screen);
     }
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem(TOKEN_KEYS.QR_SESSION)
+    setScreen(SCREENS.SESSION)
+  }
   
   // Show fallback if invalid URL
   if (!isValidUrl) {
@@ -377,7 +385,7 @@ export default function PublicMenuPage() {
         }}
         onCategoryClick={handleCategoryClick}
         onViewCart={() => setScreen(SCREENS.CART)}
-        onLogout={() => setScreen(SCREENS.SESSION)}
+        onLogout={() => handleLogout()}
         onSelectItem={handleSelectItem}
         onQuickAdd={handleQuickAddWithDetail}
         onChangeQty={handleChangeQty}

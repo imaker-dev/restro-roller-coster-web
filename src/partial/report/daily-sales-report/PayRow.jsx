@@ -1,12 +1,7 @@
 import React from "react";
-import {
-  Banknote,
-  CreditCard,
-  Smartphone,
-  IndianRupee,
-  Wallet,
-} from "lucide-react";
+import { Banknote, CreditCard, Smartphone, Wallet } from "lucide-react";
 import { formatNumber, num } from "../../../utils/numberFormatter";
+import { CURRENCY } from "../../../constants";
 
 const PAY_META = {
   cash: { icon: Banknote, color: "#10b981", label: "Cash" },
@@ -14,7 +9,7 @@ const PAY_META = {
   upi: { icon: Smartphone, color: "#6366f1", label: "UPI" },
   wallet: { icon: Wallet, color: "#06b6d4", label: "Wallet" },
   split: { icon: Wallet, color: "#8b5cf6", label: "Split" },
-  other:  { icon: IndianRupee, color: "#64748b", label: "Other" },
+  other: { icon: CURRENCY.ICON, color: "#64748b", label: "Other" },
 };
 
 function PayRow({ type, amount, total }) {

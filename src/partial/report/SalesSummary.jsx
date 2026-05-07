@@ -4,16 +4,16 @@ import {
   XCircle,
   Clock,
   TrendingUp,
-  DollarSign,
   Utensils,
   Package,
   Banknote,
   QrCode,
-  IndianRupee,
   CreditCard,
 } from "lucide-react";
 import StatCard from "../../components/StatCard";
 import { formatNumber } from "../../utils/numberFormatter";
+import CurrencyIcon from "../../components/CurrencyIcon";
+import { CURRENCY } from "../../constants";
 
 export default function SalesSummary({ data }) {
   const statCards = [
@@ -25,57 +25,56 @@ export default function SalesSummary({ data }) {
       color: "blue",
     },
     {
-      icon: DollarSign,
+      icon: CURRENCY.ICON,
       label: "Net Sales",
       value: formatNumber(data?.netSales, true),
-      subtitle: `Avg: ₹${data?.averageOrderValue}`,
+      subtitle: `Avg: ${formatNumber(data?.averageOrderValue, true)}`,
       color: "green",
     },
     {
       icon: TrendingUp,
       label: "Gross Sales",
       value: formatNumber(data?.grossSales, true),
-      subtitle: `Tax: ₹${data?.totalTax}`,
+      subtitle: `Tax: ${formatNumber(data?.totalTax, true)}`,
       color: "orange",
     },
     {
       icon: Banknote,
       label: "Total Paid",
       value: formatNumber(data?.totalPaid, true),
-      subtitle: `Tips: ₹${data?.totalTips}`,
+      subtitle: `Tips: ${formatNumber(data?.totalTips, true)}`,
       color: "purple",
     },
   ];
 
+  const { paymentBreakdown } = data || {};
 
-const {paymentBreakdown} = data || {};
-
-const paymentModes = [
-  {
-    key: "cash",
-    label: "Cash",
-    icon: Banknote,
-    color: "text-emerald-600",
-  },
-  {
-    key: "card",
-    label: "Card",
-    icon: CreditCard,
-    color: "text-indigo-600",
-  },
-  {
-    key: "upi",
-    label: "UPI",
-    icon: QrCode,
-    color: "text-blue-600",
-  },
-  {
-    key: "split",
-    label: "Split",
-    icon: ShoppingCart,
-    color: "text-purple-600",
-  },
-];
+  const paymentModes = [
+    {
+      key: "cash",
+      label: "Cash",
+      icon: Banknote,
+      color: "text-emerald-600",
+    },
+    {
+      key: "card",
+      label: "Card",
+      icon: CreditCard,
+      color: "text-indigo-600",
+    },
+    {
+      key: "upi",
+      label: "UPI",
+      icon: QrCode,
+      color: "text-blue-600",
+    },
+    {
+      key: "split",
+      label: "Split",
+      icon: ShoppingCart,
+      color: "text-purple-600",
+    },
+  ];
 
   return (
     <div className="mb-8">
@@ -212,7 +211,7 @@ const paymentModes = [
         {/* Financial Breakdown */}
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
           <h3 className="font-bold text-gray-900  flex items-center gap-2 border-b border-gray-200 p-4">
-            <IndianRupee size={18} className="text-primary-500" />
+            <CurrencyIcon size={18} className="text-primary-500" />
             Financial Breakdown
           </h3>
           <div className="space-y-3 p-4">

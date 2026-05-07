@@ -5,7 +5,6 @@ import {
   Check,
   ChevronDown,
   Copy,
-  ReceiptIndianRupee,
   ShoppingBag,
   Tag,
   SlidersHorizontal,
@@ -16,6 +15,7 @@ import { formatNumber } from "../../../utils/numberFormatter";
 import PaymentBar from "../PaymentBreakdownBar";
 import { formatDate } from "../../../utils/dateFormatter";
 import { copyToClipboard } from "../../../utils/copyToClipboard";
+import CurrencyIcon from "../../../components/CurrencyIcon";
 
 const fmt = (n) => formatNumber(n, true);
 
@@ -134,7 +134,7 @@ function DayEndCollectionSummaryCard({
       >
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0">
-            <ReceiptIndianRupee size={15} className="text-emerald-600" />
+            <CurrencyIcon size={15} className="text-emerald-600" />
           </div>
           <div className="text-left">
             <p className="text-sm font-semibold text-gray-900">

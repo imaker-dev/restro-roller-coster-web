@@ -95,7 +95,7 @@ const InventoryItemBatches = () => {
       render: (row) => (
         <div className="flex flex-col">
           <p className="text-sm font-bold text-slate-800">
-            ₹{formatNumber(row.purchasePrice)}
+            {formatNumber(row.purchasePrice,true)}
           </p>
 
           <p className="text-[10px] text-slate-400">

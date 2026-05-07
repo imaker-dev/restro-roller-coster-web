@@ -6,7 +6,6 @@ import LoadingOverlay from "../../components/LoadingOverlay";
 import {
   Users,
   AlertCircle,
-  BadgeIndianRupee,
   ReceiptText,
   TrendingDown,
   TrendingUp,
@@ -25,6 +24,7 @@ import Pagination from "../../components/Pagination";
 import SearchBar from "../../components/SearchBar";
 import { CustomerDueCard } from "../../partial/report/due-report/CustomerDueCard";
 import CustomerDueCardSkeleton from "../../partial/report/due-report/CustomerDueCardSkeleton";
+import { CURRENCY } from "../../constants";
 
 /* ═══════════════════════════════════════════════════════════════════════════
    MAIN PAGE
@@ -75,7 +75,7 @@ const DueReportPage = () => {
       label: "Total Collected",
       value: formatNumber(summary?.totalCollected,true),
       sub: "Due payments received",
-      icon: BadgeIndianRupee,
+      icon: CURRENCY.ICON,
       color: "green",
     },
 

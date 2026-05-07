@@ -9,7 +9,6 @@ import {
   Clock,
   Package,
   FlaskConical,
-  IndianRupee,
   Pencil,
   Hash,
   AlertTriangle,
@@ -24,6 +23,7 @@ import PageHeader from "../../layout/PageHeader";
 import MetricPanel from "../../partial/report/daily-sales-report/MetricPanel";
 import StatCard from "../../components/StatCard";
 import { ROUTE_PATHS } from "../../config/paths";
+import { CURRENCY } from "../../constants";
 
 const fmt = (v) => formatNumber(v, true);
 
@@ -136,7 +136,7 @@ const ProductionRecipeDetailsPage = () => {
 
   const KPI_TILES = [
     {
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       label: "Total Input Cost",
       value: fmt(recipe?.totalInputCost),
       sub: "All ingredients",

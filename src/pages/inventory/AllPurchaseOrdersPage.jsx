@@ -8,7 +8,6 @@ import {
   Phone,
   Hash,
   CalendarDays,
-  BadgeIndianRupee,
   ReceiptText,
   ChevronDown,
   X,
@@ -16,7 +15,6 @@ import {
   XCircle,
   AlertTriangle,
   CheckCircle2,
-  IndianRupee,
   Wallet,
   Activity,
   CheckCircle,
@@ -47,6 +45,7 @@ import SearchBar from "../../components/SearchBar";
 import CustomDateRangePicker from "../../components/CustomDateRangePicker";
 import Pagination from "../../components/Pagination";
 import { ROUTE_PATHS } from "../../config/paths";
+import { CURRENCY } from "../../constants";
 
 /* ═══════════════════════════════════════════════════════════════════════════
    MAIN PAGE
@@ -167,7 +166,7 @@ const AllPurchaseOrdersPage = () => {
       label: "Total Amount",
       value: formatNumber(summary?.totalAmount, true),
       sub: "Total purchase value",
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       color: "slate",
     },
     {

@@ -4,9 +4,9 @@ import {
   Clock,
   AlertCircle,
   XCircle,
-  IndianRupee,
 } from "lucide-react";
 import { formatNumber, num } from "../../../utils/numberFormatter";
+import { CURRENCY } from "../../../constants";
 
 const STATUS_META = {
   completed: { icon: CheckCircle2, color: "#10b981", label: "Completed" },
@@ -14,7 +14,7 @@ const STATUS_META = {
   partial: { icon: AlertCircle, color: "#3b82f6", label: "Partial" }, // added
   failed: { icon: XCircle, color: "#ef4444", label: "Failed" },
   refunded: { icon: AlertCircle, color: "#6366f1", label: "Refunded" },
-  other: { icon: IndianRupee, color: "#64748b", label: "Other" },
+  other: { icon: CURRENCY.ICON, color: "#64748b", label: "Other" },
 };
 
 function PaymentStatusBar({ status, amount, count, total }) {

@@ -6,7 +6,6 @@ import PageHeader from "../../layout/PageHeader";
 import {
   Package,
   AlertTriangle,
-  IndianRupee,
   ChevronRight,
   Clock,
   BarChart2,
@@ -14,6 +13,7 @@ import {
 import { formatNumber, num } from "../../utils/numberFormatter";
 import StatCard from "../../components/StatCard";
 import LoadingOverlay from "../../components/LoadingOverlay";
+import { CURRENCY } from "../../constants";
 
 // ─── Item row ──────────────────────────────────────────────────────────────────
 function ItemRow({ item, navigate }) {
@@ -163,7 +163,7 @@ const InventorySummaryPage = () => {
   const stats = [
     {
       key: "totalStockValue",
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       label: "Total Stock Value",
       value: formatNumber(summary?.totalStockValue, true),
       sub: "Current inventory worth",

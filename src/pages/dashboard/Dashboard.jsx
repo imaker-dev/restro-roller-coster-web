@@ -7,7 +7,6 @@ import {
   Smartphone,
   XCircle,
   Users,
-  IndianRupee,
   Truck,
   AlertTriangle,
   SlidersHorizontal,
@@ -23,7 +22,7 @@ import { formatNumber } from "../../utils/numberFormatter";
 import StatCard from "../../components/StatCard";
 import PaymentBifurcation from "../../partial/dashboard/PaymentBifurcation";
 import SalesChart from "../../partial/dashboard/SalesChart";
-import { DATE_RANGES } from "../../constants";
+import { CURRENCY, DATE_RANGES } from "../../constants";
 import { useNavigate } from "react-router-dom";
 import { fetchShiftHistory } from "../../redux/slices/shiftSlice";
 import ShiftSummary from "../../partial/dashboard/ShiftSummary";
@@ -86,7 +85,7 @@ export default function Dashboard() {
       title: "Total Sales",
       value: formatNumber(summary?.total_sale, true),
       subtitle: `${formatNumber(summary?.total_orders)} orders • ${formatNumber(summary?.outside_collection, true)} outside`,
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       color: "green",
       path: "/reports/daily-sales",
     },

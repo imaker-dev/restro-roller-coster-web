@@ -7,7 +7,6 @@ import {
   RotateCcw,
   Store,
   ShoppingBag,
-  IndianRupee,
   Activity,
   MapPin,
   Phone,
@@ -22,18 +21,9 @@ import StatCard from "../../components/StatCard";
 import StatusBadge from "../../layout/StatusBadge";
 import { formatDate } from "../../utils/dateFormatter";
 import NoDataFound from "../../layout/NoDataFound";
-
-const fmt = (n) => Number(n || 0).toLocaleString("en-IN");
-const fmtCurrency = (n) => `₹${Number(n || 0).toLocaleString("en-IN")}`;
-const fmtTime = (iso) => {
-  if (!iso) return "—";
-  const d = new Date(iso);
-  return d.toLocaleTimeString("en-IN", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
-};
+import { formatNumber } from "../../utils/numberFormatter";
+import CurrencyIcon from "../../components/CurrencyIcon";
+import { CURRENCY } from "../../constants";
 
 // ─── Outlet Card ──────────────────────────────────────────────────────────────
 function OutletCard({ outlet }) {
@@ -95,17 +85,18 @@ function OutletCard({ outlet }) {
             <p
               className={`text-lg font-black leading-none ${hasActivity ? "text-orange-600" : "text-slate-400"}`}
             >
-              {fmt(outlet.totalOrders)}
+              {formatNumber(outlet.totalOrders)}
             </p>
           </div>
           <div
             className={`rounded-xl px-3.5 py-3 ${hasActivity ? "bg-blue-50 border border-blue-100" : "bg-slate-50 border border-slate-100"}`}
           >
             <div className="flex items-center gap-1.5 mb-1">
-              <IndianRupee
+              <CurrencyIcon
                 size={11}
                 className={hasActivity ? "text-blue-500" : "text-slate-400"}
               />
+
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">
                 Sales
               </p>
@@ -113,7 +104,7 @@ function OutletCard({ outlet }) {
             <p
               className={`text-lg font-black leading-none ${hasActivity ? "text-blue-600" : "text-slate-400"}`}
             >
-              {fmtCurrency(outlet.totalSale)}
+              {formatNumber(outlet.totalSale || 0, true)}
             </p>
           </div>
         </div>
@@ -196,25 +187,25 @@ const SuperAdminDashboard = () => {
     {
       icon: Store,
       label: "Total Outlets",
-      value: summary ? fmt(summary.totalOutlets) : "—",
+      value: summary ? formatNumber(summary.totalOutlets) : "—",
       color: "violet",
     },
     {
       icon: Activity,
       label: "Active Outlets",
-      value: summary ? fmt(summary.activeOutlets) : "—",
+      value: summary ? formatNumber(summary.activeOutlets) : "—",
       color: "emerald",
     },
     {
       icon: ShoppingBag,
       label: "Total Orders",
-      value: summary ? fmt(summary.grandTotalOrders) : "—",
+      value: summary ? formatNumber(summary.grandTotalOrders) : "—",
       color: "orange",
     },
     {
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       label: "Total Sales",
-      value: summary ? fmtCurrency(summary.grandTotalSale) : "—",
+      value: summary ? formatNumber(summary.grandTotalSale, true) : "—",
       color: "blue",
     },
   ];

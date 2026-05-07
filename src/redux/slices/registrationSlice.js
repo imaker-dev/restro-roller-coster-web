@@ -12,6 +12,15 @@ export const fetchAllRegistrationRequests = createAsyncThunk(
     return res.data;
   },
 );
+export const createRegistrationRequest = createAsyncThunk(
+  "/create/registration/requests",
+  async ({ values }) => {
+    const res = await RegistrationServices.createRegistrationRequestApi({
+      values,
+    });
+    return res.data;
+  },
+);
 export const updateRegistrationRequest = createAsyncThunk(
   "/update/registration/request",
   async ({ id, values }) => {
@@ -51,6 +60,7 @@ const registrationSlice = createSlice({
   name: "registration",
   initialState: {
     isFetchingAllRequests: false,
+    isCreatingRegistrationRequest: false,
     allRegistrationRequests: null,
     isUpdatingRequest: false,
     isGeneratingActivationToken: false,
@@ -68,6 +78,17 @@ const registrationSlice = createSlice({
       })
       .addCase(fetchAllRegistrationRequests.rejected, (state, action) => {
         state.isFetchingAllRequests = false;
+        toast.error(action.error.message);
+      })
+      .addCase(createRegistrationRequest.pending, (state) => {
+        state.isCreatingRegistrationRequest = true;
+      })
+      .addCase(createRegistrationRequest.fulfilled, (state, action) => {
+        state.isCreatingRegistrationRequest = false;
+        toast.success(action.payload.message)
+      })
+      .addCase(createRegistrationRequest.rejected, (state, action) => {
+        state.isCreatingRegistrationRequest = false;
         toast.error(action.error.message);
       })
       .addCase(updateRegistrationRequest.pending, (state) => {

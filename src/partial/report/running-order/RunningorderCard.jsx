@@ -253,9 +253,7 @@ const RunningorderCard = ({ order }) => {
           parseFloat(order?.subtotal) !== parseFloat(order?.total_amount) && (
             <div className="flex items-center justify-between text-[12px] text-slate-500 mb-2 font-medium">
               <span>Subtotal</span>
-              <span>
-                ₹{parseFloat(order?.subtotal).toLocaleString("en-IN")}
-              </span>
+              <span>{formatNumber(order?.subtotal, true)}</span>
             </div>
           )}
 

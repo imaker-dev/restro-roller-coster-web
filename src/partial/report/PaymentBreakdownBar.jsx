@@ -1,11 +1,11 @@
 import {
   Banknote,
   CreditCard,
-  IndianRupee,
   Smartphone,
   Wallet,
 } from "lucide-react";
 import { formatNumber } from "../../utils/numberFormatter";
+import { CURRENCY } from "../../constants";
 
 const PAY_META = {
   cash: { icon: Banknote, color: "#f59e0b", label: "Cash" },
@@ -13,7 +13,7 @@ const PAY_META = {
   upi: { icon: Smartphone, color: "#6366f1", label: "UPI" },
   wallet: { icon: Wallet, color: "#06b6d4", label: "Wallet" },
   split: { icon: Wallet, color: "#8b5cf6", label: "Split" },
-  other: { icon: IndianRupee, color: "#64748b", label: "Other" },
+  other: { icon: CURRENCY.ICON, color: "#64748b", label: "Other" },
 };
 
 function PaymentBar({ type, amount, count, total }) {

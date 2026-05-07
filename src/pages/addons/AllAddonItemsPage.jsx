@@ -15,6 +15,7 @@ import AddonItemModal from "../../partial/addons/AddonItemModal";
 import { handleResponse } from "../../utils/helpers";
 import FoodTypeIcon from "../../partial/common/FoodTypeIcon";
 import StatusBadge from "../../layout/StatusBadge";
+import { formatNumber } from "../../utils/numberFormatter";
 
 const AllAddonItemsPage = () => {
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ const AllAddonItemsPage = () => {
       label: "Price",
       render: (row) => (
         <span className="text-slate-700 font-medium">
-          ₹ {Number(row.price).toFixed(2)}
+          {formatNumber(row.price,true)}
         </span>
       ),
     },

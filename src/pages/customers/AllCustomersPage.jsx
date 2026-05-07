@@ -5,11 +5,12 @@ import PageHeader from "../../layout/PageHeader";
 import { formatDate } from "../../utils/dateFormatter";
 import SmartTable from "../../components/SmartTable";
 import { formatNumber } from "../../utils/numberFormatter";
-import { Box, Eye, ReceiptIndianRupee, Users } from "lucide-react";
+import { Box, Eye, Users } from "lucide-react";
 import StatCard from "../../components/StatCard";
 import { useNavigate } from "react-router-dom";
 import StatusBadge from "../../layout/StatusBadge";
 import { ROUTE_PATHS } from "../../config/paths";
+import { CURRENCY } from "../../constants";
 
 const AllCustomersPage = () => {
   const dispatch = useDispatch();
@@ -119,7 +120,7 @@ const AllCustomersPage = () => {
       title: "GST Customers",
       value: formatNumber(summary?.gstCustomers),
       color: "green",
-      icon: ReceiptIndianRupee,
+      icon: CURRENCY.ICON,
     },
   ];
 

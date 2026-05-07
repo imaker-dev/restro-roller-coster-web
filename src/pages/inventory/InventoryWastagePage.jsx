@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchWastageLogs } from "../../redux/slices/inventorySlice";
 import {
   AlertTriangle,
-  IndianRupee,
   Package,
   Search,
   Trash2,
@@ -17,6 +16,7 @@ import SearchBar from "../../components/SearchBar";
 import { formatText } from "../../utils/utils";
 import CustomDateRangePicker from "../../components/CustomDateRangePicker";
 import Pagination from "../../components/Pagination";
+import { CURRENCY } from "../../constants";
 
 const InventoryWastagePage = () => {
   const dispatch = useDispatch();
@@ -173,7 +173,7 @@ const InventoryWastagePage = () => {
   const stats = [
     {
       key: "totalCostLost",
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       label: "Total Cost Lost",
       value: formatNumber(summary?.totalCostLost, true),
       sub: "Value of wasted stock",

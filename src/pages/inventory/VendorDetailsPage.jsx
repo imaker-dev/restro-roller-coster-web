@@ -13,7 +13,6 @@ import {
   Hash,
   Calendar,
   ShoppingCart,
-  IndianRupee,
   TrendingUp,
   CheckCircle2,
   AlertTriangle,
@@ -34,6 +33,7 @@ import StatCard from "../../components/StatCard";
 import Tabs from "../../components/Tabs";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import NoDataFound from "../../layout/NoDataFound";
+import { CURRENCY } from "../../constants";
 
 const PAY_METHOD = {
   cash: { icon: Banknote, label: "Cash" },
@@ -202,7 +202,7 @@ const VendorDetailsPage = () => {
 
   const stats = [
     {
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       label: "Total Purchased",
       value: formatNumber(fs?.totalPurchaseAmount, true),
       sub: "Lifetime spend",
@@ -685,7 +685,7 @@ const VendorDetailsPage = () => {
               {paymentHistory?.length > 0 ? (
                 paymentHistory.map((pay) => {
                   const m = PAY_METHOD[pay?.paymentMethod] || {
-                    icon: IndianRupee,
+                    icon: CURRENCY.ICON,
                     label: pay?.paymentMethod,
                   };
 

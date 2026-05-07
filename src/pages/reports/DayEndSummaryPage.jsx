@@ -21,10 +21,6 @@ import DayEndCollectionSummaryCard from "../../partial/report/day-end-summary-re
 import DayEndSummarySkeleton from "../../partial/report/day-end-summary-report/DayEndSummarySkeleton";
 import NoDataFound from "../../layout/NoDataFound";
 
-/* ─── helpers ─── */
-const fmt = (n) =>
-  "₹" + Number(n || 0).toLocaleString("en-IN", { maximumFractionDigits: 0 });
-const fmtN = (n) => Number(n || 0).toLocaleString("en-IN");
 
 /* ─── main page ─── */
 const DayEndSummaryPage = () => {

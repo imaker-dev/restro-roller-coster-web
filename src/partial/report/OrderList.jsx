@@ -19,6 +19,7 @@ import {
   AlertCircle,
   TrendingUp,
 } from "lucide-react";
+import { formatNumber } from "../../utils/numberFormatter";
 
 export default function OrdersList({ orders, onOrderClick }) {
   const navigate = useNavigate();
@@ -80,7 +81,10 @@ export default function OrdersList({ orders, onOrderClick }) {
           />
           <StatCard
             label="Revenue"
-            value={`₹${orders?.reduce((sum, o) => sum + (o.totalAmount || 0), 0).toLocaleString("en-IN")}`}
+            value={`${formatNumber(
+              orders?.reduce((sum, o) => sum + (o.totalAmount || 0), 0),
+              true,
+            )}`}
             icon={<TrendingUp className="w-5 h-5" />}
             gradient="from-cyan-500 to-blue-600"
             isAmount
@@ -105,8 +109,12 @@ export default function OrdersList({ orders, onOrderClick }) {
             <div className="w-32 h-32 rounded-full bg-gradient-to-br from-violet-500/20 to-cyan-500/20 flex items-center justify-center mb-6 backdrop-blur-xl border border-white/10">
               <Receipt className="w-16 h-16 text-violet-400" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">No orders yet</h3>
-            <p className="text-gray-400">Orders will appear here when available</p>
+            <h3 className="text-2xl font-bold text-white mb-2">
+              No orders yet
+            </h3>
+            <p className="text-gray-400">
+              Orders will appear here when available
+            </p>
           </div>
         )}
       </div>
@@ -126,7 +134,9 @@ function StatCard({ label, value, icon, gradient, isAmount }) {
           </div>
         </div>
         <p className="text-sm text-gray-400 mb-1 font-medium">{label}</p>
-        <p className={`${isAmount ? "text-2xl" : "text-3xl"} font-bold text-white`}>
+        <p
+          className={`${isAmount ? "text-2xl" : "text-3xl"} font-bold text-white`}
+        >
           {value}
         </p>
       </div>
@@ -210,8 +220,12 @@ function OrderCard({ order, index, onClick }) {
               <div className="flex items-center gap-4 mb-3">
                 {/* Order Number Badge */}
                 <div className="relative">
-                  <div className={`absolute inset-0 bg-gradient-to-r ${statusConfig.gradient} blur-md opacity-50`} />
-                  <div className={`relative px-4 py-2 bg-gradient-to-r ${statusConfig.gradient} rounded-xl`}>
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-r ${statusConfig.gradient} blur-md opacity-50`}
+                  />
+                  <div
+                    className={`relative px-4 py-2 bg-gradient-to-r ${statusConfig.gradient} rounded-xl`}
+                  >
                     <span className="text-sm font-bold text-white">
                       #{order.orderNumber}
                     </span>
@@ -219,9 +233,13 @@ function OrderCard({ order, index, onClick }) {
                 </div>
 
                 {/* Status Badge */}
-                <div className={`flex items-center gap-2 px-4 py-2 ${statusConfig.bg} border ${statusConfig.border} rounded-xl backdrop-blur-xl`}>
+                <div
+                  className={`flex items-center gap-2 px-4 py-2 ${statusConfig.bg} border ${statusConfig.border} rounded-xl backdrop-blur-xl`}
+                >
                   <StatusIcon className={`w-4 h-4 ${statusConfig.color}`} />
-                  <span className={`text-sm font-semibold ${statusConfig.color} capitalize`}>
+                  <span
+                    className={`text-sm font-semibold ${statusConfig.color} capitalize`}
+                  >
                     {order.status}
                   </span>
                 </div>
@@ -253,9 +271,11 @@ function OrderCard({ order, index, onClick }) {
             {/* Right: Amount */}
             <div className="text-right">
               <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400 mb-1">
-                ₹{order.totalAmount.toLocaleString("en-IN")}
+                {formatNumber(order.totalAmount, true)}
               </div>
-              <div className="text-xs text-gray-500 font-medium">Total Amount</div>
+              <div className="text-xs text-gray-500 font-medium">
+                Total Amount
+              </div>
             </div>
           </div>
 
@@ -303,7 +323,9 @@ function OrderCard({ order, index, onClick }) {
                 {order.tableNumber && (
                   <div className="flex items-center gap-2 text-sm text-gray-300">
                     <MapPin className="w-4 h-4 text-violet-400" />
-                    <span className="font-medium">Table {order.tableNumber}</span>
+                    <span className="font-medium">
+                      Table {order.tableNumber}
+                    </span>
                   </div>
                 )}
                 {order.customerName && (
@@ -344,7 +366,7 @@ function OrderCard({ order, index, onClick }) {
                       <span>×{item.quantity}</span>
                       <span className="text-gray-600">•</span>
                       <span className="text-emerald-400 font-bold">
-                        ₹{item.totalPrice.toLocaleString("en-IN")}
+                        {formatNumber(item.totalPrice, true)}
                       </span>
                     </div>
                   </div>
@@ -367,14 +389,14 @@ function OrderCard({ order, index, onClick }) {
               <div>
                 <div className="text-gray-500 text-xs mb-1">Subtotal</div>
                 <div className="text-white font-bold">
-                  ₹{order.subtotal.toLocaleString("en-IN")}
+                  {formatNumber(order.subtotal, true)}
                 </div>
               </div>
               <div className="w-px h-8 bg-white/10" />
               <div>
                 <div className="text-gray-500 text-xs mb-1">Tax</div>
                 <div className="text-cyan-400 font-bold">
-                  ₹{order.taxAmount.toFixed(2)}
+                  {formatNumber(order.taxAmount, true)}
                 </div>
               </div>
               {order.discountAmount > 0 && (
@@ -383,7 +405,7 @@ function OrderCard({ order, index, onClick }) {
                   <div>
                     <div className="text-gray-500 text-xs mb-1">Discount</div>
                     <div className="text-emerald-400 font-bold">
-                      -₹{order.discountAmount.toLocaleString("en-IN")}
+                      -{formatNumber(order.discountAmount, true)}
                     </div>
                   </div>
                 </>
@@ -392,8 +414,12 @@ function OrderCard({ order, index, onClick }) {
 
             {/* View Details Button */}
             <div className="relative group/btn">
-              <div className={`absolute inset-0 bg-gradient-to-r ${statusConfig.gradient} blur-md opacity-0 group-hover/btn:opacity-75 transition-opacity duration-300`} />
-              <div className={`relative flex items-center gap-2 px-6 py-3 bg-gradient-to-r ${statusConfig.gradient} rounded-xl font-semibold text-white text-sm shadow-lg group-hover/btn:shadow-xl transition-all duration-300`}>
+              <div
+                className={`absolute inset-0 bg-gradient-to-r ${statusConfig.gradient} blur-md opacity-0 group-hover/btn:opacity-75 transition-opacity duration-300`}
+              />
+              <div
+                className={`relative flex items-center gap-2 px-6 py-3 bg-gradient-to-r ${statusConfig.gradient} rounded-xl font-semibold text-white text-sm shadow-lg group-hover/btn:shadow-xl transition-all duration-300`}
+              >
                 <span>View Details</span>
                 <ChevronRight
                   className={`w-4 h-4 transition-transform duration-300 ${isHovered ? "translate-x-1" : ""}`}
@@ -423,7 +449,9 @@ function OrderCard({ order, index, onClick }) {
 // Info Pill Component
 function InfoPill({ icon, label, value, gradient }) {
   return (
-    <div className={`relative overflow-hidden backdrop-blur-xl bg-gradient-to-br ${gradient} border border-white/10 rounded-xl p-4 group/pill hover:border-white/20 transition-all duration-300`}>
+    <div
+      className={`relative overflow-hidden backdrop-blur-xl bg-gradient-to-br ${gradient} border border-white/10 rounded-xl p-4 group/pill hover:border-white/20 transition-all duration-300`}
+    >
       <div className="flex items-center gap-3">
         <div className="text-white/80">{icon}</div>
         <div>

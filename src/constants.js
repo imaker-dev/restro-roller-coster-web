@@ -1,3 +1,5 @@
+import { IndianRupee } from "lucide-react";
+
 export const TOKEN_KEYS = {
   ACCESS: "_k_e7c1fa92",
   REFRESH: "_k_91bd04ce",
@@ -21,6 +23,20 @@ export const ROLES = {
   CAPTAIN: "captain",
   WAITER: "waiter",
   INVENTORY: "inventory",
+};
+
+export const SUBSCRIPTION_PLANS = {
+  FREE: "free",
+  PRO: "pro",
+  OFFLINE_ANNUAL: "offline_annual",
+};
+
+export const CURRENCY = {
+  SYMBOL: "₹",
+  CODE: "INR",
+  NAME: "Indian Rupee",
+  LOCALE: "en-IN",
+  ICON:IndianRupee,
 };
 
 export const FOOD_TYPES = {

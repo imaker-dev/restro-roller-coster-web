@@ -4,7 +4,6 @@ import { fetchSectionSalesReport } from "../../redux/slices/reportSlice";
 import PageHeader from "../../layout/PageHeader";
 import {
   Download,
-  IndianRupee,
   LayoutGrid,
   RotateCcw,
   ShoppingBag,
@@ -20,6 +19,7 @@ import { formatFileDate } from "../../utils/dateFormatter";
 import { handleResponse } from "../../utils/helpers";
 import { exportSectionSalesReport } from "../../redux/slices/exportReportSlice";
 import { downloadBlob } from "../../utils/blob";
+import { CURRENCY } from "../../constants";
 
 const SectionSalesPage = () => {
   const dispatch = useDispatch();
@@ -61,7 +61,7 @@ const SectionSalesPage = () => {
       color: "amber",
     },
     {
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       title: "Total Sales",
       value: formatNumber(summary?.total_sales),
       subtitle: `Avg ${formatNumber(summary?.average_order_value)}/order`,

@@ -12,12 +12,12 @@ import {
   FlaskConical,
   TrendingUp,
   TrendingDown,
-  BadgeIndianRupee,
   CheckCircle2,
   Package,
 } from "lucide-react";
 import FoodTypeIcon from "../../partial/common/FoodTypeIcon";
 import MetricPanel from "../../partial/report/daily-sales-report/MetricPanel";
+import { CURRENCY } from "../../constants";
 
 /* ─── Info row ────────────────────────────────────────────────────────────── */
 function Row({ label, value, accent }) {
@@ -425,7 +425,7 @@ const RecipeDetailsPage = () => {
           <MetricPanel
             title="Cost Summary"
             subtitle="Profitability breakdown"
-            icon={BadgeIndianRupee}
+            icon={CURRENCY.ICON}
           >
             {/* Big profit number */}
             <div

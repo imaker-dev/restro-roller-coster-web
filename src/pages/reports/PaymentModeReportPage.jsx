@@ -12,10 +12,8 @@ import {
   CreditCard,
   Download,
   HandCoins,
-  IndianRupee,
   Percent,
   Receipt,
-  ReceiptIndianRupee,
   RotateCcw,
   ShoppingCart,
   TrendingUp,
@@ -26,6 +24,7 @@ import { handleResponse } from "../../utils/helpers";
 import { formatFileDate } from "../../utils/dateFormatter";
 import { exportPaymentModeReport } from "../../redux/slices/exportReportSlice";
 import { downloadBlob } from "../../utils/blob";
+import { CURRENCY } from "../../constants";
 
 const PaymentModeReportPage = () => {
   const dispatch = useDispatch();
@@ -54,7 +53,7 @@ const PaymentModeReportPage = () => {
       title: "Total Sales",
       value: formatNumber(summary?.total_sale, true),
       subtitle: "Gross amount",
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       color: "green",
     },
 
@@ -70,7 +69,7 @@ const PaymentModeReportPage = () => {
       title: "Due Amount",
       value: formatNumber(summary?.due_amount, true),
       subtitle: "Pending collection",
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       color: "red",
     },
 

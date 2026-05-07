@@ -17,7 +17,6 @@ import {
   ShieldAlert,
   CheckCircle,
   XCircle,
-  IndianRupee,
 } from "lucide-react";
 import InventoryItemCard from "../../partial/inventory/inventory/InventoryItemCard";
 import StockAdjustOverlay from "../../partial/inventory/inventory/StockAdjustOverlay";
@@ -27,6 +26,7 @@ import { handleResponse } from "../../utils/helpers";
 import InventoryItemCardSkeleton from "../../partial/inventory/inventory/InventoryItemCardSkeleton";
 import Pagination from "../../components/Pagination";
 import { ROUTE_PATHS } from "../../config/paths";
+import { CURRENCY } from "../../constants";
 
 /* ═══════════════════════════════════════════════════════════════════════════
    MAIN PAGE
@@ -135,7 +135,7 @@ const InventoryItemPage = () => {
       title: "Total Stock Value",
       value: formatNumber(summary?.totalStockValue, true),
       subtitle: "Inventory worth",
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       color: "blue",
     },
   ];

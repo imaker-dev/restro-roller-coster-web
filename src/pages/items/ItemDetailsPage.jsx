@@ -11,7 +11,6 @@ import {
   Package,
   Plus,
   FlaskConical,
-  IndianRupee,
   CheckCircle2,
   Utensils,
   ShieldCheck,
@@ -26,6 +25,7 @@ import PageHeader from "../../layout/PageHeader";
 import StatusBadge from "../../layout/StatusBadge";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import { ROUTE_PATHS } from "../../config/paths";
+import { CURRENCY } from "../../constants";
 
 const fmt = (v) => formatNumber(v, true);
 
@@ -192,7 +192,7 @@ const ItemDetailsPage = () => {
           </MetricPanel>
 
           {/* Pricing */}
-          <MetricPanel icon={IndianRupee} title={"Pricing"}>
+          <MetricPanel icon={CURRENCY.ICON} title={"Pricing"}>
             <InfoRow
               label="Base Price"
               value={num(item?.base_price) > 0 ? fmt(item?.base_price) : "—"}

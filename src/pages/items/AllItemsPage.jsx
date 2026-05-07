@@ -18,6 +18,7 @@ import { SERVICE_TYPES } from "../../constants";
 import { formatText } from "../../utils/utils";
 import { FOOD_TYPE_OPTIONS } from "../../constants/selectOptions";
 import { ROUTE_PATHS } from "../../config/paths";
+import { formatNumber } from "../../utils/numberFormatter";
 
 const AllItemsPage = () => {
   const dispatch = useDispatch();
@@ -135,7 +136,7 @@ const AllItemsPage = () => {
       render: (row) => (
         <div className="flex flex-col">
           <span className="font-semibold text-slate-800">
-            ₹{Number(row.base_price).toFixed(2)}
+            {formatNumber(row.base_price,true)}
           </span>
 
           <span className="text-xs text-slate-500">

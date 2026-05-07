@@ -21,7 +21,6 @@ import {
   Star,
   Info,
   Wallet,
-  ReceiptIndianRupee,
 } from "lucide-react";
 import OrderBadge from "../../partial/order/OrderBadge";
 import StatusPill from "../../components/StatusPill";
@@ -30,6 +29,7 @@ import { formatNumber } from "../../utils/numberFormatter";
 import { formatDate } from "../../utils/dateFormatter";
 import OrderDetailsSkeleton from "../../partial/order/OrderDetailsSkeleton";
 import NoDataFound from "../../layout/NoDataFound";
+import { CURRENCY } from "../../constants";
 
 /* ── helpers ── */
 const fmt = (n) => formatNumber(n, true);
@@ -99,7 +99,7 @@ const OrderDetailsPage = () => {
   if (!d)
     return (
       <NoDataFound
-        icon={ReceiptIndianRupee}
+        icon={CURRENCY.ICON}
         title="Order not found"
         description=""
       />
@@ -323,7 +323,7 @@ const OrderDetailsPage = () => {
         {/* ── Bill breakdown ── */}
         <Section
           title="Bill breakdown"
-          icon={ReceiptIndianRupee}
+          icon={CURRENCY.ICON}
           iconBg="bg-blue-50 border-blue-100"
           iconColor="text-blue-600"
         >
@@ -626,7 +626,7 @@ const OrderDetailsPage = () => {
         {d.invoice && (
           <Section
             title="Invoice"
-            icon={ReceiptIndianRupee}
+            icon={CURRENCY.ICON}
             iconBg="bg-blue-50 border-blue-100"
             iconColor="text-blue-600"
           >

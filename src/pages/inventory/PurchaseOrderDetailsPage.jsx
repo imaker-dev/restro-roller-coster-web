@@ -17,16 +17,16 @@ import {
   CalendarX,
   Banknote,
   Smartphone,
-  BadgeIndianRupee,
   Info,
   AlertTriangle,
 } from "lucide-react";
 import MetricPanel from "../../partial/report/daily-sales-report/MetricPanel";
 import NoDataFound from "../../layout/NoDataFound";
+import { formatNumber } from "../../utils/numberFormatter";
+import { CURRENCY } from "../../constants";
 
 /* ─── helpers ─────────────────────────────────────────────────────────────── */
-const inr = (v) =>
-  `₹${parseFloat(v ?? 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const inr = (v) => formatNumber(v,true);
 
 const safePct = (a, b) =>
   b > 0 ? Math.min(Math.round((a / b) * 100), 100) : 0;
@@ -49,7 +49,7 @@ function ProgressBar({ value, max, colorClass = "bg-emerald-500", h = "h-2" }) {
 }
 
 /* ─── Animated counter ────────────────────────────────────────────────────── */
-function Counter({ to = 0, prefix = "₹" }) {
+function Counter({ to = 0, prefix = CURRENCY.SYMBOL }) {
   const [v, setV] = useState(0);
   const r = useRef();
   useEffect(() => {
@@ -670,7 +670,7 @@ const PurchaseOrderDetailsPage = () => {
           {/* Bill Summary */}
           <MetricPanel
             title="Bill Summary"
-            icon={BadgeIndianRupee}
+            icon={CURRENCY.ICON}
             desc="Amount breakdown"
           >
             <div className="space-y-0.5">

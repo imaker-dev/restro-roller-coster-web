@@ -7,7 +7,6 @@ import {
   ChevronDown,
   Clock,
   Copy,
-  ReceiptIndianRupee,
   ShoppingBag,
   SlidersHorizontal,
   Tag,
@@ -18,6 +17,7 @@ import { useState } from "react";
 import { formatNumber } from "../../../utils/numberFormatter";
 import StatusPill from "../../../components/StatusPill";
 import { copyToClipboard } from "../../../utils/copyToClipboard";
+import CurrencyIcon from "../../../components/CurrencyIcon";
 
 /* ── Summary Deductions Card ── */
 function DailySalesSummaryBreakup({ summary, outsideCollections }) {
@@ -89,7 +89,7 @@ function DailySalesSummaryBreakup({ summary, outsideCollections }) {
       >
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
-            <ReceiptIndianRupee size={14} className="text-emerald-600" />
+            <CurrencyIcon size={14} className="text-emerald-600" />
           </div>
           <div className="text-left">
             <p className="text-sm font-semibold text-gray-900">

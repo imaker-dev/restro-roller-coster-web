@@ -1,9 +1,10 @@
-import { AlertTriangle, ArrowRight, Clock, Hash, IndianRupee, Package, User } from "lucide-react";
+import { AlertTriangle, ArrowRight, Clock, Hash,  Package, User } from "lucide-react";
 import MetaPill from "../../../components/MetaPill";
 import { formatNumber } from "../../../utils/numberFormatter";
 import { formatDate } from "../../../utils/dateFormatter";
 import { Link } from "react-router-dom";
 import { ROUTE_PATHS } from "../../../config/paths";
+import { CURRENCY } from "../../../constants";
 
   // ─── Item cancellation card ───────────────────────────────────────────────────
   export default function ItemCancelCard({ item, }) {
@@ -59,7 +60,7 @@ import { ROUTE_PATHS } from "../../../config/paths";
             <div className="grid grid-cols-2 gap-2 mb-2">
               <MetaPill icon={User} label="By" value={item.cancelled_by_name} />
               <MetaPill
-                icon={IndianRupee}
+                icon={CURRENCY.ICON}
                 label="Loss"
                 value={formatNumber(item.cancelled_amount,true)}
                 highlight

@@ -1,5 +1,6 @@
 import React from "react";
 import Tooltip from "../../../components/Tooltip";
+import { formatNumber } from "../../../utils/numberFormatter";
 
 const CONFIG = {
   percentage: {
@@ -38,7 +39,7 @@ export default function DiscountBadge({
   const label =
     type === "percentage"
       ? `${value}% OFF`
-      : `₹${value} FLAT`;
+      : `${formatNumber(value,true)} FLAT`;
 
   return (
     <Tooltip content={item.tooltip}>

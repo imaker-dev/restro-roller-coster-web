@@ -12,7 +12,6 @@ import {
   UserCheck,
   BadgePercent,
   ArrowUpRight,
-  CircleDollarSign,
   Activity,
   Store,
   Ban,
@@ -25,7 +24,6 @@ import {
   ArrowRight,
   Download,
   SlidersHorizontal,
-  IndianRupee,
   ChevronRight,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,6 +43,7 @@ import { downloadBlob } from "../../utils/blob";
 import MetricPanel from "../../partial/report/daily-sales-report/MetricPanel";
 import NoDataFound from "../../layout/NoDataFound";
 import { ROUTE_PATHS } from "../../config/paths";
+import { CURRENCY } from "../../constants";
 
 // ─── Utils ────────────────────────────────────────────────────────────────────
 const pct = (a, b) => (b ? +((a / b) * 100).toFixed(1) : 0);
@@ -382,7 +381,7 @@ export default function DayEndSummaryDetailsPage() {
                 {
                   label: "Avg Order",
                   val: Math.round(s?.avgOrderValue ?? 0),
-                  Icon: CircleDollarSign,
+                  Icon: CURRENCY.ICON,
                   prefix: "\u20B9",
                 },
                 {
@@ -1125,7 +1124,7 @@ export default function DayEndSummaryDetailsPage() {
 
       {d?.dueCollections?.orders?.length > 0 && (
         <MetricPanel
-          icon={IndianRupee}
+          icon={CURRENCY.ICON}
           title="Due Collections"
           desc="Payments collected against outstanding dues today"
           right={

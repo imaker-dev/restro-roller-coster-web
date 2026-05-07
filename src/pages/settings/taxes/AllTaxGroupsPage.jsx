@@ -7,7 +7,7 @@ import {
   updateTaxGroup,
 } from "../../../redux/slices/taxSlice";
 import SmartTable from "../../../components/SmartTable";
-import { Edit3, Eye, Plus } from "lucide-react";
+import { Edit3, Eye, Plus, RotateCcw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import TaxGroupModal from "../../../partial/tax/TaxGroupModal";
 import StatusBadge from "../../../layout/StatusBadge";
@@ -187,6 +187,14 @@ const AllTaxGroupsPage = () => {
       type: "primary",
       icon: Plus,
       onClick: () => setShowTaxGroupModal(true),
+    },
+    {
+      label: "Refresh",
+      type: "refresh",
+      icon: RotateCcw,
+      onClick: fetchTaxGroups,
+      loading: loading,
+      loadingText: "Refreshing...",
     },
   ];
 

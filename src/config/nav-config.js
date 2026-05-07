@@ -28,6 +28,9 @@ import {
   Headphones,
   Activity,
   QrCode,
+  Layers3,
+  PercentCircle,
+  BadgePercent,
 } from "lucide-react";
 
 import { ROLES } from "../constants";
@@ -135,7 +138,7 @@ export const navConfig = [
         name: "Order Display",
         icon: Monitor,
         path: ROUTE_PATHS.ORDER_DISPLAY,
-        roles: [ROLES.MASTER, ROLES.KITCHEN, ROLES.BARTENDER],
+        roles: [ROLES.KITCHEN, ROLES.BARTENDER],
       },
     ],
   },
@@ -163,8 +166,20 @@ export const navConfig = [
         roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER],
       },
       {
+        name: "Tax Types",
+        icon: BadgePercent,
+        path: ROUTE_PATHS.ALL_TAX_TYPES,
+        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
+      },
+      {
+        name: "Tax Components",
+        icon: PercentCircle,
+        path: ROUTE_PATHS.ALL_TAX_COMPONENTS,
+        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
+      },
+      {
         name: "Tax Groups",
-        icon: Percent,
+        icon: Layers3,
         path: ROUTE_PATHS.ALL_TAX_GROUPS,
         roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
       },
@@ -343,6 +358,47 @@ export const navConfig = [
         icon: Users,
         path: ROUTE_PATHS.ALL_USERS,
         roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER],
+      },
+    ],
+  },
+
+  {
+    title: "Subscriptions",
+    roles: [ROLES.MASTER],
+    items: [
+      {
+        name: "Subscription Dashboard",
+        icon: ReceiptText,
+        path: ROUTE_PATHS.SUBSCRIPTION_DASHBOARD,
+        roles: [ROLES.MASTER],
+      },
+
+      {
+        name: "Global Pricing",
+        icon: Percent,
+        path: ROUTE_PATHS.SUBSCRIPTION_GLOBAL_PRICING,
+        roles: [ROLES.MASTER],
+      },
+
+      {
+        name: "Super Admin Pricing",
+        icon: Users,
+        path: ROUTE_PATHS.SUPER_ADMIN_SUBSCRIPTION_PRICING,
+        roles: [ROLES.MASTER],
+      },
+
+      {
+        name: "Outlet Pricing",
+        icon: Building2,
+        path: ROUTE_PATHS.OUTLET_PRICING,
+        roles: [ROLES.MASTER],
+      },
+
+      {
+        name: "All Subscriptions",
+        icon: ClipboardList,
+        path: ROUTE_PATHS.SUBSCRIPTION_LIST,
+        roles: [ROLES.MASTER],
       },
     ],
   },

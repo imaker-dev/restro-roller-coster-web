@@ -31,15 +31,17 @@ const ActivateSubscriptionModal = ({
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
+      outletId:request?.outlet_id || "",
       restaurant: request?.restaurant_name || "",
       email: request?.email || "",
       phone: request?.phone || "",
       password: "",
+      notify_whatsapp: true,
+      notify_email: true,
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
-      await onConfirm(values);
-      resetForm();
+      await onConfirm({ values, resetForm });
     },
   });
 

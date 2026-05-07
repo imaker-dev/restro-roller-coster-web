@@ -7,9 +7,7 @@ import {
   Ban,
   CheckCircle,
   Download,
-  IndianRupee,
   Package,
-  ReceiptIndianRupee,
   RotateCcw,
   ShoppingBag,
   TrendingUp,
@@ -29,7 +27,7 @@ import { handleResponse } from "../../utils/helpers";
 import { exportOrdersReport } from "../../redux/slices/exportReportSlice";
 import { downloadBlob } from "../../utils/blob";
 import SidebarFilter from "../../components/SidebarFilter";
-import { ORDER_STATUSES, ORDER_TYPES, PAYMENT_STATUSES } from "../../constants";
+import { CURRENCY, ORDER_STATUSES, ORDER_TYPES, PAYMENT_STATUSES } from "../../constants";
 import { formatText } from "../../utils/utils";
 
 const AllOrdersPage = () => {
@@ -110,7 +108,7 @@ const AllOrdersPage = () => {
       title: "Total Amount",
       value: formatNumber(summary?.totalAmount, true),
       color: "indigo",
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
     },
     {
       title: "Completed Amount",
@@ -160,7 +158,7 @@ const AllOrdersPage = () => {
       title: "NC Amount",
       value: formatNumber(summary?.ncAmount, true),
       color: "rose",
-      icon: ReceiptIndianRupee,
+      icon: CURRENCY.ICON,
     },
   ];
 

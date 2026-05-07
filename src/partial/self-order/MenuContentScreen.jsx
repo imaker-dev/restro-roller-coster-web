@@ -9,7 +9,6 @@ import {
   Leaf,
   Flame,
   MapPin,
-  ReceiptIndianRupee,
   LogOut,
 } from "lucide-react";
 import { useSelector } from "react-redux";
@@ -19,6 +18,7 @@ import ItemGridCard from "./ItemGridCard";
 import ItemDetailSheet from "./ItemDetailSheet";
 import { formatNumber } from "../../utils/numberFormatter";
 import { LOGO, LOGO_ICON } from "../../constants";
+import CurrencyIcon from "../../components/CurrencyIcon";
 
 const fmt = (p, i) => formatNumber(p, true);
 
@@ -298,7 +298,7 @@ function MenuContentScreen({
               className="relative bg-blue-600 w-9 h-9 rounded-xl flex items-center justify-center shadow-md shadow-blue-600/30 shrink-0"
               title="View Order Status"
             >
-              <ReceiptIndianRupee size={16} className="text-white" />
+              <CurrencyIcon size={16} className="text-white" />
             </button>
           )}
 

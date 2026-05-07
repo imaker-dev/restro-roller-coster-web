@@ -5,7 +5,6 @@ import {
   ChevronLeft,
   Minus,
   Plus,
-  ReceiptIndianRupee,
   ShoppingBag,
   Trash2,
 } from "lucide-react";
@@ -20,6 +19,7 @@ import {
 } from "../../redux/slices/publicMenuSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
+import CurrencyIcon from "../../components/CurrencyIcon";
 
 // ─────────────────────────────────────────────────────────────────────────────
 function CartScreen({
@@ -272,7 +272,7 @@ function CartScreen({
                   {loading ? (
                     <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   ) : (
-                    <ReceiptIndianRupee size={16} />
+                    <CurrencyIcon size={16}/>
                   )}
                   {loading ? "Placing Order..." : "Place Order"}
                 </div>

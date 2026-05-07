@@ -34,13 +34,13 @@ import ingredientSlice from "./redux/slices/ingredientSlice";
 import recipeSlice from "./redux/slices/recipeSlice";
 import itemBatchSlice from "./redux/slices/itemBatchSlice";
 import menuMediaSlice from "./redux/slices/menuMediaSlice";
-import outsideCollectionSlice from './redux/slices/outsideCollectionSlice';
-import registrationSlice from './redux/slices/registrationSlice';
-import publicMenuSlice from './redux/slices/publicMenuSlice';
-import qrSlice from './redux/slices/qrSlice';
-import adminSlice from './redux/slices/adminSlice';
-import superAdminDashboardSlice from './redux/slices/superAdminDashboardSlice';
-
+import outsideCollectionSlice from "./redux/slices/outsideCollectionSlice";
+import registrationSlice from "./redux/slices/registrationSlice";
+import publicMenuSlice from "./redux/slices/publicMenuSlice";
+import qrSlice from "./redux/slices/qrSlice";
+import adminSlice from "./redux/slices/adminSlice";
+import superAdminDashboardSlice from "./redux/slices/superAdminDashboardSlice";
+import subscriptionSlice from "./redux/slices/subscriptionSlice";
 
 const reducer = {
   auth: authSlice,
@@ -76,14 +76,15 @@ const reducer = {
   inventory: inventorySlice,
   ingredient: ingredientSlice,
   recipe: recipeSlice,
-  itemBatch:itemBatchSlice,
-  menuMedia:menuMediaSlice,
-  outsideCollection:outsideCollectionSlice,
-  registration:registrationSlice,
+  itemBatch: itemBatchSlice,
+  menuMedia: menuMediaSlice,
+  outsideCollection: outsideCollectionSlice,
+  registration: registrationSlice,
   publicMenu: publicMenuSlice,
-  qr:qrSlice,
-  admin:adminSlice,
-  superAdminDashboard:superAdminDashboardSlice,
+  qr: qrSlice,
+  admin: adminSlice,
+  superAdminDashboard: superAdminDashboardSlice,
+  subscription: subscriptionSlice,
 };
 
 const store = configureStore({

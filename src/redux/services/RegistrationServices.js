@@ -13,11 +13,14 @@ export default false
         });
         return Api.get("/registration/requests", { params });
       },
+      createRegistrationRequestApi:({values}) => {
+        return Api.post(`/registration/register`,values)
+      },
       updateRegistrationRequestApi: ({ id, values }) => {
         return Api.patch(`/registration/${id}/status`, values);
       },
       generateActivationTokenApi: (values) => {
-        return Api.post(`/token-generation/activation`, values);
+        return Api.post(`/token-generation/offline-activation`, values);
       },
       getTokenActivationLogsApi: ({ page, limit }) => {
         const params = cleanParams({

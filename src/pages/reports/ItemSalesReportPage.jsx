@@ -7,7 +7,6 @@ import { formatNumber } from "../../utils/numberFormatter";
 import SmartTable from "../../components/SmartTable";
 import {
   Download,
-  IndianRupee,
   Package,
   RotateCcw,
   ShoppingCart,
@@ -20,6 +19,7 @@ import { formatFileDate } from "../../utils/dateFormatter";
 import { handleResponse } from "../../utils/helpers";
 import { exportItemSalesReport } from "../../redux/slices/exportReportSlice";
 import { downloadBlob } from "../../utils/blob";
+import { CURRENCY } from "../../constants";
 
 const ItemSalesReportPage = () => {
   const dispatch = useDispatch();
@@ -118,7 +118,7 @@ const ItemSalesReportPage = () => {
       title: "Total Sales",
       value: formatNumber(summary?.total_sale, true),
       subtitle: "Gross revenue",
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       color: "green",
     },
     {

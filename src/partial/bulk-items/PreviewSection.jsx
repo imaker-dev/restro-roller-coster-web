@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import FoodTypeIcon from "../common/FoodTypeIcon";
+import { formatNumber } from "../../utils/numberFormatter";
 
 function FoodDot({ type }) {
   const map = {
@@ -227,7 +228,7 @@ export default function PreviewSection({
                           {row.category}
                         </td>
                         <td className="px-4 py-3 text-[12px] font-bold text-slate-800">
-                          ₹{row.price}
+                          {formatNumber(row.price,true)}
                         </td>
 
                         <td className="px-4 py-3 text-[12px]">
@@ -278,7 +279,7 @@ export default function PreviewSection({
                           {row.item}
                         </td>
                         <td className="px-4 py-3 text-[12px] font-bold text-slate-800">
-                          ₹{row.price}
+                          {formatNumber(row.price,true)}
                         </td>
                         <td className="px-4 py-3">
                           {row.isDefault === "yes" ? (
@@ -329,7 +330,7 @@ export default function PreviewSection({
                               Free
                             </span>
                           ) : (
-                            `₹${row.price}`
+                            `${formatNumber(row.price,true)}`
                           )}
                         </td>
                       </>

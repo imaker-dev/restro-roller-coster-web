@@ -10,7 +10,6 @@ import {
   Download,
   FolderPlus,
   Hash,
-  IndianRupee,
   Package,
   RotateCcw,
   TrendingDown,
@@ -31,6 +30,7 @@ import { formatFileDate } from "../../utils/dateFormatter";
 import { handleResponse } from "../../utils/helpers";
 import { exportCancellationReport } from "../../redux/slices/exportReportSlice";
 import { downloadBlob } from "../../utils/blob";
+import { CURRENCY } from "../../constants";
 
 const CancellationReport = () => {
   const dispatch = useDispatch();
@@ -76,7 +76,7 @@ const CancellationReport = () => {
       color: "blue",
     },
     {
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       title: "Order Cancel Loss",
       value: formatNumber(summary?.total_order_cancel_amount, true),
       subtitle: "Revenue from full orders",

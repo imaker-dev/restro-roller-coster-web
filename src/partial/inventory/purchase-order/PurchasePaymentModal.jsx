@@ -3,7 +3,6 @@ import {
   Building2,
   CheckCircle2,
   CreditCard,
-  IndianRupee,
   Loader2,
   Wallet,
   X,
@@ -13,6 +12,7 @@ import { formatNumber } from "../../../utils/numberFormatter";
 import ModalBlank from "../../../components/ModalBlank";
 import { InputField } from "../../../components/fields/InputField";
 import { TextareaField } from "../../../components/fields/TextareaField";
+import { CURRENCY } from "../../../constants";
 
 /* ══════════════════════════════════════════════════════════════════════════
    PAYMENT OVERLAY
@@ -75,7 +75,7 @@ export function PurchasePaymentModal({
 
   const METHODS = [
     { id: "cash", label: "Cash", icon: Wallet },
-    { id: "upi", label: "UPI", icon: IndianRupee },
+    { id: "upi", label: "UPI", icon: CURRENCY.ICON },
     { id: "card", label: "Card", icon: CreditCard },
     { id: "bank", label: "Bank Transfer", icon: Building2 },
   ];
@@ -150,7 +150,7 @@ export function PurchasePaymentModal({
           </label>
           <div className="relative">
             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">
-              ₹
+              {CURRENCY.SYMBOL}
             </span>
             <input
               ref={inputRef}

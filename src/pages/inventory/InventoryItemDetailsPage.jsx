@@ -15,7 +15,6 @@ import {
   AlertTriangle,
   ShieldAlert,
   Building2,
-  BadgeIndianRupee,
   BarChart2,
   Pencil,
   TrendingUp,
@@ -24,6 +23,7 @@ import {
 import MetricPanel from "../../partial/report/daily-sales-report/MetricPanel";
 import ExpiryBadge from "../../layout/ExpiryBadge";
 import { ROUTE_PATHS } from "../../config/paths";
+import { CURRENCY } from "../../constants";
 
 /* ─── Animated progress bar ──────────────────────────────────────────────── */
 function Bar({ value, max, colorClass = "bg-emerald-500", h = "h-2" }) {
@@ -44,7 +44,7 @@ function Bar({ value, max, colorClass = "bg-emerald-500", h = "h-2" }) {
 }
 
 /* ─── Animated counter ────────────────────────────────────────────────────── */
-function Counter({ to = 0, prefix = "₹" }) {
+function Counter({ to = 0, prefix = CURRENCY.SYMBOL }) {
   const [v, setV] = useState(0);
   const r = useRef();
   useEffect(() => {
@@ -301,14 +301,14 @@ const InventoryItemDetailsPage = () => {
             {
               label: "Stock Value",
               to: sv.totalValue,
-              prefix: "₹",
+              prefix: CURRENCY.SYMBOL,
               color: "text-violet-600",
               isNum: true,
             },
             {
               label: "Latest Price",
               to: d.latestPrice,
-              prefix: "₹",
+              prefix: CURRENCY.SYMBOL,
               color: "text-slate-900",
               isNum: true,
               suffix: ` / ${d.unitAbbreviation}`,
@@ -568,7 +568,7 @@ const InventoryItemDetailsPage = () => {
           <MetricPanel
             title="Stock Summary"
             desc="Current inventory status"
-            icon={BadgeIndianRupee}
+            icon={CURRENCY.ICON}
           >
             {/* Value highlight */}
             <div className="bg-violet-50 border border-violet-100 rounded-xl px-4 py-4 mb-4 flex items-center justify-between">

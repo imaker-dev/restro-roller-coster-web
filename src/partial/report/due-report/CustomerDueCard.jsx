@@ -1,7 +1,6 @@
 // ─── CustomerDueCard.jsx ──────────────────────────────────────────────────────
 import {
   AlertCircle,
-  BadgeIndianRupee,
   Clock,
   Hash,
   Mail,
@@ -17,6 +16,7 @@ import { formatDate } from "../../../utils/dateFormatter";
 import { Link } from "react-router-dom";
 import CustomerDueDrawer from "./CustomerDueDrawer";
 import { ROUTE_PATHS } from "../../../config/paths";
+import { CURRENCY } from "../../../constants";
 
 // ─── Due Badge ────────────────────────────────────────────────────────────────
 function DueBadge({ amount }) {
@@ -141,7 +141,7 @@ export function CustomerDueCard({ customer }) {
             <MiniStat
               label="Collected"
               value={formatNumber(customer.totalDueCollected, true)}
-              icon={BadgeIndianRupee}
+              icon={CURRENCY.ICON}
               accent="text-emerald-600"
             />
           </div>

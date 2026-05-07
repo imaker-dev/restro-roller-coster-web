@@ -13,7 +13,6 @@ import {
   Download,
   Eye,
   File,
-  IndianRupee,
   Percent,
   RotateCcw,
   TrendingUp,
@@ -23,6 +22,7 @@ import { handleResponse } from "../../utils/helpers";
 import { exportTaxReport } from "../../redux/slices/exportReportSlice";
 import { downloadBlob } from "../../utils/blob";
 import { ROUTE_PATHS } from "../../config/paths";
+import { CURRENCY } from "../../constants";
 
 const TaxReportPage = () => {
   const dispatch = useDispatch();
@@ -53,7 +53,7 @@ const TaxReportPage = () => {
       title: "Total Sale",
       value: formatNumber(summary?.total_grand, true),
       subtitle: `${summary?.total_orders} orders`,
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       color: "green",
     },
 

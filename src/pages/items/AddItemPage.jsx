@@ -7,7 +7,6 @@ import { SelectField } from "../../components/fields/SelectField";
 import {
   CheckCircle2,
   Image,
-  IndianRupee,
   Info,
   Loader2,
   Plus,
@@ -34,7 +33,7 @@ import {
 } from "../../redux/slices/itemSlice";
 import { useNavigate } from "react-router-dom";
 import { useQueryParams } from "../../hooks/useQueryParams";
-import { FOOD_TYPES } from "../../constants";
+import { CURRENCY, FOOD_TYPES } from "../../constants";
 import InfoCard from "../../components/InfoCard";
 import ToggleField from "../../components/fields/ToggleField";
 import LoadingOverlay from "../../components/LoadingOverlay";
@@ -426,7 +425,7 @@ const AddItemPage = () => {
             </AccordionSection>
 
             {/* PRICING & OPTIONS */}
-            <AccordionSection title="Pricing & Options" icon={IndianRupee}>
+            <AccordionSection title="Pricing & Options" icon={CURRENCY.ICON}>
               <div className="space-y-6">
                 <ToggleField
                   label="Enable Tax"
@@ -489,7 +488,7 @@ const AddItemPage = () => {
                     name="basePrice"
                     type="number"
                     placeholder="Price"
-                    icon={IndianRupee}
+                    icon={CURRENCY.ICON}
                     required
                     value={formik.values.basePrice}
                     onChange={formik.handleChange}
@@ -570,7 +569,7 @@ const AddItemPage = () => {
                                     formik.touched.variants?.[index]?.price &&
                                     formik.errors.variants?.[index]?.price
                                   }
-                                  icon={IndianRupee}
+                                  icon={CURRENCY.ICON}
                                 />
 
                                 {/* Default Selection */}

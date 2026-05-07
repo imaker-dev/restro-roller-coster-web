@@ -28,6 +28,7 @@ import {
 import PageHeader from "../../layout/PageHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRunningOrder } from "../../redux/slices/reportSlice";
+import { formatNumber } from "../../utils/numberFormatter";
 
 const MOCK_ORDERS = [
   {
@@ -311,7 +312,7 @@ function OrderCard({ order, onClick }) {
             )}
           </div>
           <span className="text-sm font-bold text-gray-900 flex-shrink-0">
-            ₹{order.total.toLocaleString()}
+            {formatNumber(order.total, true)}
           </span>
         </div>
 
@@ -567,7 +568,7 @@ function Drawer({ order, onClose }) {
                           </span>
                         </div>
                         <span className="text-sm font-semibold text-gray-800 ml-2 flex-shrink-0">
-                          ₹{(item.price * item.qty).toLocaleString()}
+                          {formatNumber(item.price * item.qty, true)}
                         </span>
                       </div>
                     ))}
@@ -602,16 +603,16 @@ function Drawer({ order, onClose }) {
               <div className="flex justify-between text-sm text-gray-600">
                 <span>Subtotal</span>
                 <span className="font-medium">
-                  ₹{order.subtotal.toLocaleString()}
+                  {formatNumber(order.subtotal, true)}
                 </span>
               </div>
               <div className="flex justify-between text-sm text-gray-400">
-                <span>GST (12%)</span>
-                <span>₹{order.tax}</span>
+                <span>GST </span>
+                <span>{formatNumber(order.tax, true)}</span>
               </div>
               <div className="flex justify-between font-bold text-base text-gray-900 pt-2 mt-1 border-t border-gray-200">
                 <span>Total Payable</span>
-                <span>₹{order.total.toLocaleString()}</span>
+                <span>{formatNumber(order.total, true)}</span>
               </div>
             </div>
           </div>
@@ -662,22 +663,22 @@ export default function LiveOrdersPage() {
   const dispatch = useDispatch();
   const { outletId } = useSelector((state) => state.auth);
 
-  
   const [tab, setTab] = useState("dinein");
 
   const fetchOrders = () => {
-    dispatch(fetchRunningOrder({outletId,status:tab}));
+    dispatch(fetchRunningOrder({ outletId, status: tab }));
   };
 
-  const {isFetchingRunningOrder,runningOrders} = useSelector((state) => state.report);
+  const { isFetchingRunningOrder, runningOrders } = useSelector(
+    (state) => state.report,
+  );
 
-  console.log(isFetchingRunningOrder,runningOrders)
 
   useEffect(() => {
     if (outletId) {
       fetchOrders(outletId);
     }
-  }, [outletId,tab]);
+  }, [outletId, tab]);
 
   const [selected, setSelected] = useState(null);
   const [, tick] = useState(0);

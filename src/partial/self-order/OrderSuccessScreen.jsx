@@ -1,7 +1,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // SUCCESS SCREEN
 
-import { CheckCircle2, ReceiptIndianRupee } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
+import CurrencyIcon from "../../components/CurrencyIcon";
 
 // ─────────────────────────────────────────────────────────────────────────────
 function OrderSuccessScreen({ orderData, session, onContinue }) {
@@ -31,7 +32,7 @@ function OrderSuccessScreen({ orderData, session, onContinue }) {
       <div className="w-full max-w-sm bg-white rounded-2xl border border-black/[0.06] shadow-sm p-4 mb-6">
         <div className="flex items-center gap-2 mb-3 pb-3 border-b border-[#F2F2F7]">
           <div className="w-8 h-8 bg-primary-500/10 rounded-lg flex items-center justify-center">
-            <ReceiptIndianRupee size={15} className="text-primary-500" />
+            <CurrencyIcon size={15} className="text-primary-500" />
           </div>
           <div className="text-left">
             <p className="text-sm font-bold text-[#1C1C1E]">

@@ -5,7 +5,6 @@ import { useQueryParams } from "../../hooks/useQueryParams";
 import { fetchDailySalesReportByDate } from "../../redux/slices/reportSlice";
 import {
   ShoppingBag,
-  IndianRupee,
   TrendingUp,
   CheckCircle2,
   Tag,
@@ -30,6 +29,7 @@ import { handleResponse } from "../../utils/helpers";
 import { exportDailySalesReportDetails } from "../../redux/slices/exportReportSlice";
 import { downloadBlob } from "../../utils/blob";
 import DailySalesDetailsPageSkeleton from "../../partial/report/daily-sales-report/DailySalesDetailsPageSkeleton";
+import { CURRENCY } from "../../constants";
 
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 const DailySalesReportDetailsPage = () => {
@@ -81,7 +81,7 @@ const DailySalesReportDetailsPage = () => {
       label: "Gross Sales",
       value: formatNumber(summary?.grossSales, true),
       sub: "Before discounts",
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       color: "slate",
     },
     {

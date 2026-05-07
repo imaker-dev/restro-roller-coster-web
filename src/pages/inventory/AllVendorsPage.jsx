@@ -8,7 +8,6 @@ import {
   Edit3,
   Eye,
   FileText,
-  IndianRupee,
   Plus,
   ShoppingBag,
   TrendingUp,
@@ -23,6 +22,7 @@ import { formatDate } from "../../utils/dateFormatter";
 import StatusBadge from "../../layout/StatusBadge";
 import StatCard from "../../components/StatCard";
 import { ROUTE_PATHS } from "../../config/paths";
+import { CURRENCY } from "../../constants";
 
 const AllVendorsPage = () => {
   const dispatch = useDispatch();
@@ -251,7 +251,7 @@ const AllVendorsPage = () => {
       label: "Total Purchase Value",
       value: formatNumber(summary?.totalPurchaseValue, true),
       sub: "Overall procurement",
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       color: "slate",
     },
     {

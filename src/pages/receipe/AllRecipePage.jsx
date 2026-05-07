@@ -14,7 +14,6 @@ import {
   Percent,
   Star,
   Wallet,
-  IndianRupee,
   Unlink,
   AlertTriangle,
 } from "lucide-react";
@@ -23,6 +22,7 @@ import SearchBar from "../../components/SearchBar";
 import { RecipeCardSkeleton } from "../../partial/recipe/RecipeCardSkeleton";
 import Pagination from "../../components/Pagination";
 import { ROUTE_PATHS } from "../../config/paths";
+import { CURRENCY } from "../../constants";
 
 /* ═══════════════════════════════════════════════════════════════════════════
    MAIN PAGE
@@ -108,7 +108,7 @@ const AllRecipePage = () => {
       title: "Total Profit",
       value: formatNumber(summary?.totalProfit, true),
       subtitle: "Profit",
-      icon: IndianRupee,
+      icon: CURRENCY.ICON,
       color: "green",
     },
 

@@ -6,6 +6,7 @@ import {
   Loader2,
   Table,
 } from "lucide-react";
+import { CURRENCY } from "../../constants";
 
 const TEMPLATE_COLS = [
   {
@@ -26,7 +27,7 @@ const TEMPLATE_COLS = [
   //   example: "Starters",
   //   desc: "Parent category (for sub-categories & items)",
   // },
-  { key: "Price", required: true, example: "250", desc: "Price in ₹" },
+  { key: "Price", required: true, example: "250", desc: `Price in ${CURRENCY.SYMBOL}` },
   {
     key: "Food Type",
     required: true,
