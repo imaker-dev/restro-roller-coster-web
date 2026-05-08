@@ -58,18 +58,18 @@ function Sidebar({
   // Keyboard shortcut
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         setIsSearchVisible(true);
       }
-      if (e.key === 'Escape' && isSearchVisible) {
+      if (e.key === "Escape" && isSearchVisible) {
         setIsSearchVisible(false);
         setSearchQuery("");
       }
     };
-    
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isSearchVisible]);
 
   // close on click outside
@@ -170,7 +170,7 @@ function Sidebar({
     if (!searchQuery.trim()) return filteredNavConfig;
 
     const query = searchQuery.toLowerCase().trim();
-    
+
     return filteredNavConfig
       .map((group) => {
         const searchedItems = group.items
@@ -179,7 +179,7 @@ function Sidebar({
               const matchingChildren = item.children.filter(
                 (child) =>
                   child.name.toLowerCase().includes(query) ||
-                  child.path?.toLowerCase().includes(query)
+                  child.path?.toLowerCase().includes(query),
               );
 
               const parentMatches = item.name.toLowerCase().includes(query);
@@ -211,18 +211,24 @@ function Sidebar({
 
   const highlightMatch = (text) => {
     if (!searchQuery.trim() || !isSearchVisible) return text;
-    
-    const regex = new RegExp(`(${searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+
+    const regex = new RegExp(
+      `(${searchQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
+      "gi",
+    );
     const parts = text.split(regex);
-    
-    return parts.map((part, i) => 
+
+    return parts.map((part, i) =>
       regex.test(part) ? (
-        <span key={i} className="text-gray-900 font-semibold bg-amber-100/80 rounded px-0.5">
+        <span
+          key={i}
+          className="text-gray-900 font-semibold bg-amber-200/80 rounded px-0.5"
+        >
           {part}
         </span>
       ) : (
         part
-      )
+      ),
     );
   };
 
@@ -285,58 +291,57 @@ function Sidebar({
               <img src={LOGO_ICON} className="w-8" />
             )}
           </NavLink>
-
-
         </div>
-                    {/* Search Area */}
-          {effectiveExpanded && (
-            <div className="px-4 py-2">
-              {!isSearchVisible ? (
-                <button
-                  onClick={() => setIsSearchVisible(true)}
-                  className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-500 
-                    hover:text-gray-700 rounded-lg hover:bg-gray-100 transition-colors group"
-                >
-                  <Search className="w-4 h-4" />
-                  <span className="flex-1 text-left">Search</span>
-                  <kbd className="text-[10px] font-medium text-gray-400 bg-gray-100 group-hover:bg-gray-200 px-1.5 py-0.5 rounded transition-colors">
-                    ⌘K
-                  </kbd>
-                </button>
-              ) : (
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <input
-                    ref={searchInputRef}
-                    type="text"
-                    placeholder="Search menus..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-9 pr-8 py-1.5 text-sm border border-gray-200 rounded-md
+        {/* Search Area */}
+        {effectiveExpanded && (
+          <div className="px-4 py-2">
+            {!isSearchVisible ? (
+              <button
+                onClick={() => setIsSearchVisible(true)}
+                className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-500 
+                    hover:text-gray-700 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors group"
+              >
+                <Search className="w-4 h-4" />
+                <span className="flex-1 text-left">Search</span>
+
+                <kbd className="text-[10px] font-medium text-gray-400 bg-gray-100 group-hover:bg-gray-200 px-1.5 py-0.5 rounded transition-colors">
+                  Ctrl + K
+                </kbd>
+              </button>
+            ) : (
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  placeholder="Search menus..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-8 py-1.5 text-sm border border-gray-200 rounded-lg
                       focus:outline-none focus:border-gray-300
                       placeholder:text-gray-300"
-                  />
-                  {searchQuery && (
-                    <button
-                      onClick={() => setSearchQuery("")}
-                      className="absolute right-8 top-1/2 -translate-y-1/2 p-0.5 rounded hover:bg-gray-100"
-                    >
-                      <X className="w-3.5 h-3.5 text-gray-400" />
-                    </button>
-                  )}
+                />
+                {searchQuery && (
                   <button
-                    onClick={() => {
-                      setIsSearchVisible(false);
-                      setSearchQuery("");
-                    }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 hover:text-gray-600"
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-8 top-1/2 -translate-y-1/2 p-0.5 rounded hover:bg-gray-100"
                   >
-                    ESC
+                    <X className="w-3.5 h-3.5 text-gray-400" />
                   </button>
-                </div>
-              )}
-            </div>
-          )}
+                )}
+                <button
+                  onClick={() => {
+                    setIsSearchVisible(false);
+                    setSearchQuery("");
+                  }}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 hover:text-gray-600"
+                >
+                  ESC
+                </button>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Links */}
         <div
@@ -347,7 +352,9 @@ function Sidebar({
           {isSearchVisible && searchQuery && searchedNavConfig.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-sm text-gray-500">No results found</p>
-              <p className="text-xs text-gray-400 mt-1">Try a different search term</p>
+              <p className="text-xs text-gray-400 mt-1">
+                Try a different search term
+              </p>
             </div>
           ) : (
             searchedNavConfig.map((group) => (
@@ -366,7 +373,9 @@ function Sidebar({
                   )}
                 </h3>
 
-                <ul className={`${effectiveExpanded ? "space-y-1" : "space-y-2"}`}>
+                <ul
+                  className={`${effectiveExpanded ? "space-y-1" : "space-y-2"}`}
+                >
                   {group.items.map((item) => {
                     const isActive = isItemActive(item);
                     const iconClass = isActive
@@ -395,8 +404,8 @@ function Sidebar({
                                     isActive
                                       ? "bg-primary-100 text-primary-600"
                                       : item._searchHighlight && searchQuery
-                                      ? "bg-gray-100"
-                                      : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                        ? "bg-gray-100"
+                                        : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                                   } ${effectiveExpanded ? "" : "flex justify-center"}`}
                                   onClick={(e) => {
                                     e.preventDefault();
@@ -463,7 +472,8 @@ function Sidebar({
                                   }`}
                                 >
                                   {item.children.map((child) => {
-                                    const isChildActive = pathname === child.path;
+                                    const isChildActive =
+                                      pathname === child.path;
                                     return (
                                       <li
                                         key={child.name}
@@ -519,8 +529,8 @@ function Sidebar({
                               isActive
                                 ? "bg-primary-100"
                                 : item._searchHighlight && searchQuery
-                                ? "bg-gray-100"
-                                : ""
+                                  ? "bg-gray-100"
+                                  : ""
                             } ${
                               effectiveExpanded
                                 ? "rounded-sm"

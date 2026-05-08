@@ -1,5 +1,5 @@
 import React from "react";
-import { Crown, Gift, HelpCircle } from "lucide-react";
+import { Crown, Database, Gift, HelpCircle } from "lucide-react";
 import Tooltip from "../../components/Tooltip";
 
 /**
@@ -26,7 +26,7 @@ const PLAN_VARIANTS = {
     bg: "bg-orange-50",
     text: "text-orange-700",
     dot: "bg-orange-500",
-    icon: Crown,
+    icon: Database,
     label: "Offline Annual",
   },
 

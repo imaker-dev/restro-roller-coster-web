@@ -3,7 +3,6 @@ import SubscriptionServices from "../services/SubscriptionServices";
 import toast from "react-hot-toast";
 
 /* ---------------- GET GLOBAL PRICING ---------------- */
-
 export const fetchSubscriptionGlobalPricing = createAsyncThunk(
   "/fetch/global/pricing",
   async () => {
@@ -13,56 +12,62 @@ export const fetchSubscriptionGlobalPricing = createAsyncThunk(
 );
 
 /* ---------------- SET GLOBAL PRICING ---------------- */
-
 export const updateSubscriptionGlobalPricing = createAsyncThunk(
   "/set/global/pricing",
   async ({ values }) => {
     const res = await SubscriptionServices.setNewGlobalPricingApi({
       values,
     });
-
     return res.data;
   },
 );
 
 /* ---------------- GET ALL SUPER ADMIN PRICING ---------------- */
-
 export const fetchAllSuperAdminSubscriptionPricing = createAsyncThunk(
   "/fetch/super/admin/pricing",
   async () => {
     const res = await SubscriptionServices.getAllSuperAdminPricingApi();
+    return res.data;
+  },
+);
 
+/* ---------------- GET SUPER ADMIN OUTLETS PRICING ---------------- */
+export const fetchSuperAdminOutletsPricing = createAsyncThunk(
+  "/fetch/super/admin/outlets/pricing",
+  async ({ userId }) => {
+    const res = await SubscriptionServices.getSuperAdminOutletsPricingApi({
+      userId,
+    });
     return res.data;
   },
 );
 
 /* ---------------- SET CUSTOM SUPER ADMIN PRICING ---------------- */
-
 export const setCustomPricingForSuperAdmin = createAsyncThunk(
   "/set/custom/pricing/super/admin",
-  async ({ userId, values }) => {
+  async ({ adminId, values }) => {
     const res = await SubscriptionServices.setCustomPricingForSuperAdmin({
-      userId,
+      adminId,
       values,
     });
-
     return res.data;
   },
 );
 
 /* ---------------- GET ALL SUBSCRIPTIONS ---------------- */
-
 export const fetchAllSubscriptions = createAsyncThunk(
   "/fetch/all/subscriptions",
-  async ({page,limit,search}) => {
-    const res = await SubscriptionServices.getAllSubscriptionsApi({page,limit,search});
-
+  async ({ page, limit, search }) => {
+    const res = await SubscriptionServices.getAllSubscriptionsApi({
+      page,
+      limit,
+      search,
+    });
     return res.data;
   },
 );
 
 /* ---------------- FORCE ACTIVATE SUBSCRIPTION ---------------- */
-
 export const forceActivateSubscription = createAsyncThunk(
   "/force/activate/subscription",
   async ({ outletId, values }) => {
@@ -70,13 +75,11 @@ export const forceActivateSubscription = createAsyncThunk(
       outletId,
       values,
     });
-
     return res.data;
   },
 );
 
 /* ---------------- FORCE DEACTIVATE SUBSCRIPTION ---------------- */
-
 export const forceDeactivateSubscription = createAsyncThunk(
   "/force/deactivate/subscription",
   async ({ outletId, values }) => {
@@ -84,13 +87,11 @@ export const forceDeactivateSubscription = createAsyncThunk(
       outletId,
       values,
     });
-
     return res.data;
   },
 );
 
 /* ---------------- EXTEND SUBSCRIPTION ---------------- */
-
 export const extendSubscription = createAsyncThunk(
   "/extend/subscription",
   async ({ outletId, values }) => {
@@ -98,7 +99,24 @@ export const extendSubscription = createAsyncThunk(
       outletId,
       values,
     });
+    return res.data;
+  },
+);
 
+/* ---------------- SUBSCRIPTION DASHBOARD ---------------- */
+export const fetchSubscriptionDashboard = createAsyncThunk(
+  "/fetch/subscription/dashboard",
+  async () => {
+    const res = await SubscriptionServices.getSubscriptionDashboardApi();
+    return res.data;
+  },
+);
+
+/* ---------------- MY SUBSCRIPTION ---------------- */
+export const fetchMySubscription = createAsyncThunk(
+  "/fetch/my/subscription",
+  async () => {
+    const res = await SubscriptionServices.getMySubscriptionApi();
     return res.data;
   },
 );
@@ -117,13 +135,22 @@ const subscriptionSlice = createSlice({
     isUpdatingSubscriptionGlobalPricing: false,
 
     isFetchingSuperAdminSubscriptionPricing: false,
-    isSettingCustomPricing: false,
+    isSettingSuperAdminCustomPricing: false,
 
     isFetchingSubscriptions: false,
 
     isActivatingSubscription: false,
     isDeactivatingSubscription: false,
     isExtendingSubscription: false,
+
+    isFetchingSubscriptionDashboard: false,
+    subscriptionDashboard: null,
+
+    isFetchingMySubscription: false,
+    mySubscriptionData: null,
+
+    isFetchingSuperAdminOutletsPricing: false,
+    superAdminOutletsPricing: null,
   },
 
   reducers: {},
@@ -132,7 +159,6 @@ const subscriptionSlice = createSlice({
     builder
 
       /* ---------------- FETCH GLOBAL PRICING ---------------- */
-
       .addCase(fetchSubscriptionGlobalPricing.pending, (state) => {
         state.isFetchingSubscriptionGlobalPricing = true;
       })
@@ -142,54 +168,65 @@ const subscriptionSlice = createSlice({
       })
       .addCase(fetchSubscriptionGlobalPricing.rejected, (state, action) => {
         state.isFetchingSubscriptionGlobalPricing = false;
-
         toast.error(action?.error?.message);
       })
 
       /* ---------------- SET GLOBAL PRICING ---------------- */
-
       .addCase(updateSubscriptionGlobalPricing.pending, (state) => {
         state.isUpdatingSubscriptionGlobalPricing = true;
       })
       .addCase(updateSubscriptionGlobalPricing.fulfilled, (state, action) => {
         state.isUpdatingSubscriptionGlobalPricing = false;
-
         toast.success(action.payload.message);
       })
       .addCase(updateSubscriptionGlobalPricing.rejected, (state, action) => {
         state.isUpdatingSubscriptionGlobalPricing = false;
-
         toast.error(action?.error?.message);
       })
 
       /* ---------------- FETCH SUPER ADMIN PRICING ---------------- */
-
       .addCase(fetchAllSuperAdminSubscriptionPricing.pending, (state) => {
         state.isFetchingSuperAdminSubscriptionPricing = true;
       })
-      .addCase(fetchAllSuperAdminSubscriptionPricing.fulfilled, (state, action) => {
-        state.isFetchingSuperAdminSubscriptionPricing = false;
-        state.allSuperAdminSubscriptionPricing = action.payload.data;
+      .addCase(
+        fetchAllSuperAdminSubscriptionPricing.fulfilled,
+        (state, action) => {
+          state.isFetchingSuperAdminSubscriptionPricing = false;
+          state.allSuperAdminSubscriptionPricing = action.payload.pricings;
+        },
+      )
+      .addCase(
+        fetchAllSuperAdminSubscriptionPricing.rejected,
+        (state, action) => {
+          state.isFetchingSuperAdminSubscriptionPricing = false;
+          toast.error(action?.error?.message);
+        },
+      )
+      /* ---------------- FETCH SUPER ADMIN OUTLET PRICING ---------------- */
+      .addCase(fetchSuperAdminOutletsPricing.pending, (state) => {
+        state.isFetchingSuperAdminOutletsPricing = true;
       })
-      .addCase(fetchAllSuperAdminSubscriptionPricing.rejected, (state, action) => {
-        state.isFetchingSuperAdminSubscriptionPricing = false;
-
+      .addCase(fetchSuperAdminOutletsPricing.fulfilled, (state, action) => {
+        state.isFetchingSuperAdminOutletsPricing = false;
+        state.superAdminOutletsPricing = action.payload;
+      })
+      .addCase(fetchSuperAdminOutletsPricing.rejected, (state, action) => {
+        state.isFetchingSuperAdminOutletsPricing = false;
         toast.error(action?.error?.message);
       })
 
       /* ---------------- SET CUSTOM SUPER ADMIN PRICING ---------------- */
 
       .addCase(setCustomPricingForSuperAdmin.pending, (state) => {
-        state.isSettingCustomPricing = true;
+        state.isSettingSuperAdminCustomPricing = true;
       })
       .addCase(setCustomPricingForSuperAdmin.fulfilled, (state, action) => {
-        state.isSettingCustomPricing = false;
+        state.isSettingSuperAdminCustomPricing = false;
 
         toast.success(action.payload.message);
       })
       .addCase(setCustomPricingForSuperAdmin.rejected, (state, action) => {
-        state.isSettingCustomPricing = false;
-
+        state.isSettingSuperAdminCustomPricing = false;
         toast.error(action?.error?.message);
       })
 
@@ -204,7 +241,6 @@ const subscriptionSlice = createSlice({
       })
       .addCase(fetchAllSubscriptions.rejected, (state, action) => {
         state.isFetchingSubscriptions = false;
-
         toast.error(action?.error?.message);
       })
 
@@ -215,12 +251,10 @@ const subscriptionSlice = createSlice({
       })
       .addCase(forceActivateSubscription.fulfilled, (state, action) => {
         state.isActivatingSubscription = false;
-
         toast.success(action.payload.message);
       })
       .addCase(forceActivateSubscription.rejected, (state, action) => {
         state.isActivatingSubscription = false;
-
         toast.error(action?.error?.message);
       })
 
@@ -231,12 +265,10 @@ const subscriptionSlice = createSlice({
       })
       .addCase(forceDeactivateSubscription.fulfilled, (state, action) => {
         state.isDeactivatingSubscription = false;
-
         toast.success(action.payload.message);
       })
       .addCase(forceDeactivateSubscription.rejected, (state, action) => {
         state.isDeactivatingSubscription = false;
-
         toast.error(action?.error?.message);
       })
 
@@ -247,12 +279,38 @@ const subscriptionSlice = createSlice({
       })
       .addCase(extendSubscription.fulfilled, (state, action) => {
         state.isExtendingSubscription = false;
-
         toast.success(action.payload.message);
       })
       .addCase(extendSubscription.rejected, (state, action) => {
         state.isExtendingSubscription = false;
+        toast.error(action?.error?.message);
+      })
 
+      /* ---------------- SUBSCRIPTION DASHBOARD ---------------- */
+
+      .addCase(fetchSubscriptionDashboard.pending, (state) => {
+        state.isFetchingSubscriptionDashboard = true;
+      })
+      .addCase(fetchSubscriptionDashboard.fulfilled, (state, action) => {
+        state.isFetchingSubscriptionDashboard = false;
+        state.subscriptionDashboard = action.payload;
+      })
+      .addCase(fetchSubscriptionDashboard.rejected, (state, action) => {
+        state.isFetchingSubscriptionDashboard = false;
+        toast.error(action?.error?.message);
+      })
+
+      /* ---------------- MY SUBSCRIPTION ---------------- */
+
+      .addCase(fetchMySubscription.pending, (state) => {
+        state.isFetchingMySubscription = true;
+      })
+      .addCase(fetchMySubscription.fulfilled, (state, action) => {
+        state.isFetchingMySubscription = false;
+        state.mySubscriptionData = action.payload.subscription;
+      })
+      .addCase(fetchMySubscription.rejected, (state, action) => {
+        state.isFetchingMySubscription = false;
         toast.error(action?.error?.message);
       });
   },

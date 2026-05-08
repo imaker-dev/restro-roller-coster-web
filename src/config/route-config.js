@@ -104,6 +104,10 @@ import SuperAdminSubcriptionPricingPage from "../pages/subscriptions/SuperAdminS
 import AddRegistrationRequestPage from "../pages/registration-request/AddRegistrationRequestPage";
 import AllTaxComponentsPage from "../pages/settings/taxes/AllTaxComponentsPage";
 import AllTaxTypesPage from "../pages/settings/taxes/AllTaxTypesPage";
+import SubscriptionDashboard from "../pages/subscriptions/SubscriptionDashboard";
+import MySubscriptionPage from "../pages/subscriptions/MySubscriptionPage";
+import SuperAdminOutletsPricingPage from "../pages/subscriptions/SuperAdminOutletsPricingPage";
+import MyProfilePage from "../pages/profile/MyProfilePage";
 
 const routeConfig = [
   {
@@ -121,6 +125,8 @@ const routeConfig = [
   {path: ROUTE_PATHS.OUTLET_DASHBOARD, element: Dashboard, roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],},
 
   { path: ROUTE_PATHS.ORDER_DISPLAY, element: OrderDisplayPage, roles: [ROLES.BARTENDER, ROLES.KITCHEN] },
+
+  { path: ROUTE_PATHS.MY_PROFILE, element: MyProfilePage, public:true,},
 
   // Reports
   { path: ROUTE_PATHS.ALL_REPORTS, element: AllReportsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
@@ -228,9 +234,12 @@ const routeConfig = [
   
   
   //Subscriptions
+  { path: ROUTE_PATHS.SUBSCRIPTION_DASHBOARD, element: SubscriptionDashboard, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
+  { path: ROUTE_PATHS.MY_SUBSCRIPTION, element: MySubscriptionPage, roles: [ROLES.ADMIN,ROLES.MANAGER] },
   { path: ROUTE_PATHS.SUBSCRIPTION_LIST, element: AllSubscriptionsListPage, roles: [ROLES.MASTER] },
   { path: ROUTE_PATHS.SUBSCRIPTION_GLOBAL_PRICING, element: SubscriptionGlobalPricingPage, roles: [ROLES.MASTER] },
   { path: ROUTE_PATHS.SUPER_ADMIN_SUBSCRIPTION_PRICING, element: SuperAdminSubcriptionPricingPage, roles: [ROLES.MASTER] },
+  { path: ROUTE_PATHS.SUPER_ADMIN_OUTLET_SUBSCRIPTION, element: SuperAdminOutletsPricingPage, roles: [ROLES.MASTER] },
 
   // System
   { path: ROUTE_PATHS.ALL_SETTINGS, element: AllSettingsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN] },

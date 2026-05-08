@@ -17,12 +17,13 @@ import ExtendSubscriptionModal from "../../partial/subscription/ExtendSubscripti
 import { handleResponse } from "../../utils/helpers";
 import Pagination from "../../components/Pagination";
 import SearchBar from "../../components/SearchBar";
+import SubscriptionBadge from "../../partial/subscription/SubscriptionBadge";
 
 const AllSubscriptionsListPage = () => {
   const dispatch = useDispatch();
 
   const [currentPage, setCurrentPage] = useState(1);
-const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
 
   const [modalState, setModalState] = useState({
@@ -92,13 +93,9 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const columns = [
     /* ---------------- OUTLET ---------------- */
-
     {
       key: "outlet",
       label: "Outlet",
-      sortable: true,
-      sortValue: (row) => row.outlet_name,
-
       render: (row) => (
         <div className="flex flex-col ">
           <p className="text-[13px] font-bold text-slate-800 truncate">
@@ -121,38 +118,16 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
     },
 
     /* ---------------- STATUS ---------------- */
-
     {
       key: "status",
       label: "Status",
-      sortable: true,
-
-      render: (row) => (
-        <div className="">
-          <span
-            className={`inline-flex items-center rounded-md px-2 py-1 text-[11px] font-semibold capitalize
-          ${
-            row.status === "active"
-              ? "bg-emerald-50 text-emerald-700"
-              : row.status === "expired"
-                ? "bg-red-50 text-red-700"
-                : "bg-amber-50 text-amber-700"
-          }`}
-          >
-            {row.status}
-          </span>
-        </div>
-      ),
+      render: (row) => <SubscriptionBadge status={row.status} size="sm" />,
     },
 
     /* ---------------- SUBSCRIPTION PERIOD ---------------- */
-
     {
       key: "subscription",
       label: "Subscription Period",
-      sortable: true,
-      sortValue: (row) => new Date(row.subscription_end).getTime(),
-
       render: (row) => (
         <div className="flex flex-col ">
           <p className="text-[11px] font-semibold text-slate-700">
@@ -175,15 +150,9 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
     },
 
     /* ---------------- PAYMENT ---------------- */
-
     {
       key: "payment",
       label: "Last Payment",
-      sortable: true,
-
-      sortValue: (row) =>
-        row.last_paid_at ? new Date(row.last_paid_at).getTime() : 0,
-
       render: (row) => (
         <div className="flex flex-col ">
           {row.last_paid_amount ? (
@@ -216,12 +185,9 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
     },
 
     /* ---------------- PRICING ---------------- */
-
     {
       key: "pricing",
       label: "Pricing Source",
-      sortable: true,
-
       render: (row) => (
         <div className="flex flex-col ">
           <p className="text-[11px] font-semibold text-slate-700 capitalize">
@@ -238,12 +204,9 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
     },
 
     /* ---------------- NOTES ---------------- */
-
     {
       key: "notes",
       label: "Notes",
-      sortable: false,
-
       render: (row) => (
         <div className="max-w-[200px] ">
           {row.notes ? (
@@ -258,13 +221,9 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
     },
 
     /* ---------------- CREATED ---------------- */
-
     {
       key: "created",
       label: "Created",
-      sortable: true,
-      sortValue: (row) => new Date(row.created_at).getTime(),
-
       render: (row) => (
         <div className="flex flex-col ">
           <p className="text-[11px] font-semibold text-slate-700">

@@ -364,13 +364,13 @@ export const navConfig = [
 
   {
     title: "Subscriptions",
-    roles: [ROLES.MASTER],
+    roles: [ROLES.MASTER,ROLES.SUPER_ADMIN],
     items: [
       {
         name: "Subscription Dashboard",
         icon: ReceiptText,
         path: ROUTE_PATHS.SUBSCRIPTION_DASHBOARD,
-        roles: [ROLES.MASTER],
+        roles: [ROLES.MASTER,ROLES.SUPER_ADMIN],
       },
 
       {

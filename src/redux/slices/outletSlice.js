@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import OutletServices from "../services/OutletServices";
 
-export const fetchAllOutlets = createAsyncThunk("/fetch/outlets", async () => {
-  const res = await OutletServices.getAllOutletsApi();
+export const fetchAllOutlets = createAsyncThunk("/fetch/outlets", async ({search}) => {
+  const res = await OutletServices.getAllOutletsApi({search});
   return res.data;
 });
 export const fetchOutletById = createAsyncThunk(

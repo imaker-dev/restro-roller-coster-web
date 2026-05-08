@@ -8,39 +8,34 @@ import {
   Clock,
   Edit2,
   Eye,
-  Hash,
-  Layers,
   Mail,
   MapPin,
   Phone,
   Plus,
-  Table2,
   Trash2,
 } from "lucide-react";
-import OutletUpdateModal from "../../partial/outlet/OutletUpdateModal";
-import { handleResponse } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import StatusBadge from "../../layout/StatusBadge";
 import { ROLES } from "../../constants";
 import { ROUTE_PATHS } from "../../config/paths";
+import SearchBar from "../../components/SearchBar";
+import OutletDetailsDrawer from "../../partial/outlet/OutletDetailsDrawer";
 
 const AllOutletsPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [showTableUpdateModal, setShowTableUpdateModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedOutlet, setSelectedOutlet] = useState(null);
 
-  const { allOutlets, loading, isupdatingOutlet } = useSelector(
-    (state) => state.outlet,
-  );
+  const { allOutlets, loading } = useSelector((state) => state.outlet);
 
   const fetchOutlets = () => {
-    dispatch(fetchAllOutlets());
+    dispatch(fetchAllOutlets({ search: searchTerm }));
   };
 
   useEffect(() => {
     fetchOutlets();
-  }, []);
+  }, [searchTerm]);
 
   const columns = [
     /* ===============================
@@ -51,7 +46,7 @@ const AllOutletsPage = () => {
       label: "Outlet",
       sortable: true,
       render: (row) => (
-        <div className="flex flex-col gap-1 min-w-[240px]">
+        <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <Building2 className="w-4 h-4 text-slate-400" />
             <span className="font-semibold text-slate-800 truncate">
@@ -64,11 +59,6 @@ const AllOutletsPage = () => {
               {row.legal_name}
             </span>
           )}
-
-          <div className="flex items-center gap-1 text-[11px] text-slate-400">
-            <Hash className="w-3 h-3" />
-            {row.code}
-          </div>
         </div>
       ),
     },
@@ -145,34 +135,6 @@ const AllOutletsPage = () => {
     },
 
     /* ===============================
-     STRUCTURE (Floors + Tables)
-  =============================== */
-    {
-      key: "structure",
-      label: "Structure",
-      sortable: false,
-      render: (row) => (
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 text-indigo-400" />
-            <span className="text-sm font-semibold text-slate-700">
-              {row.floor_count ?? 0}
-            </span>
-            <span className="text-xs text-slate-500">Floors</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Table2 className="w-4 h-4 text-emerald-400" />
-            <span className="text-sm font-semibold text-slate-700">
-              {row.table_count ?? 0}
-            </span>
-            <span className="text-xs text-slate-500">Tables</span>
-          </div>
-        </div>
-      ),
-    },
-
-    /* ===============================
      STATUS
   =============================== */
     {
@@ -187,8 +149,9 @@ const AllOutletsPage = () => {
     {
       label: "View",
       icon: Eye,
-      onClick: (row) =>
-        navigate(`${ROUTE_PATHS.OUTLET_DETAILS}?outletId=${row.id}`),
+      onClick: (row) => setSelectedOutlet(row),
+      // onClick: (row) =>
+      //   navigate(`${ROUTE_PATHS.OUTLET_DETAILS}?outletId=${row.id}`),
     },
     {
       label: "Edit",
@@ -201,23 +164,11 @@ const AllOutletsPage = () => {
       label: "Delete",
       icon: Trash2,
       color: "red",
-      roles: [ROLES.SUPER_ADMIN],
+      roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
       onClick: (row) =>
         navigate(`${ROUTE_PATHS.OUTLET_DELETE}?outletId=${row.id}`),
     },
   ];
-
-  const clearOutletStates = () => {
-    setShowTableUpdateModal(false);
-    setSelectedOutlet(null);
-  };
-
-  const handleUpdateOutlet = async ({ id, values }) => {
-    await handleResponse(dispatch(updateOutlet({ id, values })), () => {
-      fetchOutlets();
-      clearOutletStates();
-    });
-  };
 
   const actions = [
     {
@@ -225,7 +176,7 @@ const AllOutletsPage = () => {
       type: "primary",
       icon: Plus,
       onClick: () => navigate(ROUTE_PATHS.OUTLET_ADD),
-      roles: [ROLES.SUPER_ADMIN],
+      roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
     },
   ];
 
@@ -233,6 +184,8 @@ const AllOutletsPage = () => {
     <>
       <div className="space-y-6">
         <PageHeader title={"All Outlets"} actions={actions} />
+
+        <SearchBar onSearch={(v) => setSearchTerm(v)} />
 
         <SmartTable
           title="Outlets"
@@ -242,15 +195,13 @@ const AllOutletsPage = () => {
           actions={rowActions}
           loading={loading}
         />
-      </div>
 
-      <OutletUpdateModal
-        isOpen={showTableUpdateModal}
-        onClose={() => clearOutletStates()}
-        outlet={selectedOutlet}
-        onSubmit={handleUpdateOutlet}
-        loading={isupdatingOutlet}
-      />
+        <OutletDetailsDrawer
+          isOpen={!!selectedOutlet}
+          onClose={() => setSelectedOutlet(null)}
+          outlet={selectedOutlet}
+        />
+      </div>
     </>
   );
 };

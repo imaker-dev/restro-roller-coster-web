@@ -1,3 +1,4 @@
+import { cleanParams } from "../../utils/cleanParams.js";
 import Api from "../api.js";
 
 export default false
@@ -5,8 +6,12 @@ export default false
       message: "You are Offline. Please turn on the internet",
     }
   : {
-      getAllOutletsApi: () => {
-        return Api.get("/outlets");
+      getAllOutletsApi: ({ search }) => {
+        const params = cleanParams({
+          search,
+        });
+
+        return Api.get("/outlets", { params });
       },
       getOutletById: (id) => {
         return Api.get(`/outlets/${id}`);
@@ -25,10 +30,10 @@ export default false
           data: { confirmationCode },
         });
       },
-      getOutletPrintLogoApi:(id) => {
-        return Api.get(`/outlets/${id}/print-logo`)
+      getOutletPrintLogoApi: (id) => {
+        return Api.get(`/outlets/${id}/print-logo`);
       },
-      updateOutletPrintLogoApi:(id,values) => {
-        return Api.put(`/outlets/${id}/print-logo`,values)
-      }
+      updateOutletPrintLogoApi: (id, values) => {
+        return Api.put(`/outlets/${id}/print-logo`, values);
+      },
     };

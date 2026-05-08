@@ -5,19 +5,19 @@ import CustomerServices from "../services/CustomerServices";
 // Fetch All Customers
 export const fetchAllCustomers = createAsyncThunk(
   "/fetch/outlets/customers",
-  async ({outletId}) => {
-    const res = await CustomerServices.getAllCustomersApi(outletId);
+  async ({ outletId, search }) => {
+    const res = await CustomerServices.getAllCustomersApi({ outletId, search });
     return res.data;
-  }
+  },
 );
 
 // Fetch Customer By ID
 export const fetchCustomerById = createAsyncThunk(
   "/fetch/customer",
-  async ({outletId,customerId}) => {
-    const res = await CustomerServices.getCustomerByIdApi(outletId,customerId);
+  async ({ outletId, customerId }) => {
+    const res = await CustomerServices.getCustomerByIdApi(outletId, customerId);
     return res.data;
-  }
+  },
 );
 
 const customerSlice = createSlice({
@@ -25,7 +25,7 @@ const customerSlice = createSlice({
   initialState: {
     loading: false,
     allCustomers: null,
-    isfetchingCustomerDetails:false,
+    isfetchingCustomerDetails: false,
     customerDetails: null,
   },
   reducers: {},

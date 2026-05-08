@@ -15,8 +15,11 @@ export default false
       getAllSuperAdminPricingApi: () => {
         return Api.get(`/subscriptions/pricing/super-admin`);
       },
-      setCustomPricingForSuperAdmin: ({ userId, values }) => {
-        return Api.get(`/subscriptions/pricing/super-admin/${userId}`, values);
+      getSuperAdminOutletsPricingApi: ({userId}) => {
+        return Api.get(`/subscriptions/pricing/super-admin/${userId}/outlets`);
+      },
+      setCustomPricingForSuperAdmin: ({ adminId, values }) => {
+        return Api.post(`/subscriptions/pricing/super-admin/${adminId}`, values);
       },
       getAllSubscriptionsApi: ({ page, limit, search }) => {
         const params = cleanParams({
@@ -35,4 +38,10 @@ export default false
       extendSubscriptionForNDays: ({ outletId, values }) => {
         return Api.post(`/subscriptions/${outletId}/extend`, values);
       },
+      getSubscriptionDashboardApi: () => {
+        return Api.get(`/subscriptions/dashboard`);
+      },
+      getMySubscriptionApi:() => {
+        return Api.get(`/subscriptions/my`)
+      }
     };

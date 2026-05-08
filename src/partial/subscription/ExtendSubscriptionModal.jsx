@@ -105,7 +105,8 @@ const ExtendSubscriptionModal = ({
                   +{formik.values.days} days
                 </span>
               </div>
-              <div className="pt-2 border-t border-emerald-200">
+              <div className="h-[1px] bg-emerald-200 my-2"></div>
+              <div className="">
                 <div className="flex justify-between text-sm">
                   <span className="font-semibold text-slate-900">
                     New End Date:

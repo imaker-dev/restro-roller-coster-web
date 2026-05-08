@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Sidebar from "./Sideabar";
 import Header from "./Header";
+import OutletGuard from "../guard/OutletGuard";
 // import { useSelector } from "react-redux"; // optional if you want role-based control
 
 function AppLayout({ children }) {
@@ -114,7 +115,7 @@ function AppLayout({ children }) {
               showPadding ? "p-4 sm:p-6" : ""
             }`}
           >
-            {children}
+            <OutletGuard>{children}</OutletGuard>
           </div>
         </main>
       </div>

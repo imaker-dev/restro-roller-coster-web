@@ -4,6 +4,7 @@ export const ROUTE_PATHS = {
   OUTLET_DASHBOARD: "/outlet-dashboard",
   ORDER_DISPLAY: "/order-display",
   GUIDE: "/guide",
+  MY_PROFILE: "/my-profile",
 
   // Reports
   ALL_REPORTS: "/reports",
@@ -113,10 +114,12 @@ export const ROUTE_PATHS = {
 
   // SUBSCRIPTIONS
   SUBSCRIPTION_DASHBOARD: "/subscriptions",
+  MY_SUBSCRIPTION: "/my-subscription",
   SUBSCRIPTION_GLOBAL_PRICING: "/global-pricing",
   SUPER_ADMIN_SUBSCRIPTION_PRICING: "/super-admin-pricing",
+  SUPER_ADMIN_OUTLET_SUBSCRIPTION: "/super-admin-pricing/outlets",
   OUTLET_PRICING: "/outlet-pricing",
-  SUBSCRIPTION_LIST: "/subscription-list",
+  SUBSCRIPTION_LIST: "/subscriptions-list",
 
   // System
   ALL_SETTINGS: "/settings",

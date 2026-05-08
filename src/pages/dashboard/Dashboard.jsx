@@ -26,7 +26,6 @@ import { CURRENCY, DATE_RANGES } from "../../constants";
 import { useNavigate } from "react-router-dom";
 import { fetchShiftHistory } from "../../redux/slices/shiftSlice";
 import ShiftSummary from "../../partial/dashboard/ShiftSummary";
-import NoOutletsMessage from "../../partial/common/NoOutletsMessage";
 
 // ─── MAIN DASHBOARD ───────────────────────────────────────────────────────────
 export default function Dashboard() {
@@ -192,8 +191,7 @@ export default function Dashboard() {
       color,
     };
   });
-
-  if (!hasOutlet) return <NoOutletsMessage />;
+  
   return (
     <div className="space-y-6">
       <PageHeader

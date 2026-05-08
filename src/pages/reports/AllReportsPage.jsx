@@ -15,11 +15,12 @@ import {
   Search,
   ChevronRight,
   Wallet,
+  BadgePercent,
+  HandCoins,
 } from "lucide-react";
 import PageHeader from "../../layout/PageHeader";
 import SearchBar from "../../components/SearchBar";
 import { ROUTE_PATHS } from "../../config/paths";
-import { CURRENCY } from "../../constants";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const GROUPS = [
@@ -84,7 +85,7 @@ const GROUPS = [
       {
         name: "Discount",
         path: ROUTE_PATHS.REPORTS_DISCOUNT,
-        icon: CURRENCY.ICON,
+        icon: BadgePercent,
         desc: "Discounts applied to orders",
       },
       {
@@ -123,13 +124,13 @@ const GROUPS = [
       {
         name: "Due Report",
         path: ROUTE_PATHS.REPORTS_DUE,
-        icon: CURRENCY.ICON,
+        icon: Wallet,
         desc: "Outstanding customer balances",
       },
       {
         name: "No Charge Report",
         path: ROUTE_PATHS.REPORTS_NC,
-        icon: CURRENCY.ICON,
+        icon: HandCoins,
         desc: "Complimentary & no-charge items",
       },
       {

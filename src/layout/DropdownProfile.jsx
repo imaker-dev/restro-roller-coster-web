@@ -8,6 +8,7 @@ import { ROLES } from "../constants";
 import UserAvatar from "../components/UserAvatar";
 import { ROUTE_PATHS } from "../config/paths";
 import RoleBadge from "../partial/user/RoleBadge";
+import { CreditCard, LogOut, Settings, User } from "lucide-react";
 
 function DropdownProfile({ align, onLogoutClick }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -92,29 +93,68 @@ function DropdownProfile({ align, onLogoutClick }) {
               {meData?.email || "No Email"}
             </div>
             <RoleBadge role={meData?.roles?.[0]?.slug} />
-            
           </div>
           <ul>
-            <PermissionGuard roles={[ROLES.SUPER_ADMIN, ROLES.ADMIN]}>
+            <li>
+              <Link
+                className="group flex items-center gap-2 px-3 py-1 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 transition-all"
+                to={ROUTE_PATHS.MY_PROFILE}
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              >
+                <User
+                  size={16}
+                  className="text-slate-400 group-hover:text-amber-600 transition-colors"
+                />
+                <span className="flex-1">My Profile</span>
+              </Link>
+            </li>
+            <PermissionGuard roles={[ROLES.ADMIN, ROLES.MANAGER]}>
               <li>
                 <Link
-                  className="font-medium text-sm text-primary hover:text-primary-600  flex items-center py-1 px-3"
-                  to={ROUTE_PATHS.ALL_SETTINGS}
+                  className="group flex items-center gap-2 px-3 py-1 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 transition-all"
+                  to={ROUTE_PATHS.MY_SUBSCRIPTION}
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                 >
-                  Settings
+                  <CreditCard
+                    size={16}
+                    className="text-slate-400 group-hover:text-amber-600 transition-colors"
+                  />
+                  <span className="flex-1">My Subscription</span>
                 </Link>
               </li>
             </PermissionGuard>
+
+            <PermissionGuard
+              roles={[ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER]}
+            >
+              <li>
+                <Link
+                  className="group flex items-center gap-2 px-3 py-1 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 transition-all"
+                  to={ROUTE_PATHS.ALL_SETTINGS}
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                >
+                  <Settings
+                    size={16}
+                    className="text-slate-400 group-hover:text-amber-600 transition-colors"
+                  />
+                  <span className="flex-1">Settings</span>
+                </Link>
+              </li>
+            </PermissionGuard>
+
             {loginSource != "mobile" && (
               <li>
                 <button
-                  className="font-medium text-sm text-red-500 hover:text-red-600  flex items-center py-1 px-3"
+                  className="group flex items-center gap-2 px-3 py-1 rounded-lg text-sm font-medium text-red-500 hover:text-red-700 transition-all"
                   onClick={(e) => {
                     (e.stopPropagation(), onLogoutClick());
                   }}
                 >
-                  Sign Out
+                  <LogOut
+                    size={16}
+                    className="text-red-500 group-hover:text-red-700 transition-colors"
+                  />
+                  <span className="flex-1">Sign Out</span>
                 </button>
               </li>
             )}

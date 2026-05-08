@@ -122,7 +122,6 @@ const AddRegistrationRequestPage = () => {
 
       {/* Info Banner */}
       <InfoCard
-        size="sm"
         type="info"
         title="Manual Registration Request"
         description="You are creating a registration request on behalf of a restaurant owner. This will allow you to manually register outlets that have shown interest offline or through other channels."

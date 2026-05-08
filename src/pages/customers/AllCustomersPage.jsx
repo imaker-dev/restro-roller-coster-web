@@ -1,28 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCustomers } from "../../redux/slices/customerSlice";
 import PageHeader from "../../layout/PageHeader";
 import { formatDate } from "../../utils/dateFormatter";
 import SmartTable from "../../components/SmartTable";
 import { formatNumber } from "../../utils/numberFormatter";
-import { Box, Eye, Users } from "lucide-react";
+import { Box, Eye, FileText, Users } from "lucide-react";
 import StatCard from "../../components/StatCard";
 import { useNavigate } from "react-router-dom";
 import StatusBadge from "../../layout/StatusBadge";
 import { ROUTE_PATHS } from "../../config/paths";
-import { CURRENCY } from "../../constants";
+import SearchBar from "../../components/SearchBar";
 
 const AllCustomersPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [searchTerm, setSearchTerm] = useState("");
+
   const { outletId } = useSelector((state) => state.auth);
   const { allCustomers, loading } = useSelector((state) => state.customer);
-
   const { customers, pagination, summary } = allCustomers || {};
 
   useEffect(() => {
-    dispatch(fetchAllCustomers({ outletId }));
-  }, [outletId]);
+    dispatch(fetchAllCustomers({ outletId, search: searchTerm }));
+  }, [outletId, searchTerm]);
 
   const columns = [
     {
@@ -112,7 +114,7 @@ const AllCustomersPage = () => {
     },
     {
       title: "Total Orders",
-      value: formatNumber(summary?.totalOrders, true),
+      value: formatNumber(summary?.totalOrders),
       color: "indigo",
       icon: Box,
     },
@@ -120,14 +122,13 @@ const AllCustomersPage = () => {
       title: "GST Customers",
       value: formatNumber(summary?.gstCustomers),
       color: "green",
-      icon: CURRENCY.ICON,
+      icon: FileText,
     },
   ];
 
   return (
     <div className="space-y-6">
       <PageHeader title={"All Customers"} />
-
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {customerStats.map((card, i) => (
           <StatCard
@@ -140,6 +141,7 @@ const AllCustomersPage = () => {
           />
         ))}
       </div>
+      <SearchBar onSearch={(v) => setSearchTerm(v)} placeholder="Search by customer details..." />
 
       <SmartTable
         title="Customers"
