@@ -194,6 +194,8 @@ const AllOutletsPage = () => {
           columns={columns}
           actions={rowActions}
           loading={loading}
+          emptyMessage="No Outlets Found"
+          emptyDescription="No outlets are currently available to display."
         />
 
         <OutletDetailsDrawer

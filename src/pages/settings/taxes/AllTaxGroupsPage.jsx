@@ -219,6 +219,8 @@ const AllTaxGroupsPage = () => {
           columns={columns}
           actions={rowActions}
           loading={loading}
+          emptyMessage="No Tax Groups Found"
+          emptyDescription="No tax groups are currently available to display."
         />
       </div>
       <TaxGroupModal

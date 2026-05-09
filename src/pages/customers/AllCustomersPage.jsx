@@ -141,7 +141,11 @@ const AllCustomersPage = () => {
           />
         ))}
       </div>
-      <SearchBar onSearch={(v) => setSearchTerm(v)} placeholder="Search by customer details..." />
+      
+      <SearchBar
+        onSearch={(v) => setSearchTerm(v)}
+        placeholder="Search by customer details..."
+      />
 
       <SmartTable
         title="Customers"
@@ -150,6 +154,8 @@ const AllCustomersPage = () => {
         columns={columns}
         actions={rowActions}
         loading={loading}
+        emptyMessage="No Customers Found"
+        emptyDescription="No customers are available for this outlet or match the selected filters."
       />
     </div>
   );

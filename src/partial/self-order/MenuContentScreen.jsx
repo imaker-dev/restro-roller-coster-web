@@ -286,7 +286,7 @@ function MenuContentScreen({
             <div className="flex items-center gap-1">
               <MapPin size={10} className="text-white/30" />
               <p className="text-white/40 text-[11px] truncate">
-                {session?.tableName || session?.tableNumber || "Table"}
+                {session?.tableNumber || session?.tableName || "Table"}
               </p>
             </div>
           </div>

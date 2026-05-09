@@ -6,6 +6,7 @@ import {
   ArrowUpRight,
   CheckCircle2,
   Circle,
+  ClipboardList,
 } from "lucide-react";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +14,7 @@ import { formatNumber } from "../../utils/numberFormatter";
 import Shimmer from "../../layout/Shimmer";
 import { formatDate } from "../../utils/dateFormatter";
 import StatusBadge from "../../layout/StatusBadge";
+import NoDataFound from "../../layout/NoDataFound";
 
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
 function ShiftSummarySkeleton() {
@@ -255,7 +257,7 @@ export default function ShiftSummary({
   }, [shifts]);
 
   if (loading) return <ShiftSummarySkeleton />;
-  if (!shifts?.length) return null;
+  // if (!shifts?.length) return null;
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
@@ -290,7 +292,14 @@ export default function ShiftSummary({
 
       {/* Content */}
       <div className="p-4">
-        {isRangeView ? (
+        {!shifts?.length ? (
+          <NoDataFound
+            icon={ClipboardList}
+            title="No shift data"
+            description="There aren't any shifts recorded for this period"
+            size="sm"
+          />
+        ) : isRangeView ? (
           <RangeSummaryBanner shifts={shifts} dateRange={dateRange} />
         ) : (
           <div className="space-y-3">

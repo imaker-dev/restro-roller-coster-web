@@ -14,12 +14,16 @@ export function formatNumber(num, showCurrency = false, decimals = null) {
   }
 
   if (showCurrency) {
-    return new Intl.NumberFormat(CURRENCY.LOCALE || "en-IN", {
-      style: "currency",
-      currency: CURRENCY.CODE || "INR",
-      ...options,
-    }).format(safeNumber);
-  }
+  // Default: no decimals for currency
+  options.minimumFractionDigits = decimals ?? 0;
+  options.maximumFractionDigits = decimals ?? 0;
+
+  return new Intl.NumberFormat(CURRENCY.LOCALE || "en-IN", {
+    style: "currency",
+    currency: CURRENCY.CODE || "INR",
+    ...options,
+  }).format(safeNumber);
+}
 
   return new Intl.NumberFormat(CURRENCY.LOCALE || "en-IN", options).format(
     safeNumber,

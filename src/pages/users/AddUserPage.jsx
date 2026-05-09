@@ -175,7 +175,14 @@ const AddUserPage = () => {
       email: pendingValues.email?.trim(),
       employeeCode: pendingValues.employeeCode?.trim(),
       isActive: Boolean(pendingValues.isActive),
-      phone: pendingValues.phone?.trim() || null,
+      ...(!userId
+        ? pendingValues.phone?.trim()
+          ? { phone: pendingValues.phone.trim() }
+          : {}
+        : {
+            phone: pendingValues.phone?.trim() || null,
+          }),
+      // phone: pendingValues.phone?.trim() || null,
 
       // ...(pendingValues.phone?.trim() && { phone: pendingValues.phone.trim() }),
 

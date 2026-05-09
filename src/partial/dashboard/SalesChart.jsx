@@ -1,4 +1,4 @@
-import { BarChart2, LineChart } from "lucide-react";
+import { BarChart2, BarChart3, LineChart } from "lucide-react";
 import React, { useMemo, useState } from "react";
 import { formatDate } from "../../utils/dateFormatter";
 import {
@@ -14,6 +14,7 @@ import {
 } from "recharts";
 import { formatNumber } from "../../utils/numberFormatter";
 import Shimmer from "../../layout/Shimmer";
+import NoDataFound from "../../layout/NoDataFound";
 
 const isSameDay = (a, b) => {
   if (!a || !b) return false;
@@ -182,6 +183,10 @@ const SalesChart = ({ chartData = [], dateRange, loading = false }) => {
     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
   );
 
+  const hasData = chartData?.some((item) =>
+    SERIES.some((s) => Number(item?.[s.key]) > 0),
+  );
+
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
       {/* ── Header ── */}
@@ -248,95 +253,108 @@ const SalesChart = ({ chartData = [], dateRange, loading = false }) => {
       </div>
 
       {/* ── Chart body ── */}
-      <div className="px-2 pb-5 pt-2" style={{ height: 280 }}>
-        <ResponsiveContainer width="100%" height="100%">
-          {chartType === "bar" ? (
-            /* ────── STACKED BAR ────── */
-            <BarChart
-              data={chartData}
-              barCategoryGap={barCategoryGap}
-              barGap={barGap}
-              margin={{ top: 4, right: 4, left: 0, bottom: 0 }}
-            >
-              {sharedGrid}
-              {sharedXAxis}
-              {sharedYAxis}
-              <Tooltip
-                content={<CustomTooltip isStacked />}
-                cursor={{ fill: "#f8fafc", radius: 4 }}
-              />
-              {/* Rendered bottom → top: delivery, pickup, dineIn */}
-              <Bar
-                dataKey="delivery"
-                name="Delivery"
-                stackId="s"
-                fill={SERIES[2].color}
-                radius={[0, 0, isMultiDay ? 0 : 3, isMultiDay ? 0 : 3]}
-                maxBarSize={isMultiDay ? 18 : 32}
-                isAnimationActive={!isMultiDay}
-              />
-              <Bar
-                dataKey="pickup"
-                name="Pickup"
-                stackId="s"
-                fill={SERIES[1].color}
-                radius={[0, 0, 0, 0]}
-                maxBarSize={isMultiDay ? 18 : 32}
-                isAnimationActive={!isMultiDay}
-              />
-              <Bar
-                dataKey="dineIn"
-                name="Dine In"
-                stackId="s"
-                fill={SERIES[0].color}
-                radius={[isMultiDay ? 1 : 4, isMultiDay ? 1 : 4, 0, 0]}
-                maxBarSize={isMultiDay ? 18 : 32}
-                isAnimationActive={!isMultiDay}
-              />
-            </BarChart>
-          ) : (
-            /* ────── SEPARATE AREA LINES (no stackId) ────── */
-            <AreaChart
-              data={chartData}
-              margin={{ top: 4, right: 4, left: 0, bottom: 0 }}
-            >
-              <defs>
-                {SERIES.map((s) => (
-                  <linearGradient
-                    key={s.key}
-                    id={`g-${s.key}`}
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="5%" stopColor={s.color} stopOpacity={0.15} />
-                    <stop offset="95%" stopColor={s.color} stopOpacity={0} />
-                  </linearGradient>
-                ))}
-              </defs>
-              {sharedGrid}
-              {sharedXAxis}
-              {sharedYAxis}
-              <Tooltip content={<CustomTooltip isStacked={false} />} />
-              {/* No stackId — each series plots independently on its own scale */}
-              {SERIES.map((s) => (
-                <Area
-                  key={s.key}
-                  type="monotone"
-                  dataKey={s.key}
-                  name={s.name}
-                  stroke={s.color}
-                  strokeWidth={2}
-                  fill={`url(#g-${s.key})`}
-                  dot={false}
-                  activeDot={{ r: 4, strokeWidth: 0 }}
+      {!hasData ? (
+        <NoDataFound
+          icon={BarChart3}
+          title="No sales data"
+          description="There aren't any sales recorded for this period"
+          size="sm"
+        />
+      ) : (
+        <div className="px-2 pb-5 pt-2" style={{ height: 280 }}>
+          <ResponsiveContainer width="100%" height="100%">
+            {chartType === "bar" ? (
+              /* ────── STACKED BAR ────── */
+              <BarChart
+                data={chartData}
+                barCategoryGap={barCategoryGap}
+                barGap={barGap}
+                margin={{ top: 4, right: 4, left: 0, bottom: 0 }}
+              >
+                {sharedGrid}
+                {sharedXAxis}
+                {sharedYAxis}
+                <Tooltip
+                  content={<CustomTooltip isStacked />}
+                  cursor={{ fill: "#f8fafc", radius: 4 }}
                 />
-              ))}
-            </AreaChart>
-          )}
-        </ResponsiveContainer>
-      </div>
+                {/* Rendered bottom → top: delivery, pickup, dineIn */}
+                <Bar
+                  dataKey="delivery"
+                  name="Delivery"
+                  stackId="s"
+                  fill={SERIES[2].color}
+                  radius={[0, 0, isMultiDay ? 0 : 3, isMultiDay ? 0 : 3]}
+                  maxBarSize={isMultiDay ? 18 : 32}
+                  isAnimationActive={!isMultiDay}
+                />
+                <Bar
+                  dataKey="pickup"
+                  name="Pickup"
+                  stackId="s"
+                  fill={SERIES[1].color}
+                  radius={[0, 0, 0, 0]}
+                  maxBarSize={isMultiDay ? 18 : 32}
+                  isAnimationActive={!isMultiDay}
+                />
+                <Bar
+                  dataKey="dineIn"
+                  name="Dine In"
+                  stackId="s"
+                  fill={SERIES[0].color}
+                  radius={[isMultiDay ? 1 : 4, isMultiDay ? 1 : 4, 0, 0]}
+                  maxBarSize={isMultiDay ? 18 : 32}
+                  isAnimationActive={!isMultiDay}
+                />
+              </BarChart>
+            ) : (
+              /* ────── SEPARATE AREA LINES (no stackId) ────── */
+              <AreaChart
+                data={chartData}
+                margin={{ top: 4, right: 4, left: 0, bottom: 0 }}
+              >
+                <defs>
+                  {SERIES.map((s) => (
+                    <linearGradient
+                      key={s.key}
+                      id={`g-${s.key}`}
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop
+                        offset="5%"
+                        stopColor={s.color}
+                        stopOpacity={0.15}
+                      />
+                      <stop offset="95%" stopColor={s.color} stopOpacity={0} />
+                    </linearGradient>
+                  ))}
+                </defs>
+                {sharedGrid}
+                {sharedXAxis}
+                {sharedYAxis}
+                <Tooltip content={<CustomTooltip isStacked={false} />} />
+                {/* No stackId — each series plots independently on its own scale */}
+                {SERIES.map((s) => (
+                  <Area
+                    key={s.key}
+                    type="monotone"
+                    dataKey={s.key}
+                    name={s.name}
+                    stroke={s.color}
+                    strokeWidth={2}
+                    fill={`url(#g-${s.key})`}
+                    dot={false}
+                    activeDot={{ r: 4, strokeWidth: 0 }}
+                  />
+                ))}
+              </AreaChart>
+            )}
+          </ResponsiveContainer>
+        </div>
+      )}
     </div>
   );
 };

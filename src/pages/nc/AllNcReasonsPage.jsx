@@ -111,6 +111,8 @@ const AllNcReasonsPage = () => {
           columns={columns}
           actions={rowActions}
           loading={loading}
+          emptyMessage="No NC Reasons Found"
+          emptyDescription="No NC reasons are available or match the selected filters."
         />
       </div>
       <AddNcReasonModal

@@ -27,7 +27,12 @@ import { handleResponse } from "../../utils/helpers";
 import { exportOrdersReport } from "../../redux/slices/exportReportSlice";
 import { downloadBlob } from "../../utils/blob";
 import SidebarFilter from "../../components/SidebarFilter";
-import { CURRENCY, ORDER_STATUSES, ORDER_TYPES, PAYMENT_STATUSES } from "../../constants";
+import {
+  CURRENCY,
+  ORDER_STATUSES,
+  ORDER_TYPES,
+  PAYMENT_STATUSES,
+} from "../../constants";
 import { formatText } from "../../utils/utils";
 
 const AllOrdersPage = () => {
@@ -327,6 +332,8 @@ const AllOrdersPage = () => {
         sortField={sortBy}
         sortDirection={sortOrder}
         onSortChange={handleSort}
+        emptyMessage="No Orders Found"
+        emptyDescription="No orders are available for this outlet or match the selected filters."
       />
 
       <Pagination

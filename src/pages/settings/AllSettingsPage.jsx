@@ -373,7 +373,7 @@ const AllSettingsPage = () => {
 
   return (
     <div className="space-y-6">
-      <PageHeader title={"All Settings"} />
+      <PageHeader title={"All Settings"} showBackButton/>
       <SmartTable
         title="Settings"
         totalcount={allSettings?.length}

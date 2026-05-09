@@ -31,6 +31,7 @@ import {
   Layers3,
   PercentCircle,
   BadgePercent,
+  Trash2,
 } from "lucide-react";
 
 import { ROLES } from "../constants";
@@ -166,24 +167,6 @@ export const navConfig = [
         roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER],
       },
       {
-        name: "Tax Types",
-        icon: BadgePercent,
-        path: ROUTE_PATHS.ALL_TAX_TYPES,
-        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
-      },
-      {
-        name: "Tax Components",
-        icon: PercentCircle,
-        path: ROUTE_PATHS.ALL_TAX_COMPONENTS,
-        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
-      },
-      {
-        name: "Tax Groups",
-        icon: Layers3,
-        path: ROUTE_PATHS.ALL_TAX_GROUPS,
-        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
-      },
-      {
         name: "NC (No Charge) Reasons",
         icon: XCircle,
         path: ROUTE_PATHS.ALL_NC_REASONS,
@@ -194,6 +177,31 @@ export const navConfig = [
         icon: Image,
         path: ROUTE_PATHS.MENU_MEDIA,
         roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER],
+      },
+    ],
+  },
+
+  {
+    title: "Taxes",
+    roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
+    items: [
+      {
+        name: "Tax Types",
+        icon: ReceiptText,
+        path: ROUTE_PATHS.ALL_TAX_TYPES,
+        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
+      },
+      {
+        name: "Tax Components",
+        icon: Percent,
+        path: ROUTE_PATHS.ALL_TAX_COMPONENTS,
+        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
+      },
+      {
+        name: "Tax Groups",
+        icon: Layers,
+        path: ROUTE_PATHS.ALL_TAX_GROUPS,
+        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
       },
     ],
   },
@@ -248,7 +256,7 @@ export const navConfig = [
           },
           {
             name: "Inventory Wastage",
-            icon: Truck,
+            icon: Trash2,
             path: ROUTE_PATHS.ALL_INVENTORY_WASTAGE,
             roles: [
               ROLES.MASTER,
@@ -364,15 +372,20 @@ export const navConfig = [
 
   {
     title: "Subscriptions",
-    roles: [ROLES.MASTER,ROLES.SUPER_ADMIN],
+    roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
     items: [
       {
         name: "Subscription Dashboard",
         icon: ReceiptText,
         path: ROUTE_PATHS.SUBSCRIPTION_DASHBOARD,
-        roles: [ROLES.MASTER,ROLES.SUPER_ADMIN],
+        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
       },
-
+      {
+        name: "All Subscriptions",
+        icon: ClipboardList,
+        path: ROUTE_PATHS.SUBSCRIPTION_LIST,
+        roles: [ROLES.MASTER],
+      },
       {
         name: "Global Pricing",
         icon: Percent,
@@ -390,14 +403,7 @@ export const navConfig = [
       {
         name: "Outlet Pricing",
         icon: Building2,
-        path: ROUTE_PATHS.OUTLET_PRICING,
-        roles: [ROLES.MASTER],
-      },
-
-      {
-        name: "All Subscriptions",
-        icon: ClipboardList,
-        path: ROUTE_PATHS.SUBSCRIPTION_LIST,
+        path: ROUTE_PATHS.OUTLETS_SUBSCRIPTION_PRICING,
         roles: [ROLES.MASTER],
       },
     ],
@@ -417,7 +423,7 @@ export const navConfig = [
   },
 
   {
-    title: "Master Control",
+    title: "Requests & Logs",
     roles: [ROLES.MASTER],
     items: [
       {
@@ -432,6 +438,12 @@ export const navConfig = [
         path: ROUTE_PATHS.TOKEN_GENERATION_LOGS,
         roles: [ROLES.MASTER],
       },
+    ],
+  },
+  {
+    title: "Master Control",
+    roles: [ROLES.MASTER],
+    items: [
       {
         name: "Super Admins",
         icon: Users,

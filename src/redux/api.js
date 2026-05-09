@@ -1,5 +1,6 @@
 import axios from "axios";
 import { clearAuthStorage, getBearerToken } from "../utils/authToken";
+import { ERROR_TYPES, identifyError } from "../utils/errorHandler";
 
 const baseURL = import.meta.env.VITE_API_URL;
 
@@ -43,31 +44,25 @@ axiosInstance.interceptors.response.use(
       const { status, data } = error.response;
       const errorMessage = data?.message || data?.error || "Some unknown error";
 
-      const logoutErrors = [
-        "Access token required",
-        "Invalid access token",
-        "Invalid or expired token",
-        "The user belonging to this token no longer exists",
-        "Invalid or expired session",
-        "This order is no longer active. Please start a new session",
-        "Session verification failed",
-      ];
+      const errorType = identifyError(errorMessage);
 
-      if (logoutErrors.includes(errorMessage)) {
+      if (errorType === ERROR_TYPES.AUTH) {
         clearAuthStorage();
+        window.location.replace("/auth");
+      }
 
-        const isSelfOrderRoute =
-          window.location.pathname.includes("self-order");
+      if (errorType === ERROR_TYPES.SUBSCRIPTION) {
+        // Same route for all roles
+         window.dispatchEvent(new CustomEvent("api-error", {
+          detail: { type: ERROR_TYPES.SUBSCRIPTION, message: errorMessage }
+        }));
+        // window.location.replace("/subscription-expired");
+      }
 
-        if (isSelfOrderRoute) {
-          // Just refresh page
-          window.location.reload();
-        } else {
-          //  Redirect to auth
-          window.location.replace("/auth");
+      if (errorType === ERROR_TYPES.ORDER) {
+        if (window.location.pathname.includes("self-order")) {
+          // window.location.reload();
         }
-
-        // window.location.replace("/auth");
       }
 
       return Promise.reject(new Error(errorMessage));

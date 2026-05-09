@@ -143,9 +143,11 @@ const AllStationsPage = () => {
           columns={columns}
           actions={rowActions}
           loading={loading}
+          emptyMessage="No Kitchen Stations Found"
+          emptyDescription="No kitchen stations are available for this outlet or match the selected filters."
         />
       </div>
-      
+
       <StationModal
         isOpen={showStationModal}
         onClose={clearStationStates}

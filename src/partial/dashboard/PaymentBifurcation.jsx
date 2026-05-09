@@ -2,6 +2,8 @@ import React, { useMemo } from "react";
 import { formatNumber } from "../../utils/numberFormatter";
 import Shimmer from "../../layout/Shimmer";
 import { formatDate } from "../../utils/dateFormatter";
+import { BarChart3 } from "lucide-react";
+import NoDataFound from "../../layout/NoDataFound";
 
 function PaymentBifurcationSkeleton() {
   return (
@@ -48,8 +50,11 @@ const isSameDay = (a, b) => {
 };
 
 const PaymentBifurcation = ({ data, loading = false, dateRange }) => {
-  const total = data?.reduce((s, p) => s + p?.amount, 0) || 0;
   if (loading) return <PaymentBifurcationSkeleton />;
+
+  const hasData = Array.isArray(data) && data.length > 0;
+  const total = hasData ? data.reduce((s, p) => s + (p?.amount || 0), 0) : 0;
+  const hasAmounts = total > 0;
 
   const isSingleDay = useMemo(() => {
     if (!dateRange?.startDate) return true;
@@ -80,62 +85,76 @@ const PaymentBifurcation = ({ data, loading = false, dateRange }) => {
         </div>
       </div>
 
-      <div className=" p-4">
-        {/* Segmented bar */}
-        <div className="flex h-5 rounded-full overflow-hidden gap-0.5 mb-5 ">
-          {data
-            ?.filter((p) => p.amount > 0)
-            ?.map((p) => (
-              <div
-                key={p.name}
-                className="transition-all duration-700 flex items-center justify-center"
-                style={{
-                  width: `${(p.amount / total) * 100}%`,
-                  backgroundColor: p.color,
-                }}
-                title={`${p.name}: ${p.percentage}%`}
-              >
-                {p.percentage > 8 && (
-                  <span className="text-[9px] font-black text-white">
-                    {p.percentage}%
-                  </span>
-                )}
-              </div>
-            ))}
-        </div>
-
-        {/* Legend rows */}
-        <div className="space-y-2.5">
-          {data?.map((p) => {
-            const Icon = p.icon;
-            return (
-              <div key={p.name} className="flex items-center gap-3">
+      {/* Content */}
+      {!hasData ? (
+        <NoDataFound
+          icon={BarChart3}
+          title="No payment data available"
+          description="There aren't any payments to display for this period"
+          size="sm"
+        />
+      ) : !hasAmounts ? (
+        <NoDataFound
+          icon={BarChart3}
+          title="No payments recorded"
+          description="Payment methods exist but no amounts have been recorded"
+          size="sm"
+        />
+      ) : (
+        <div className="p-4">
+          {/* Segmented bar */}
+          <div className="flex h-5 rounded-full overflow-hidden gap-0.5 mb-5">
+            {data
+              .filter((p) => p.amount > 0)
+              .map((p) => (
                 <div
-                  className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
-                  style={{ backgroundColor: `${p.color}18` }}
+                  key={p.name}
+                  className="transition-all duration-700 flex items-center justify-center"
+                  style={{
+                    width: `${(p.amount / total) * 100}%`,
+                    backgroundColor: p.color,
+                  }}
+                  title={`${p.name}: ${p.percentage}%`}
                 >
-                  <Icon
-                    size={13}
-                    style={{ color: p.color }}
-                    strokeWidth={1.75}
-                  />
+                  {p.percentage > 8 && (
+                    <span className="text-[9px] font-black text-white">
+                      {p.percentage}%
+                    </span>
+                  )}
                 </div>
-                <span className="text-xs font-semibold text-gray-700 flex-1">
-                  {p.name}
-                </span>
-                <div className="flex items-center gap-3">
-                  {/* <span className="text-[10px] font-bold text-gray-400 w-10 text-right tabular-nums">
-                  {p.percentage > 0 ? `${p.percentage}%` : "—"}
-                </span> */}
-                  <span className="text-xs font-black text-gray-900 w-28 text-right tabular-nums">
-                    {p.amount > 0 ? formatNumber(p.amount, true) : "0"}
+              ))}
+          </div>
+
+          {/* Legend rows */}
+          <div className="space-y-2.5">
+            {data.map((p) => {
+              const Icon = p.icon;
+              return (
+                <div key={p.name} className="flex items-center gap-3">
+                  <div
+                    className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ backgroundColor: `${p.color}18` }}
+                  >
+                    <Icon
+                      size={13}
+                      style={{ color: p.color }}
+                      strokeWidth={1.75}
+                    />
+                  </div>
+                  <span className="text-xs font-semibold text-gray-700 flex-1">
+                    {p.name}
                   </span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-black text-gray-900 w-28 text-right tabular-nums">
+                      {p.amount > 0 ? formatNumber(p.amount, true) : "0"}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

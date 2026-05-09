@@ -205,8 +205,11 @@ const AllPrintersPage = () => {
           columns={columns}
           actions={rowActions}
           loading={loading}
+          emptyMessage="No Printers Found"
+          emptyDescription="No printers are available for this outlet or match the selected filters."
         />
       </div>
+
       <PrinterModal
         isOpen={showPrinterModal}
         onClose={clearPrinterStates}

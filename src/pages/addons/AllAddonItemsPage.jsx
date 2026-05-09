@@ -54,7 +54,7 @@ const AllAddonItemsPage = () => {
       label: "Price",
       render: (row) => (
         <span className="text-slate-700 font-medium">
-          {formatNumber(row.price,true)}
+          {formatNumber(row.price, true)}
         </span>
       ),
     },
@@ -117,6 +117,7 @@ const AllAddonItemsPage = () => {
     setShowAddonItemModal(false);
     setSelectedItem(null);
   };
+
   const handleAddAddon = async ({ id, values, resetForm }) => {
     const action = id
       ? updateAddonItem({ id, values })
@@ -145,6 +146,8 @@ const AllAddonItemsPage = () => {
           columns={columns}
           loading={isFetchingAddonItems}
           actions={rowActions}
+          emptyMessage="No Add-on Items Found"
+          emptyDescription="No add-on items match the selected filters in this add-on group."
         />
       </div>
 

@@ -111,6 +111,8 @@ const AllTaxTypesPage = () => {
           data={allTaxTypes}
           columns={columns}
           loading={isFetchingTaxTypes}
+          emptyMessage="No Tax Groups Found"
+          emptyDescription="No tax groups are currently available to display."
         />
       </div>
 

@@ -252,6 +252,8 @@ const AllUsersPage = () => {
           columns={columns}
           actions={rowActions}
           loading={loading}
+          emptyMessage="No Staff Members Found"
+          emptyDescription="No staff members are available for this outlet or match the selected criteria."
         />
 
         <Pagination

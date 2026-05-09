@@ -33,13 +33,13 @@ const Breadcrumb = () => {
             <ChevronRight className="w-4 h-4 text-gray-400 mx-1" />
 
             {isLast ? (
-              <span className="font-semibold text-gray-800 truncate max-w-[160px]">
+              <span className="font-semibold text-gray-800 truncate ">
                 {formatText(segment)}
               </span>
             ) : (
               <Link
                 to={routeTo}
-                className="hover:text-primary-600 transition-colors truncate max-w-[140px]"
+                className="hover:text-primary-600 transition-colors truncate "
               >
                 {formatText(segment)}
               </Link>

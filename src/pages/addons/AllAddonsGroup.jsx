@@ -209,6 +209,8 @@ const AllAddonsGroup = () => {
             columns={columns}
             loading={loading}
             actions={rowActions}
+            emptyMessage="No Add-on Groups Found"
+            emptyDescription="No add-on groups are available for this outlet or match the selected filters."
           />
         </div>
       </div>

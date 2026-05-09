@@ -212,6 +212,8 @@ const AllFloorsPage = () => {
           columns={columns}
           actions={rowActions}
           loading={loading}
+          emptyMessage="No Floors Found"
+          emptyDescription="No floors are available for this outlet or match the selected filters."
         />
       </div>
 

@@ -149,6 +149,8 @@ const AllTaxComponentsPage = () => {
           columns={columns}
           actions={rowActions}
           loading={isFetchingTaxComponents}
+          emptyMessage="No Tax Components Found"
+          emptyDescription="No tax components are currently available to display."
         />
       </div>
 

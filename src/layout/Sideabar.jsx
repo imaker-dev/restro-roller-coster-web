@@ -404,7 +404,7 @@ function Sidebar({
                                     isActive
                                       ? "bg-primary-100 text-primary-600"
                                       : item._searchHighlight && searchQuery
-                                        ? "bg-gray-100"
+                                        ? "bg-gray-50 hover:bg-gray-100"
                                         : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                                   } ${effectiveExpanded ? "" : "flex justify-center"}`}
                                   onClick={(e) => {
@@ -529,7 +529,7 @@ function Sidebar({
                               isActive
                                 ? "bg-primary-100"
                                 : item._searchHighlight && searchQuery
-                                  ? "bg-gray-100"
+                                  ? "bg-gray-50 hover:bg-gray-100"
                                   : ""
                             } ${
                               effectiveExpanded

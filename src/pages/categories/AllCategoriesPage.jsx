@@ -216,6 +216,8 @@ const AllCategoriesPage = () => {
           columns={columns}
           actions={rowActions}
           loading={loading}
+          emptyMessage="No Menu Categories Found"
+          emptyDescription="No menu categories are available for this outlet or match the selected filters."
         />
 
         <Pagination

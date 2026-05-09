@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import Sidebar from "./Sideabar";
 import Header from "./Header";
 import OutletGuard from "../guard/OutletGuard";
+import GlobalErrorManager from "../components/GlobalErrorManager";
 // import { useSelector } from "react-redux"; // optional if you want role-based control
 
 function AppLayout({ children }) {
@@ -91,6 +92,7 @@ function AppLayout({ children }) {
 
   return (
     <div className="flex h-[100dvh] overflow-hidden">
+      <GlobalErrorManager />
       {/* -------- SIDEBAR -------- */}
       {showSidebar && (
         <Sidebar

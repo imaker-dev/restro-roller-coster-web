@@ -136,7 +136,7 @@ const AllItemsPage = () => {
       render: (row) => (
         <div className="flex flex-col">
           <span className="font-semibold text-slate-800">
-            {formatNumber(row.base_price,true)}
+            {formatNumber(row.base_price, true)}
           </span>
 
           <span className="text-xs text-slate-500">
@@ -292,6 +292,8 @@ const AllItemsPage = () => {
         columns={columns}
         actions={rowActions}
         loading={loading}
+        emptyMessage="No Menu Items Found"
+        emptyDescription="No menu items are available for this outlet or match the selected filters."
       />
 
       <Pagination
