@@ -11,7 +11,6 @@ export default false
           startDate: dateRange.startDate,
           endDate: dateRange.endDate,
         });
-        console.log(params);
         return Api.get(`/orders/outside-collections/${outletId}`, {params});
       },
     };

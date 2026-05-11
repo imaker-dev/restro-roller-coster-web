@@ -121,15 +121,15 @@ function ItemDetailSheet({ item, cartItems, onClose, onAddToCart }) {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <FoodTypeIcon type={item.type} />
-                {item.spiceLevel && (
+                <h2 className="text-lg font-bold text-[#1C1C1E] leading-snug">
+                  {item.name}
+                </h2>
+                {/* {item.spiceLevel && (
                   <span className="text-[10px] font-semibold bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded-md">
                     🌶 {item.spiceLevel}
                   </span>
-                )}
+                )} */}
               </div>
-              <h2 className="text-lg font-bold text-[#1C1C1E] leading-snug">
-                {item.name}
-              </h2>
             </div>
             <div className="text-right shrink-0">
               <p className="text-xl font-bold text-primary-500">

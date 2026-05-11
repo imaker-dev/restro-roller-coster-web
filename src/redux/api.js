@@ -45,7 +45,6 @@ axiosInstance.interceptors.response.use(
       const errorMessage = data?.message || data?.error || "Some unknown error";
 
       const errorType = identifyError(errorMessage);
-
       if (errorType === ERROR_TYPES.AUTH) {
         clearAuthStorage();
         window.location.replace("/auth");
@@ -53,15 +52,28 @@ axiosInstance.interceptors.response.use(
 
       if (errorType === ERROR_TYPES.SUBSCRIPTION) {
         // Same route for all roles
-         window.dispatchEvent(new CustomEvent("api-error", {
-          detail: { type: ERROR_TYPES.SUBSCRIPTION, message: errorMessage }
-        }));
+        window.dispatchEvent(
+          new CustomEvent("api-error", {
+            detail: { type: ERROR_TYPES.SUBSCRIPTION, message: errorMessage },
+          }),
+        );
         // window.location.replace("/subscription-expired");
       }
 
       if (errorType === ERROR_TYPES.ORDER) {
         if (window.location.pathname.includes("self-order")) {
-          // window.location.reload();
+          window.dispatchEvent(
+            new CustomEvent("self-order-expired", {
+              detail: {
+                type: ERROR_TYPES.ORDER,
+                message:
+                  errorMessage ||
+                  "Your order session has expired. Please start a new session.",
+              },
+            }),
+          );
+
+          clearAuthStorage();
         }
       }
 

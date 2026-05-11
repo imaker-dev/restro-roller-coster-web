@@ -5,7 +5,7 @@ import { CheckCircle2 } from "lucide-react";
 import CurrencyIcon from "../../components/CurrencyIcon";
 
 // ─────────────────────────────────────────────────────────────────────────────
-function OrderSuccessScreen({ orderData, session, onContinue }) {
+function OrderSuccessScreen({ orderData, onContinue }) {
   return (
     <div className="min-h-[100dvh] bg-[#FAF8F5] flex flex-col items-center justify-center px-5 text-center">
       {/* Checkmark */}
@@ -45,18 +45,20 @@ function OrderSuccessScreen({ orderData, session, onContinue }) {
           <div className="flex justify-between">
             <span className="text-[#8E8E93]">Name</span>
             <span className="font-semibold text-[#1C1C1E]">
-              {session?.customerName}
+              {orderData?.customerName}
             </span>
           </div>
           <div className="flex justify-between">
             <span className="text-[#8E8E93]">Table</span>
             <span className="font-semibold text-[#1C1C1E]">
-              {session?.tableNumber || "—"}
+              {orderData?.tableNumber || "—"}
             </span>
           </div>
           <div className="flex justify-between">
             <span className="text-[#8E8E93]">Status</span>
-            <span className="font-semibold text-emerald-600">Preparing</span>
+            <span className="font-semibold text-emerald-600">
+              {orderData?.status || "Preparing"}
+            </span>
           </div>
         </div>
       </div>

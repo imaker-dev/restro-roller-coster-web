@@ -9,6 +9,7 @@ export const ERROR_TYPES = {
 
 const errorPatterns = {
   [ERROR_TYPES.AUTH]: [
+    "User not found",
     "Access token required",
     "Invalid access token",
     "Invalid or expired token",
@@ -18,7 +19,7 @@ const errorPatterns = {
     "Your subscription has expired. Please renew to continue using the system.",
   ],
   [ERROR_TYPES.ORDER]: [
-     "Invalid or expired session",
+    "Invalid or expired session",
     "Session verification failed",
     "This order is no longer active. Please start a new session",
   ],

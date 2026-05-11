@@ -849,7 +849,6 @@ const ShiftHistoryDetailsPage = () => {
 
                       const Icon = cfg.icon;
 
-                      console.log(amount);
                       return (
                         <StatusPill
                           key={mode}

@@ -1,11 +1,13 @@
-// ─────────────────────────────────────────────────────────────────────────────
 // ORDER STATUS SCREEN
 
 import {
   AlertCircle,
   ChevronLeft,
+  Clock,
   Info,
   Receipt,
+  ReceiptText,
+  ShieldCheck,
   Trash2,
   X,
 } from "lucide-react";
@@ -18,6 +20,7 @@ import OrderBadge from "../order/OrderBadge";
 import { formatDate } from "../../utils/dateFormatter";
 import FoodTypeIcon from "../common/FoodTypeIcon";
 import { formatNumber } from "../../utils/numberFormatter";
+import InfoCard from "../../components/InfoCard";
 
 // ─────────────────────────────────────────────────────────────────────────────
 function CurrentOrderStatusScreen({
@@ -32,13 +35,16 @@ function CurrentOrderStatusScreen({
   const [cancelReason, setCancelReason] = useState("");
   const [cancelling, setCancelling] = useState(false);
 
-  const { hasOrder, order } = orderData || {};
+  const { hasOrder, order, pendingRequest } = orderData || {};
 
-  if (!hasOrder || !order) {
+  const isPending = pendingRequest && !hasOrder;
+  const activeOrder = isPending ? pendingRequest : order;
+
+  if ((!hasOrder && !pendingRequest) || !activeOrder) {
     return (
       <div className="min-h-screen bg-[#FAF8F5] flex flex-col items-center justify-center px-5">
         <div className="w-16 h-16 bg-[#F0EDE8] rounded-full flex items-center justify-center mb-4">
-          <Receipt size={30} className="text-black/20" />
+          <ReceiptText size={30} className="text-black/20" />
         </div>
         <h2 className="text-lg font-bold text-[#1C1C1E] mb-2">
           No Active Order
@@ -61,7 +67,24 @@ function CurrentOrderStatusScreen({
   };
 
   const canCancelOrder = () => {
-    return order.status === "pending" || order.status === "confirmed";
+    if (isPending) return true;
+    return (
+      activeOrder?.status === "pending" || activeOrder?.status === "confirmed"
+    );
+  };
+
+  const getOrderStatus = () => {
+    if (isPending) return "pending";
+    return activeOrder?.status;
+  };
+
+  const getOrderNumber = () => {
+    return activeOrder?.orderNumber || "Pending";
+  };
+
+  const getOrderDate = () => {
+    if (isPending) return activeOrder?.placedAt;
+    return activeOrder?.createdAt;
   };
 
   const handleCancelOrder = async () => {
@@ -104,120 +127,188 @@ function CurrentOrderStatusScreen({
         </button>
         <div className="flex-1">
           <h1 className="text-white font-bold text-base">Order Status</h1>
-          <p className="text-white/40 text-xs">#{order?.orderNumber}</p>
+          <p className="text-white/40 text-xs">#{getOrderNumber()}</p>
         </div>
       </div>
 
       <div className="w-full max-w-3xl mx-auto p-4">
         <div className="flex-1 pb-32 space-y-4 overflow-y-auto">
-          {/* Order Status Banner */}
+          {/* Order Status Banner - Same for both pending and confirmed */}
           <div
             className={`rounded-2xl p-4 border ${
-              order?.status === "cancelled"
+              getOrderStatus() === "cancelled"
                 ? "bg-red-50 border-red-100"
                 : "bg-white border-black/[0.06]"
             }`}
           >
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-lg font-bold text-[#1C1C1E]">
-                Order #{order?.orderNumber}
+                Order #{getOrderNumber()}
               </h2>
-              <OrderBadge value={order?.status} size="sm" />
+              <OrderBadge value={getOrderStatus()} size="sm" />
             </div>
             <div className="text-xs text-[#8E8E93] space-y-1">
-              <p>Placed: {formatDate(order?.createdAt, "longTime")}</p>
+              <p>Placed: {formatDate(getOrderDate(), "longTime")}</p>
+              {activeOrder?.cancelReason && (
+                <p className="text-red-500">
+                  Cancelled: {activeOrder.cancelReason}
+                </p>
+              )}
             </div>
           </div>
 
+          {/* Pending Order Info Card */}
+          {isPending && (
+            <InfoCard
+              title="Waiting for Confirmation"
+              description={
+                activeOrder?.message ||
+                "Your order has been placed and is waiting for the restaurant staff to accept it. This usually takes less than a minute."
+              }
+              type="warning"
+              size="md"
+            />
+          )}
+
           {/* Items */}
           <div className="bg-white rounded-2xl border border-black/[0.05] shadow-sm overflow-hidden">
-            <div className="p-4 border-b border-[#F2F2F7]">
+            <div className="p-4 border-b border-[#F2F2F7] flex items-center justify-between">
               <h3 className="font-bold text-sm text-[#1C1C1E]">
-                Items ({order?.items.length})
+                Items (
+                {activeOrder?.itemCount || activeOrder?.items?.length || 0})
               </h3>
+              {isPending && (
+                <span className="text-[10px] font-medium text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">
+                  Pending
+                </span>
+              )}
             </div>
             <div className="divide-y divide-[#F2F2F7]">
-              {order?.items?.map((item) => (
-                <div
-                  key={item?.id}
-                  className="p-4 hover:bg-[#FAF8F5] transition-colors"
-                >
-                  <div className="flex items-start justify-between mb-1">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <FoodTypeIcon type={item?.itemType} size="sm" />
+              {activeOrder?.items?.map((item, index) => (
+                <div key={item?.id || index} className="p-4">
+                  {/* Row 1: Food Type + Name + Status */}
+                  <div className="flex items-center justify-between gap-3 mb-2">
+                    <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                      <FoodTypeIcon type={item?.itemType} size="sm" />
+                      <div className="min-w-0 flex-1">
                         <h4 className="font-semibold text-sm text-[#1C1C1E] truncate">
                           {item?.name}
+                          {item?.variantName && (
+                            <span className="text-xs text-[#8E8E93] font-normal ml-1">
+                              - {item?.variantName}
+                            </span>
+                          )}
                         </h4>
                       </div>
-                      {item?.variantName && (
-                        <p className="text-xs text-[#8E8E93] ml-6">
-                          {item?.variantName}
-                        </p>
-                      )}
                     </div>
-                    <OrderBadge value={item?.status} size="sm" />
+                    {!isPending && (
+                      <OrderBadge value={item?.status} size="sm" />
+                    )}
                   </div>
 
+                  {/* Special Instructions */}
                   {item?.specialInstructions && (
-                    <p className="text-xs text-primary-500 mt-1 italic">
+                    <p className="text-[11px] text-primary-500/80 italic mb-2 ml-7">
                       "{item?.specialInstructions}"
                     </p>
                   )}
 
-                  <div className="flex items-center justify-between mt-2">
-                    <div className="flex items-center gap-3 text-xs text-[#8E8E93]">
-                      <span>Qty: {item?.quantity}</span>
-                      <span>{formatNumber(item?.unitPrice, true)} each</span>
+                  {/* Row 2: Qty × Price + Tax = Total */}
+                  <div className="ml-7 flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 text-xs flex-wrap">
+                      <span className="text-[#8E8E93]">×{item?.quantity}</span>
+                      <span className="text-[#C7C7CC]">•</span>
+                      <span className="text-[#8E8E93]">
+                        {formatNumber(item?.unitPrice, true)}
+                      </span>
+                      {item?.taxDetails && item.taxDetails.length > 0 && (
+                        <>
+                          <span className="text-[#C7C7CC]">•</span>
+                          <span className="text-[#8E8E93]">
+                            {item.taxDetails
+                              .map(
+                                (t) =>
+                                  `${formatNumber(t.amount, true)} (${t.componentName})`,
+                              )
+                              .join(", ")}
+                          </span>
+                        </>
+                      )}
                     </div>
-                    <div className="text-right">
-                      <p className="text-sm font-bold text-[#1C1C1E]">
-                        {formatNumber(item?.totalPrice, true)}
-                      </p>
-                    </div>
+                    <span className="text-sm font-bold text-[#1C1C1E] ml-3 shrink-0">
+                      {formatNumber(item?.totalPrice, true)}
+                    </span>
                   </div>
 
-                  {!canModifyItem(item?.status) &&
-                    item?.status !== "pending" && (
-                      <div className="mt-2 flex items-center gap-1.5 text-[10px] text-[#8E8E93] bg-[#F2F2F7] rounded-lg px-2 py-1.5">
-                        <AlertCircle size={11} className="shrink-0" />
-                        <span>
-                          {item?.status === "cancelled"
-                            ? "This item has been cancelled"
+                  {/* Row 3: Status Message */}
+                  {isPending && item?.status === "pending" && (
+                    <div className="mt-2 ml-7 flex items-center gap-2 text-[11px] text-amber-700 bg-amber-50/70 rounded-lg px-3 py-2">
+                      <Clock size={12} className="shrink-0" />
+                      <span>Awaiting restaurant confirmation</span>
+                    </div>
+                  )}
+
+                  {!isPending && item?.status !== "pending" && (
+                    <div className="mt-2 ml-7 flex items-center gap-2 text-[11px] text-[#8E8E93] bg-[#F2F2F7] rounded-lg px-3 py-2">
+                      <AlertCircle size={12} className="shrink-0" />
+                      <span>
+                        {item?.status === "cancelled"
+                          ? "This item has been cancelled"
+                          : item?.status === "sent_to_kitchen"
+                            ? "Sent to kitchen for preparation"
                             : "This item has been sent to the kitchen and cannot be modified"}
-                        </span>
-                      </div>
-                    )}
+                      </span>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
           </div>
 
           {/* Bill Summary */}
-          <div className="bg-white rounded-2xl border border-black/[0.05] p-4 shadow-sm">
-            <p className="text-xs font-bold text-[#8E8E93] uppercase tracking-wider mb-3">
-              Bill Summary
-            </p>
-            <div className="space-y-2 text-sm">
+          <div className="bg-white rounded-2xl border border-black/[0.05] p-5 shadow-sm">
+            <div className="flex items-center gap-2 mb-4">
+              <ReceiptText size={16} className="text-[#8E8E93]" />
+              <p className="text-xs font-bold text-[#8E8E93] uppercase tracking-wider">
+                Bill Summary
+              </p>
+            </div>
+            <div className="space-y-3 text-sm">
               <div className="flex justify-between">
                 <span className="text-[#3A3A3C]">Subtotal</span>
-                <span className="font-semibold text-[#1C1C1E]">
-                  {formatNumber(order?.subtotal, true)}
+                <span className="font-medium text-[#1C1C1E]">
+                  {formatNumber(activeOrder?.subtotal, true)}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-[#3A3A3C]">Tax</span>
-                <span className="font-semibold text-[#1C1C1E]">
-                  {formatNumber(order?.taxAmount, true)}
+                <span className="font-medium text-[#1C1C1E]">
+                  {formatNumber(activeOrder?.taxAmount, true)}
                 </span>
               </div>
+              {activeOrder?.specialInstructions && (
+                <div className="bg-[#FAF8F5] rounded-lg p-3">
+                  <span className="text-[11px] font-medium text-[#8E8E93] block mb-1">
+                    Special Instructions
+                  </span>
+                  <span className="text-xs text-[#3A3A3C] italic">
+                    "{activeOrder.specialInstructions}"
+                  </span>
+                </div>
+              )}
               <div className="h-px bg-[#F2F2F7] my-1" />
-              <div className="flex justify-between">
-                <span className="font-bold text-[#1C1C1E]">Total</span>
-                <span className="font-bold text-primary-500 text-base">
-                  {formatNumber(order?.totalAmount, true)}
+              <div className="flex justify-between items-center">
+                <span className="font-bold text-[#1C1C1E]">Total Amount</span>
+                <span className="font-bold text-lg text-primary-500">
+                  {formatNumber(activeOrder?.totalAmount, true)}
                 </span>
               </div>
+              {isPending && (
+                <div className="flex items-center gap-2 text-[11px] text-[#8E8E93] bg-[#FAF8F5] rounded-lg p-3 mt-2">
+                  <ShieldCheck size={14} className="text-green-500 shrink-0" />
+                  <span>Payment will be processed once order is confirmed</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -228,85 +319,24 @@ function CurrentOrderStatusScreen({
         {canCancelOrder() && (
           <button
             onClick={() => setShowCancelModal(true)}
-            className="w-full bg-white text-red-500 font-bold text-sm py-3 rounded-2xl border-2 border-red-200 hover:border-red-300 hover:bg-red-50 active:scale-[0.98] transition-all"
+            className="w-full bg-white text-red-500 font-bold text-sm py-3.5 rounded-2xl border-2 border-red-200 hover:border-red-300 hover:bg-red-50 active:scale-[0.98] transition-all shadow-lg shadow-red-100/50"
           >
             Cancel Order
           </button>
         )}
 
-        {!canCancelOrder() && order?.status !== "cancelled" && (
-          <p className="text-xs text-[#8E8E93] text-center px-2">
-            Order cannot be cancelled — it is already being prepared. Please ask
-            staff for assistance.
-          </p>
+        {!canCancelOrder() && getOrderStatus() !== "cancelled" && (
+          <div className="bg-[#F2F2F7] rounded-xl p-3 flex items-center gap-2">
+            <Info size={16} className="text-[#8E8E93] shrink-0" />
+            <p className="text-xs text-[#8E8E93]">
+              Order cannot be cancelled — it is already being prepared. Please
+              ask staff for assistance.
+            </p>
+          </div>
         )}
       </div>
 
       {/* Cancel Order Modal */}
-      {/* {showCancelModal && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center">
-          <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            onClick={() => setShowCancelModal(false)}
-          />
-          <div className="relative w-full max-w-lg bg-white rounded-t-3xl shadow-2xl p-6 animate-[slideUp_0.3s_cubic-bezier(0.32,0.72,0,1)]">
-            <div className="flex justify-center mb-4">
-              <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center">
-                <AlertCircle size={24} className="text-red-500" />
-              </div>
-            </div>
-
-            <h3 className="text-lg font-bold text-[#1C1C1E] text-center mb-2">
-              Cancel Order?
-            </h3>
-            <p className="text-sm text-[#8E8E93] text-center mb-4">
-              Are you sure you want to cancel this order? This action cannot be
-              undone.
-            </p>
-
-            <div className="mb-4">
-              <label className="text-xs font-bold text-[#8E8E93] uppercase tracking-wider mb-2 block">
-                Reason for Cancellation
-              </label>
-              <textarea
-                value={cancelReason}
-                onChange={(e) => setCancelReason(e.target.value)}
-                placeholder="e.g. Changed my mind, Taking too long..."
-                rows={2}
-                maxLength={200}
-                className="w-full bg-[#F2F2F7] rounded-xl px-3.5 py-2.5 text-sm text-[#1C1C1E] placeholder-[#C7C7CC] outline-none focus:border-red-400/50 resize-none border border-transparent focus:bg-white focus:border-red-300 transition-all"
-              />
-            </div>
-
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  setShowCancelModal(false);
-                  setCancelReason("");
-                }}
-                className="flex-1 bg-[#F2F2F7] text-[#3A3A3C] font-bold text-sm py-3 rounded-xl hover:bg-[#E5E5EA] active:scale-[0.98] transition-all"
-              >
-                Keep Order
-              </button>
-              <button
-                onClick={handleCancelOrder}
-                disabled={cancelling || !cancelReason.trim()}
-                className="flex-1 bg-red-500 text-white font-bold text-sm py-3 rounded-xl hover:bg-red-600 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                {cancelling ? (
-                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <>
-                    <Trash2 size={16} />
-                    Cancel Order
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )} */}
-
       {showCancelModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
@@ -314,7 +344,6 @@ function CurrentOrderStatusScreen({
             onClick={() => setShowCancelModal(false)}
           />
           <div className="relative w-full max-w-sm bg-white rounded-2xl shadow-2xl p-6 animate-[scaleIn_0.3s_cubic-bezier(0.32,0.72,0,1)]">
-            {/* Close Button */}
             <button
               onClick={() => setShowCancelModal(false)}
               className="absolute top-4 right-4 w-8 h-8 bg-[#F2F2F7] rounded-full flex items-center justify-center hover:bg-[#E5E5EA] transition-colors"
@@ -322,14 +351,12 @@ function CurrentOrderStatusScreen({
               <X size={16} className="text-[#8E8E93]" />
             </button>
 
-            {/* Icon */}
             <div className="flex justify-center mb-4">
               <div className="w-16 h-16 rounded-full bg-[#FFF3CD] flex items-center justify-center">
                 <Info size={32} className="text-[#FFB800]" />
               </div>
             </div>
 
-            {/* Content */}
             <h3 className="text-lg font-bold text-[#1C1C1E] text-center mb-2">
               Need to Cancel?
             </h3>
@@ -341,21 +368,18 @@ function CurrentOrderStatusScreen({
               They'll help you process the cancellation quickly.
             </p>
 
-            {/* Divider */}
             <div className="h-px bg-[#F2F2F7] mb-4" />
 
-            {/* Contact Info */}
             <div className="bg-[#FAF8F5] rounded-xl p-3 mb-6">
               <div className="flex items-center gap-2 text-sm text-[#3A3A3C]">
                 <Info size={16} className="text-primary-500 shrink-0" />
                 <span>Show this order number to staff:</span>
               </div>
               <p className="text-lg font-bold text-[#1C1C1E] mt-1.5 text-center tracking-wider">
-                #{order?.orderNumber}
+                #{getOrderNumber()}
               </p>
             </div>
 
-            {/* Action Button */}
             <button
               onClick={() => setShowCancelModal(false)}
               className="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold text-sm py-3.5 rounded-xl"

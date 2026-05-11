@@ -39,10 +39,21 @@ function ItemGridCard({ item, cartQty, onSelect, onQuickAdd, onChangeQty }) {
           <div className="flex items-center gap-1 mb-2">
             <Clock size={9} className="text-[#8E8E93]" />
             <span className="text-[10px] text-[#8E8E93]">{item.prepTime}m</span>
+            {item.variants?.length > 0 && (
+              <>
+                <span className="text-[8px] text-[#8E8E93]">•</span>
+                <span className="text-[10px] text-[#8E8E93]">
+                  {item.variants.length} sizes
+                </span>
+              </>
+            )}
           </div>
         )}
+
         <div className="mt-auto flex items-center justify-between">
-          <p className="text-xs font-bold text-[#1C1C1E]">{formatNumber(item.price,true)}</p>
+          <p className="text-xs font-bold text-[#1C1C1E]">
+            {formatNumber(item.price, true)}
+          </p>
 
           {cartQty > 0 ? (
             <div

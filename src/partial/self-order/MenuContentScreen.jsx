@@ -6,10 +6,9 @@ import {
   List,
   ChevronRight,
   ShoppingBag,
-  Leaf,
-  Flame,
   MapPin,
   LogOut,
+  ShoppingCart,
 } from "lucide-react";
 import { useSelector } from "react-redux";
 import ModalAction from "../../components/ModalAction";
@@ -17,18 +16,20 @@ import ItemListRow from "./ItemListRow";
 import ItemGridCard from "./ItemGridCard";
 import ItemDetailSheet from "./ItemDetailSheet";
 import { formatNumber } from "../../utils/numberFormatter";
-import { LOGO, LOGO_ICON } from "../../constants";
+import { FOOD_TYPES, LOGO, LOGO_ICON } from "../../constants";
 import CurrencyIcon from "../../components/CurrencyIcon";
-
-const fmt = (p, i) => formatNumber(p, true);
+import Tooltip from "../../components/Tooltip";
+import Shimmer from "../../layout/Shimmer";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONSTANTS
 // ─────────────────────────────────────────────────────────────────────────────
+
 const FILTER_OPTIONS = {
   ALL: "all",
-  VEG: "veg",
-  NON_VEG: "non_veg",
+  VEG: FOOD_TYPES.VEG,
+  NON_VEG: FOOD_TYPES.NON_VEG,
+  EGG: FOOD_TYPES.EGG,
 };
 
 const VIEW_MODES = {
@@ -41,10 +42,178 @@ const VIEW_MODES = {
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Loading State
-const LoadingState = memo(() => (
-  <div className="flex flex-col items-center justify-center py-20 gap-3">
-    <div className="w-8 h-8 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin" />
-    <p className="text-[#8E8E93] text-sm">Loading menu...</p>
+const LoadingState = memo(({ viewMode }) => (
+  <div className="flex flex-col gap-6 py-4">
+    {/* Skeleton Category Sections */}
+    {[1, 2, 3].map((section) => (
+      <div key={section}>
+        {/* Category Name Skeleton */}
+        <div className="flex items-center gap-2 mb-3 px-0.5">
+          <Shimmer
+            width="80px"
+            height="20px"
+            rounded="lg"
+            className="bg-[#E5E5EA]"
+          />
+          <Shimmer
+            width="30px"
+            height="16px"
+            rounded="md"
+            className="bg-[#F0EDE8]"
+          />
+        </div>
+
+        {viewMode === VIEW_MODES.GRID ? (
+          // Grid View Skeleton
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+            {[1, 2, 3, 4].map((item) => (
+              <div
+                key={item}
+                className="bg-white rounded-2xl overflow-hidden border border-black/[0.06] shadow-sm"
+              >
+                {/* Image placeholder */}
+                <Shimmer
+                  width="100%"
+                  height="128px"
+                  rounded="none"
+                  className="bg-[#F0EDE8]"
+                />
+
+                {/* Content */}
+                <div className="p-3 space-y-2">
+                  {/* Food type and spice level */}
+                  <div className="flex items-center gap-1.5">
+                    <Shimmer
+                      width="12px"
+                      height="12px"
+                      rounded="full"
+                      className="bg-[#E5E5EA]"
+                    />
+                    <Shimmer
+                      width="48px"
+                      height="12px"
+                      rounded="md"
+                      className="bg-[#E5E5EA]"
+                    />
+                  </div>
+
+                  {/* Item name */}
+                  <div className="space-y-1.5">
+                    <Shimmer
+                      width="75%"
+                      height="16px"
+                      rounded="lg"
+                      className="bg-[#E5E5EA]"
+                    />
+                    <Shimmer
+                      width="50%"
+                      height="16px"
+                      rounded="lg"
+                      className="bg-[#F0EDE8]"
+                    />
+                  </div>
+
+                  {/* Description */}
+                  <Shimmer
+                    width="100%"
+                    height="12px"
+                    rounded="md"
+                    className="bg-[#F5F3F0]"
+                  />
+
+                  {/* Price and add button */}
+                  <div className="flex items-center justify-between pt-2">
+                    <Shimmer
+                      width="64px"
+                      height="20px"
+                      rounded="lg"
+                      className="bg-[#E5E5EA]"
+                    />
+                    <Shimmer
+                      width="80px"
+                      height="32px"
+                      rounded="xl"
+                      className="bg-[#E5E5EA]"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          // List View Skeleton
+          <div className="flex flex-col gap-2">
+            {[1, 2, 3, 4].map((item) => (
+              <div
+                key={item}
+                className="bg-white rounded-2xl overflow-hidden border border-black/[0.06] shadow-sm flex"
+              >
+                {/* Image placeholder */}
+                <Shimmer
+                  width="100px"
+                  height="100px"
+                  rounded="none"
+                  className="bg-[#F0EDE8] shrink-0"
+                />
+
+                {/* Content */}
+                <div className="flex-1 p-3 space-y-1.5 flex flex-col justify-between">
+                  <div className="space-y-1.5">
+                    {/* Food type indicator */}
+                    <div className="flex items-center gap-1.5">
+                      <Shimmer
+                        width="12px"
+                        height="12px"
+                        rounded="full"
+                        className="bg-[#E5E5EA]"
+                      />
+                      <Shimmer
+                        width="48px"
+                        height="12px"
+                        rounded="md"
+                        className="bg-[#E5E5EA]"
+                      />
+                    </div>
+
+                    {/* Item name */}
+                    <Shimmer
+                      width="70%"
+                      height="16px"
+                      rounded="lg"
+                      className="bg-[#E5E5EA]"
+                    />
+
+                    {/* Description */}
+                    <Shimmer
+                      width="90%"
+                      height="12px"
+                      rounded="md"
+                      className="bg-[#F5F3F0]"
+                    />
+                  </div>
+
+                  {/* Price and prep time */}
+                  <div className="flex items-center gap-2">
+                    <Shimmer
+                      width="64px"
+                      height="20px"
+                      rounded="lg"
+                      className="bg-[#E5E5EA]"
+                    />
+                    <Shimmer
+                      width="48px"
+                      height="16px"
+                      rounded="md"
+                      className="bg-[#F0EDE8]"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    ))}
   </div>
 ));
 
@@ -117,24 +286,103 @@ const SearchInput = memo(({ value, onChange, onClear }) => (
   </div>
 ));
 
-// Filter Button
-const FilterButton = memo(({ active, onClick, icon: Icon, activeColor }) => {
-  const getStyles = () => {
-    if (!active) return "bg-white/[0.07] border-white/[0.07]";
-    if (activeColor === "emerald")
-      return "bg-emerald-500 border-emerald-500 shadow-md shadow-emerald-500/30";
-    return "bg-red-500 border-red-500 shadow-md shadow-red-500/30";
+const FILTER_ORDER = [
+  FILTER_OPTIONS.ALL,
+  FILTER_OPTIONS.VEG,
+  FILTER_OPTIONS.NON_VEG,
+  FILTER_OPTIONS.EGG,
+];
+
+const FILTER_STYLES = {
+  all: {
+    border: "border-white/15",
+    bg: "bg-white/[0.07]",
+    dot: "bg-white/40",
+  },
+
+  veg: {
+    border: "border-emerald-500",
+    bg: "bg-emerald-500",
+    dot: "bg-emerald-500",
+  },
+
+  non_veg: {
+    border: "border-red-500",
+    bg: "bg-red-500",
+    dot: "bg-red-500",
+  },
+
+  egg: {
+    border: "border-amber-400",
+    bg: "bg-amber-400",
+    dot: "bg-amber-400",
+  },
+};
+
+const FILTER_LABELS = {
+  all: "All Items",
+  veg: "Veg Only",
+  non_veg: "Non-Veg Only",
+  egg: "Egg Only",
+};
+
+const FoodFilterButton = ({ value, onChange }) => {
+  const current = FILTER_STYLES[value];
+
+  const currentIndex = FILTER_ORDER.indexOf(value);
+  const next = FILTER_ORDER[(currentIndex + 1) % FILTER_ORDER.length];
+
+  const handleClick = () => {
+    onChange(next);
   };
 
+  const isAll = value === FILTER_OPTIONS.ALL;
+  
+
   return (
-    <button
-      onClick={onClick}
-      className={`w-9 h-9 rounded-xl flex items-center justify-center border transition-all shrink-0 ${getStyles()}`}
+    <Tooltip
+      content={
+        <div className="text-xs">
+          <p className="font-semibold">{FILTER_LABELS[value]}</p>
+
+          <p className="text-white/60">Tap for {FILTER_LABELS[next]}</p>
+        </div>
+      }
+      position="bottom"
+      animation="shift-away"
+      delay={[100, 50]}
+      theme="dark"
     >
-      <Icon size={15} className={active ? "text-white" : "text-white/40"} />
-    </button>
+      <button
+        onClick={handleClick}
+        aria-label={FILTER_LABELS[value]}
+        className={`
+          relative
+          w-9 h-9 rounded-xl border flex items-center justify-center
+          ${
+            isAll
+              ? `${current.bg} ${current.border}`
+              : `${current.bg} ${current.border} shadow-md`
+          }
+        `}
+      >
+        <div
+          className={`
+            w-4 h-4 rounded-[4px] border-2 flex items-center justify-center
+            ${isAll ? "border-white/40" : "border-white"}
+          `}
+        >
+          <div
+            className={`
+              w-1.5 h-1.5 rounded-full
+              ${isAll ? current.dot : "bg-white"}
+            `}
+          />
+        </div>
+      </button>
+    </Tooltip>
   );
-});
+};
 
 // View Toggle
 const ViewToggle = memo(({ currentView, onChange }) => (
@@ -173,7 +421,9 @@ const CartBar = memo(({ cartItemCount, cartTotal, onViewCart }) => (
         <span className="font-bold text-sm">View Cart</span>
       </div>
       <div className="flex items-center gap-2">
-        <span className="font-bold text-sm">{fmt(cartTotal)}</span>
+        <span className="font-bold text-sm">
+          {formatNumber(cartTotal, true)}
+        </span>
         <ChevronRight size={16} className="text-white/50" />
       </div>
     </button>
@@ -292,15 +542,15 @@ function MenuContentScreen({
           </div>
 
           {/* Order Status Button */}
-          {currentOrderStatus?.hasOrder && (
-            <button
-              onClick={() => onSettingsChange({ screen: "orderStatus" })}
-              className="relative bg-blue-600 w-9 h-9 rounded-xl flex items-center justify-center shadow-md shadow-blue-600/30 shrink-0"
-              title="View Order Status"
-            >
-              <CurrencyIcon size={16} className="text-white" />
-            </button>
-          )}
+          {/* {currentOrderStatus?.hasOrder && ( */}
+          <button
+            onClick={() => onSettingsChange({ screen: "orderStatus" })}
+            className="relative bg-blue-600 w-9 h-9 rounded-xl flex items-center justify-center shadow-md shadow-blue-600/30 shrink-0"
+            title="View Order Status"
+          >
+            <ShoppingBag size={16} className="text-white" />
+          </button>
+          {/* )} */}
 
           {/* Cart Button */}
           <button
@@ -308,7 +558,7 @@ function MenuContentScreen({
             className="relative bg-primary-500 w-9 h-9 rounded-xl flex items-center justify-center shadow-md shadow-primary-500/30 shrink-0"
             title="View Cart"
           >
-            <ShoppingBag size={16} className="text-white" />
+            <ShoppingCart size={16} className="text-white" />
             {cartItemCount > 0 && (
               <span className="absolute -top-1.5 -right-1.5 bg-white text-primary-500 text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-sm">
                 {cartItemCount > 9 ? "9+" : cartItemCount}
@@ -338,18 +588,9 @@ function MenuContentScreen({
               onClear={handleClearSearch}
             />
 
-            <FilterButton
-              active={vegFilter === FILTER_OPTIONS.VEG}
-              onClick={handleVegFilterToggle}
-              icon={Leaf}
-              activeColor="emerald"
-            />
-
-            <FilterButton
-              active={vegFilter === FILTER_OPTIONS.NON_VEG}
-              onClick={handleNonVegFilterToggle}
-              icon={Flame}
-              activeColor="red"
+            <FoodFilterButton
+              value={vegFilter}
+              onChange={(value) => onSettingsChange({ vegFilter: value })}
             />
 
             <ViewToggle
@@ -371,7 +612,7 @@ function MenuContentScreen({
       {/* ── CONTENT ── */}
       <main className="flex-1 px-3 pt-3 pb-28 max-w-3xl w-full mx-auto">
         {isFetchingPublicMenu ? (
-          <LoadingState />
+          <LoadingState viewMode={viewMode} />
         ) : showGrouped ? (
           // Grouped by category
           categories.map((cat) => (

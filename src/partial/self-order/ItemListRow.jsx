@@ -30,7 +30,7 @@ function ItemListRow({ item, cartQty, onSelect, onQuickAdd, onChangeQty }) {
 
       {/* Content */}
       <div className="flex-1 min-w-0 px-3 py-2.5 flex flex-col justify-between">
-        <div className="flex items-start gap-1.5">
+        <div className="flex items-center gap-1.5">
           <FoodTypeIcon type={item.type} size="sm" />
           <p className="text-[13px] font-semibold text-[#1C1C1E] leading-snug line-clamp-2 flex-1">
             {item.name}
@@ -40,7 +40,7 @@ function ItemListRow({ item, cartQty, onSelect, onQuickAdd, onChangeQty }) {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-bold text-[#1C1C1E]">
-              {formatNumber(item.price,true)}
+              {formatNumber(item.price, true)}
             </p>
             {item.variants?.length > 0 && (
               <p className="text-[10px] text-[#8E8E93] -mt-0.5">
