@@ -21,6 +21,7 @@ import {
   ScanLine,
   Wand2,
   RotateCcw,
+  DownloadIcon,
 } from "lucide-react";
 import StatusBadge from "../../layout/StatusBadge";
 import NoDataFound from "../../layout/NoDataFound";
@@ -475,6 +476,14 @@ const TablesQrPage = () => {
       label: "Generate for All",
       type: "primary",
       icon: Wand2,
+      onClick: handleOpenBulkModal,
+      loading: isFetchingAllTableQr,
+      loadingText: "Refreshing...",
+    },
+    {
+      label: "Download All",
+      type: "export",
+      icon: DownloadIcon,
       onClick: handleOpenBulkModal,
       loading: isFetchingAllTableQr,
       loadingText: "Refreshing...",

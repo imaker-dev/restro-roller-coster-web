@@ -9,6 +9,13 @@ export const fetchAllSuperAdmins = createAsyncThunk(
     return res.data;
   },
 );
+export const fetchSuperAdminById = createAsyncThunk(
+  "/fetch/all/super-admin/:id",
+  async ({userId}) => {
+    const res = await AdminServices.getSuperAdminByIdApi({userId});
+    return res.data;
+  },
+);
 export const createSuperAdmin = createAsyncThunk(
   "/create/super-admin",
   async ({ values }) => {
@@ -29,6 +36,10 @@ const adminSlice = createSlice({
   initialState: {
     isFetchingSuperAdmin: false,
     allSuperAdmins: null,
+
+    isFetchingSuperAdminDetails: false,
+    superAdminDetails:null,
+
     isCreatingSuperAdmin: false,
     isUpdatingStatus: false,
   },
@@ -44,6 +55,17 @@ const adminSlice = createSlice({
       })
       .addCase(fetchAllSuperAdmins.rejected, (state, action) => {
         state.isFetchingSuperAdmin = false;
+        toast.error(action.error.message);
+      })
+      .addCase(fetchSuperAdminById.pending, (state) => {
+        state.isFetchingSuperAdminDetails = true;
+      })
+      .addCase(fetchSuperAdminById.fulfilled, (state, action) => {
+        state.isFetchingSuperAdminDetails = false;
+        state.superAdminDetails = action.payload.data;
+      })
+      .addCase(fetchSuperAdminById.rejected, (state, action) => {
+        state.isFetchingSuperAdminDetails = false;
         toast.error(action.error.message);
       })
       .addCase(createSuperAdmin.pending, (state) => {

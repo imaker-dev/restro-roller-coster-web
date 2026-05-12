@@ -1,12 +1,16 @@
 // components/SubscriptionExpiredOverlay.jsx
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AlertTriangle, Info, LogOut, Clock } from "lucide-react";
+import { AlertTriangle, Info, LogOut, Clock, CreditCard } from "lucide-react";
 import { clearLoginState } from "../../redux/slices/authSlice";
 import UserAvatar from "../../components/UserAvatar";
+import { useNavigate } from "react-router-dom";
+import { ROUTE_PATHS } from "../../config/paths";
 
 const SubscriptionExpiredOverlay = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { meData } = useSelector((state) => state.auth);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -125,11 +129,14 @@ const SubscriptionExpiredOverlay = ({ isOpen, onClose }) => {
           {/* Actions */}
           <div className="space-y-2.5 px-6 pt-4 pb-5">
             <button
-              onClick={handleLogout}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gray-900 px-4 py-3 text-sm font-semibold text-white transition-all duration-150 hover:bg-gray-800 active:scale-[0.98]"
+              onClick={() => {
+                handleClose();
+                navigate(ROUTE_PATHS.MY_SUBSCRIPTION);
+              }}
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary-500 px-4 py-3 text-sm font-semibold text-white transition-all duration-150 hover:bg-primary-600 active:scale-[0.98]"
             >
-              <LogOut className="h-4 w-4" strokeWidth={2} />
-              Logout
+              <CreditCard className="h-4 w-4" strokeWidth={2} />
+              Renew Plan
             </button>
 
             <button
@@ -139,12 +146,12 @@ const SubscriptionExpiredOverlay = ({ isOpen, onClose }) => {
               I'll renew later
             </button>
           </div>
-
+          
           {/* Footer */}
           <div className="flex items-center justify-center gap-2 border-t border-gray-100 bg-gray-50 px-6 py-3.5">
             <Info className="h-3.5 w-3.5 flex-shrink-0 text-gray-300" />
             <span className="text-xs text-gray-400">
-              Contact your administrator to renew the subscription
+              Renew your plan to continue using all features
             </span>
           </div>
         </div>

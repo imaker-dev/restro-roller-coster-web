@@ -67,6 +67,7 @@ export const ROUTE_PATHS = {
   PREP_RECIPES_DETAILS: "/prep-recipes/details",
 
   // Menu Management
+  MASTER_MENU_ADD: "/master-menu/add",
   ALL_MENU_CATEGORIES: "/categories",
   ALL_MENU_ITEMS: "/items",
   MENU_ITEMS_DETAILS: "/items/details",
@@ -106,8 +107,11 @@ export const ROUTE_PATHS = {
   ALL_USERS: "/users",
   USER_DETAILS: "/users/details",
   USER_ADD: "/users/add",
-  ALL_SUPER_ADMINS: "/super-admins",
-  SUPER_ADMIN_ADD: "/super-admins/add",
+
+ALL_SUPER_ADMINS: "/franchise-partners",
+SUPER_ADMIN_DETAILS: "/franchise-partners/details",
+SUPER_ADMIN_ADD: "/franchise-partners/add",
+
   REGISTRATION_REQUESTS: "/registration-requests",
   REGISTRATION_REQUESTS_ADD: "/registration-requests/add",
   TOKEN_GENERATION_LOGS: "/token-generation-logs",
@@ -118,8 +122,13 @@ export const ROUTE_PATHS = {
   SUBSCRIPTION_GLOBAL_PRICING: "/global-pricing",
   SUPER_ADMIN_SUBSCRIPTION_PRICING: "/super-admin-pricing",
   SUPER_ADMIN_OUTLET_SUBSCRIPTION: "/super-admin-pricing/outlets",
+  OUTLETS_SUBSCRIPTION_PRICING: "/outlets-subscription-pricing",
   OUTLET_PRICING: "/outlet-pricing",
   SUBSCRIPTION_LIST: "/subscriptions-list",
+
+  // Transactions
+  ALL_TRANSACTIONS: "/transactions",
+  TRANSACTION_DETAILS: "/transactions/details",
 
   // System
   ALL_SETTINGS: "/settings",

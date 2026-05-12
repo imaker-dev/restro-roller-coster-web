@@ -108,6 +108,11 @@ import SubscriptionDashboard from "../pages/subscriptions/SubscriptionDashboard"
 import MySubscriptionPage from "../pages/subscriptions/MySubscriptionPage";
 import SuperAdminOutletsPricingPage from "../pages/subscriptions/SuperAdminOutletsPricingPage";
 import MyProfilePage from "../pages/profile/MyProfilePage";
+import OutletsSubscriptionPricingPage from "../pages/subscriptions/OutletsSubscriptionPricingPage";
+import AddMasterMenuPage from "../pages/items/AddMasterMenuPage";
+import SuperAdminDetailsPage from "../pages/admins/SuperAdminDetailsPage";
+import AllTransactionsPage from "../pages/transactions/AllTransactionsPage";
+import TransactionDetailsPage from "../pages/transactions/TransactionDetailsPage";
 
 const routeConfig = [
   {
@@ -200,6 +205,7 @@ const routeConfig = [
   { path: ROUTE_PATHS.ALL_MENU_CATEGORIES, element: AllCategoriesPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.MENU_MEDIA, element: MenuMediaPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.MENU_MEDIA_QR_CODES, element: QrCodesPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
+  { path: ROUTE_PATHS.MASTER_MENU_ADD, element: AddMasterMenuPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
   { path: ROUTE_PATHS.ALL_MENU_ITEMS, element: AllItemsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.MENU_ITEMS_DETAILS, element: ItemDetailsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.MENU_ITEMS_ADD, element: AddItemPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
@@ -222,6 +228,7 @@ const routeConfig = [
   { path: ROUTE_PATHS.ALL_USERS, element: AllUsersPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.USER_DETAILS, element: UserDetailsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.ALL_SUPER_ADMINS, element: AllSuperAdminsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
+  { path: ROUTE_PATHS.SUPER_ADMIN_DETAILS, element: SuperAdminDetailsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.SUPER_ADMIN_ADD, element: AddSuperAdminPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.USER_ADD, element: AddUserPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.ALL_ORDERS, element: AllOrdersPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
@@ -239,7 +246,13 @@ const routeConfig = [
   { path: ROUTE_PATHS.SUBSCRIPTION_LIST, element: AllSubscriptionsListPage, roles: [ROLES.MASTER] },
   { path: ROUTE_PATHS.SUBSCRIPTION_GLOBAL_PRICING, element: SubscriptionGlobalPricingPage, roles: [ROLES.MASTER] },
   { path: ROUTE_PATHS.SUPER_ADMIN_SUBSCRIPTION_PRICING, element: SuperAdminSubcriptionPricingPage, roles: [ROLES.MASTER] },
+  { path: ROUTE_PATHS.OUTLETS_SUBSCRIPTION_PRICING, element: OutletsSubscriptionPricingPage, roles: [ROLES.MASTER] },
   { path: ROUTE_PATHS.SUPER_ADMIN_OUTLET_SUBSCRIPTION, element: SuperAdminOutletsPricingPage, roles: [ROLES.MASTER] },
+
+
+  // Payments
+  { path: ROUTE_PATHS.ALL_TRANSACTIONS, element: AllTransactionsPage, roles: [ROLES.MASTER] },
+  { path: ROUTE_PATHS.TRANSACTION_DETAILS, element: TransactionDetailsPage, roles: [ROLES.MASTER] },
 
   // System
   { path: ROUTE_PATHS.ALL_SETTINGS, element: AllSettingsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN] },

@@ -18,6 +18,7 @@ import StepIndicator from "../../partial/bulk-items/StepIndicator";
 import { Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "../../config/paths";
+import { downloadMasterMenuTemplate } from "../../redux/slices/itemSlice";
 
 // ─── Prevent accidental page leave ───────────────────────────────────────────
 function usePreventNavigation(active) {
@@ -40,6 +41,7 @@ const AddBulkItemPage = () => {
   const navigate = useNavigate();
 
   const { outletId } = useSelector((state) => state.auth);
+  const { isDownloadingMasterMenuTemplate } = useSelector((state) => state.item);
   const {
     loadingTemplate,
     isValidating,
@@ -69,6 +71,16 @@ const AddBulkItemPage = () => {
       });
     });
   };
+
+  const downloadMasterMenu = async () => {
+    await handleResponse(dispatch(downloadMasterMenuTemplate()),(res) => {
+      //  downloadBlob({
+      //   data: res.payload,
+      //   fileName: "Master_Menu",
+      // });
+    })
+  // your API call
+};
 
   const handleFileSelected = async (selectedFile) => {
     const fd = new FormData();
@@ -130,8 +142,11 @@ const AddBulkItemPage = () => {
               onDownload={downloadTemplate}
               onNext={() => goToStep(2)}
               loading={loadingTemplate}
+              onDownloadMasterMenu={downloadMasterMenu}
+              loadingMasterMenu={isDownloadingMasterMenuTemplate}
             />
           )}
+          
           {step === 2 && (
             <UploadSection
               onFileSelected={handleFileSelected}

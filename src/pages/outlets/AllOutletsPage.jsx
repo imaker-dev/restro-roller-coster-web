@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import PageHeader from "../../layout/PageHeader";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllOutlets, updateOutlet } from "../../redux/slices/outletSlice";
+import {
+  assignOutletToSuperAdmin,
+  fetchAllOutlets,
+  updateOutlet,
+} from "../../redux/slices/outletSlice";
 import SmartTable from "../../components/SmartTable";
 import {
   Building2,
@@ -12,7 +16,9 @@ import {
   MapPin,
   Phone,
   Plus,
+  RotateCcw,
   Trash2,
+  UserPlus,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import StatusBadge from "../../layout/StatusBadge";
@@ -20,14 +26,21 @@ import { ROLES } from "../../constants";
 import { ROUTE_PATHS } from "../../config/paths";
 import SearchBar from "../../components/SearchBar";
 import OutletDetailsDrawer from "../../partial/outlet/OutletDetailsDrawer";
+import AssignSuperAdminModal from "../../partial/outlet/AssignSuperAdminModal";
+import { handleResponse } from "../../utils/helpers";
 
 const AllOutletsPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOutlet, setSelectedOutlet] = useState(null);
+  const [assignModalOutlet, setAssignModalOutlet] = useState(null);
 
-  const { allOutlets, loading } = useSelector((state) => state.outlet);
+  const [showAssignModal, setShowAssignModal] = useState(false);
+
+  const { allOutlets, loading, isAssigningOutlet } = useSelector(
+    (state) => state.outlet,
+  );
 
   const fetchOutlets = () => {
     dispatch(fetchAllOutlets({ search: searchTerm }));
@@ -154,6 +167,15 @@ const AllOutletsPage = () => {
       //   navigate(`${ROUTE_PATHS.OUTLET_DETAILS}?outletId=${row.id}`),
     },
     {
+      label: "Assign",
+      icon: UserPlus,
+      color: "violet",
+      roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
+      onClick: (row) => {
+        (setShowAssignModal(true), setAssignModalOutlet(row));
+      },
+    },
+    {
       label: "Edit",
       icon: Edit2,
       color: "blue",
@@ -170,6 +192,12 @@ const AllOutletsPage = () => {
     },
   ];
 
+  const resetOutletUI = () => {
+    setSelectedOutlet(null);
+    setAssignModalOutlet(null);
+    setShowAssignModal(false);
+  };
+
   const actions = [
     {
       label: "Add New Outlet",
@@ -178,8 +206,30 @@ const AllOutletsPage = () => {
       onClick: () => navigate(ROUTE_PATHS.OUTLET_ADD),
       roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
     },
+    {
+      label: "Refresh",
+      type: "refresh",
+      icon: RotateCcw,
+      onClick: fetchOutlets,
+      loading: loading,
+      loadingText: "Refreshing...",
+    },
   ];
 
+  const handleAssignSuperAdmin = async ({
+    outletId,
+    superAdminId,
+    resetForm,
+  }) => {
+    await handleResponse(
+      dispatch(assignOutletToSuperAdmin({ outletId, superAdminId })),
+      () => {
+        fetchOutlets();
+        resetOutletUI();
+        resetForm();
+      },
+    );
+  };
   return (
     <>
       <div className="space-y-6">
@@ -197,13 +247,22 @@ const AllOutletsPage = () => {
           emptyMessage="No Outlets Found"
           emptyDescription="No outlets are currently available to display."
         />
-
-        <OutletDetailsDrawer
-          isOpen={!!selectedOutlet}
-          onClose={() => setSelectedOutlet(null)}
-          outlet={selectedOutlet}
-        />
       </div>
+
+      <OutletDetailsDrawer
+        isOpen={!!selectedOutlet}
+        onClose={resetOutletUI}
+        outlet={selectedOutlet}
+      />
+
+      {/* Assign Super Admin Modal */}
+      <AssignSuperAdminModal
+        isOpen={showAssignModal}
+        onClose={resetOutletUI}
+        onSubmit={handleAssignSuperAdmin}
+        outlet={assignModalOutlet}
+        loading={isAssigningOutlet}
+      />
     </>
   );
 };

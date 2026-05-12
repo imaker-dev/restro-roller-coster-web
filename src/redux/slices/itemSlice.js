@@ -52,6 +52,20 @@ export const updateItem = createAsyncThunk(
     return res.data;
   },
 );
+export const downloadMasterMenuTemplate = createAsyncThunk(
+  "/download/master/menu/template",
+  async () => {
+    const res = await ItemServies.downloadMasterMenuTemplateApi();
+    return res.data;
+  },
+);
+export const addMasterMenu = createAsyncThunk(
+  "/add/master/menu",
+  async ({values }) => {
+    const res = await ItemServies.addMasterMenuApi({values});
+    return res.data;
+  },
+);
 
 const itemSlice = createSlice({
   name: "item",
@@ -62,6 +76,8 @@ const itemSlice = createSlice({
     isUpdatingItem: false,
     isFetchingItemDetails: false,
     itemDetails: null,
+    isDownloadingMasterMenuTemplate:false,
+    isAddingMasterMenu:false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -120,7 +136,29 @@ const itemSlice = createSlice({
       .addCase(updateItem.rejected, (state, action) => {
         state.isUpdatingItem = false;
         toast.error(action.error.message);
-      });
+      })
+      .addCase(downloadMasterMenuTemplate.pending, (state) => {
+        state.isDownloadingMasterMenuTemplate = true;
+      })
+      .addCase(downloadMasterMenuTemplate.fulfilled, (state, action) => {
+        state.isDownloadingMasterMenuTemplate = false;
+        toast.success(action.payload.message);
+      })
+      .addCase(downloadMasterMenuTemplate.rejected, (state, action) => {
+        state.isDownloadingMasterMenuTemplate = false;
+        toast.error(action.error.message);
+      })
+      .addCase(addMasterMenu.pending, (state) => {
+        state.isAddingMasterMenu = true;
+      })
+      .addCase(addMasterMenu.fulfilled, (state, action) => {
+        state.isAddingMasterMenu = false;
+        toast.success(action.payload.message);
+      })
+      .addCase(addMasterMenu.rejected, (state, action) => {
+        state.isAddingMasterMenu = false;
+        toast.error(action.error.message);
+      })
   },
 });
 

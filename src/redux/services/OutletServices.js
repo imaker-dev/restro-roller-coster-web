@@ -36,4 +36,7 @@ export default false
       updateOutletPrintLogoApi: (id, values) => {
         return Api.put(`/outlets/${id}/print-logo`, values);
       },
+      assignOutletToSuperAdminApi:({outletId,superAdminId}) => {
+        return Api.post(`/outlets/${outletId}/assign-super-admin`,{superAdminId})
+      }
     };

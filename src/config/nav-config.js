@@ -8,7 +8,6 @@ import {
   ReceiptText,
   BarChart3,
   Settings,
-  Table,
   Truck,
   Percent,
   Layers,
@@ -28,9 +27,6 @@ import {
   Headphones,
   Activity,
   QrCode,
-  Layers3,
-  PercentCircle,
-  BadgePercent,
   Trash2,
 } from "lucide-react";
 
@@ -159,6 +155,12 @@ export const navConfig = [
         icon: UtensilsCrossed,
         path: ROUTE_PATHS.ALL_MENU_ITEMS,
         roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER],
+      },
+      {
+        name: "Add Master Menu",
+        icon: ClipboardList,
+        path: ROUTE_PATHS.MASTER_MENU_ADD,
+        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
       },
       {
         name: "Modifiers / Add-ons",
@@ -387,6 +389,12 @@ export const navConfig = [
         roles: [ROLES.MASTER],
       },
       {
+        name: "Transactions",
+        icon: ReceiptText,
+        path: ROUTE_PATHS.ALL_TRANSACTIONS,
+        roles: [ROLES.MASTER],
+      },
+      {
         name: "Global Pricing",
         icon: Percent,
         path: ROUTE_PATHS.SUBSCRIPTION_GLOBAL_PRICING,
@@ -440,12 +448,13 @@ export const navConfig = [
       },
     ],
   },
+
   {
     title: "Master Control",
     roles: [ROLES.MASTER],
     items: [
       {
-        name: "Super Admins",
+        name: "Franchise Partners",
         icon: Users,
         path: ROUTE_PATHS.ALL_SUPER_ADMINS,
         roles: [ROLES.MASTER],

@@ -82,7 +82,7 @@ const AddSuperAdminPage = () => {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Add Super Admin" showBackButton />
+      <PageHeader title="Add Franchise Partner" showBackButton />
 
       <Formik
         initialValues={initialValues}
@@ -192,8 +192,8 @@ const AddSuperAdminPage = () => {
 
                 {/* ACTIVE USER */}
                 <ToggleField
-                  label="Super Admin Account Active"
-                  description="Inactive super admin cannot log in or access the system."
+                  label="Franchise Partner Account Active"
+                  description="Inactive franchise partner cannot log in or access the system."
                   checked={formik.values.isActive}
                   onChange={(value) => formik.setFieldValue("isActive", value)}
                   activeColorClass="bg-emerald-500"
@@ -262,8 +262,8 @@ const AddSuperAdminPage = () => {
 
               <InfoCard
                 type="info"
-                title="Super Admin Access"
-                description="Super administrators have unrestricted access to the entire platform. They can create outlets, manage all users, and configure system-wide settings. This account should be assigned only to authorized personnel."
+                title="Franchise Partner Access"
+                description="Franchise partners can manage their assigned outlets, users, subscriptions, and operational settings. This account should only be assigned to authorized business partners."
               />
 
               <div className="flex justify-end">
@@ -278,7 +278,7 @@ const AddSuperAdminPage = () => {
                       Creating...
                     </>
                   ) : (
-                    "Create Super Admin"
+                    "Create Franchise Partner"
                   )}
                 </button>
               </div>

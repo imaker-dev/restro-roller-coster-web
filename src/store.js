@@ -41,6 +41,8 @@ import qrSlice from "./redux/slices/qrSlice";
 import adminSlice from "./redux/slices/adminSlice";
 import superAdminDashboardSlice from "./redux/slices/superAdminDashboardSlice";
 import subscriptionSlice from "./redux/slices/subscriptionSlice";
+import paymentSlice from "./redux/slices/paymentSlice";
+import transactionSlice from "./redux/slices/transactionSlice";
 
 const reducer = {
   auth: authSlice,
@@ -85,6 +87,8 @@ const reducer = {
   admin: adminSlice,
   superAdminDashboard: superAdminDashboardSlice,
   subscription: subscriptionSlice,
+  payment: paymentSlice,
+  transaction: transactionSlice,
 };
 
 const store = configureStore({

@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import PageHeader from "../../layout/PageHeader";
-import { Edit, Eye, Plus, ShieldCheck, ShieldOff } from "lucide-react";
+import {
+  Building2,
+  Edit,
+  Eye,
+  Plus,
+  ShieldCheck,
+  ShieldOff,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "../../config/paths";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,9 +40,8 @@ const AllSuperAdminsPage = () => {
     fetchAdmins();
   }, []);
 
-  const { isFetchingSuperAdmin, allSuperAdmins,isUpdatingStatus } = useSelector(
-    (state) => state.admin,
-  );
+  const { isFetchingSuperAdmin, allSuperAdmins, isUpdatingStatus } =
+    useSelector((state) => state.admin);
 
   const { data, pagination } = allSuperAdmins || {};
 
@@ -70,7 +76,7 @@ const AllSuperAdminsPage = () => {
 
   const actions = [
     {
-      label: "Add New Super Admin",
+      label: "Add New Franchise Partner",
       type: "primary",
       icon: Plus,
       onClick: () => navigate(ROUTE_PATHS.SUPER_ADMIN_ADD),
@@ -129,32 +135,20 @@ const AllSuperAdminsPage = () => {
     },
 
     {
-      key: "outlet",
-      label: "Outlet",
-      sortable: false,
-      render: (row) => {
-        const outlet = row.assignedOutlets;
+      key: "outlets",
+      label: "Outlets",
 
-        if (!outlet) {
-          return (
-            <span className="text-slate-400 text-sm italic">Not Assigned</span>
-          );
-        }
-
-        return (
-          <div className="flex flex-col max-w-[200px]">
-            <span className="text-sm font-medium text-slate-700 truncate">
-              {outlet.name || "Unnamed Outlet"}
-            </span>
-
-            {outlet.code && (
-              <span className="text-xs text-slate-400 font-mono">
-                {outlet.code}
-              </span>
-            )}
-          </div>
-        );
-      },
+      render: (row) => (
+        <div className="flex items-center gap-1.5">
+          <Building2 size={14} className="text-slate-400" />
+          <span className="text-[12px] font-extrabold text-slate-800 tabular-nums">
+            {row.outletCount ?? 0}
+          </span>
+          <span className="text-[10px] text-slate-400 font-medium">
+            outlets
+          </span>
+        </div>
+      ),
     },
 
     {
@@ -177,12 +171,13 @@ const AllSuperAdminsPage = () => {
   ];
 
   const rowActions = [
-    // {
-    //   label: "View Details",
-    //   icon: Eye,
-    //   color: "primary",
-    //   onClick: (row) => navigate(`${ROUTE_PATHS.SUPER_ADMIN_VIEW}/${row.id}`),
-    // },
+    {
+      label: "View Details",
+      icon: Eye,
+      color: "primary",
+      onClick: (row) =>
+        navigate(`${ROUTE_PATHS.SUPER_ADMIN_DETAILS}?userId=${row.id}`),
+    },
     // {
     //   label: "Edit",
     //   icon: Edit,
@@ -192,7 +187,7 @@ const AllSuperAdminsPage = () => {
     {
       label: (row) => (row.isActive ? "Deactivate" : "Activate"),
       icon: (row) => (row.isActive ? ShieldOff : ShieldCheck),
-      color: (row) => (row.isActive ? "red" : "emerald"),
+      color: "blue",
       loading: (row) => false,
       disabled: (row) => false,
       onClick: (row) =>
@@ -203,10 +198,10 @@ const AllSuperAdminsPage = () => {
   return (
     <>
       <div className="space-y-6">
-        <PageHeader title={"All Super Admins"} actions={actions} />
+        <PageHeader title={"All Franchise Partners"} actions={actions} />
 
         <SmartTable
-          title="Super Admins"
+          title="Franchise Partners"
           totalcount={pagination?.total}
           data={data}
           columns={columns}

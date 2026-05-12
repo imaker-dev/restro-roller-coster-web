@@ -55,6 +55,13 @@ export const updateOutletPrintLogo = createAsyncThunk(
     return res.data;
   },
 );
+export const assignOutletToSuperAdmin = createAsyncThunk(
+  "/assign/outlet/super-admin",
+  async ({outletId,superAdminId}) => {
+    const res = await OutletServices.assignOutletToSuperAdminApi({outletId,superAdminId});
+    return res.data;
+  },
+);
 
 const outletSlice = createSlice({
   name: "outlet",
@@ -71,6 +78,7 @@ const outletSlice = createSlice({
     isFetchingOutletPrintLogo:false,
     outletPrintLogo:null,
     isUpdatingOutletPrintLogo:false,
+    isAssigningOutlet:false,
   },
   reducers: {
     resetOutletPreview: (state) => {
@@ -165,6 +173,17 @@ const outletSlice = createSlice({
       })
       .addCase(updateOutletPrintLogo.rejected, (state, action) => {
         state.isUpdatingOutletPrintLogo = false;
+        toast.error(action.error.message);
+      })
+      .addCase(assignOutletToSuperAdmin.pending, (state) => {
+        state.isAssigningOutlet = true;
+      })
+      .addCase(assignOutletToSuperAdmin.fulfilled, (state, action) => {
+        state.isAssigningOutlet = false;
+        toast.success(action.payload.message);
+      })
+      .addCase(assignOutletToSuperAdmin.rejected, (state, action) => {
+        state.isAssigningOutlet = false;
         toast.error(action.error.message);
       })
   },

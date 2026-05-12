@@ -8,6 +8,9 @@ export default false
         getAllSuperAdminsApi: () => {
             return Api.get("/users/super-admins", );
         },
+        getSuperAdminByIdApi: ({userId}) => {
+            return Api.get(`/users/super-admins/${userId}`, );
+        },
         createSuperAdminApi: ({values}) => {
             return Api.post("/users/super-admins",values);
         },

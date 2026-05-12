@@ -17,4 +17,5 @@ export const clearAuthStorage = () => {
   localStorage.removeItem(TOKEN_KEYS.QR_SESSION);
   sessionStorage.removeItem(TOKEN_KEYS.ACCESS);
   sessionStorage.removeItem(TOKEN_KEYS.REFRESH);
+  localStorage.removeItem(TOKEN_KEYS.LOGIN_SOURCE)
 };

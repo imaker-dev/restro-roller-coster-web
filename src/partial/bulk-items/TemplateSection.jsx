@@ -27,7 +27,12 @@ const TEMPLATE_COLS = [
   //   example: "Starters",
   //   desc: "Parent category (for sub-categories & items)",
   // },
-  { key: "Price", required: true, example: "250", desc: `Price in ${CURRENCY.SYMBOL}` },
+  {
+    key: "Price",
+    required: true,
+    example: "250",
+    desc: `Price in ${CURRENCY.SYMBOL}`,
+  },
   {
     key: "Food Type",
     required: true,
@@ -49,7 +54,13 @@ const TEMPLATE_COLS = [
   },
 ];
 
-export default function TemplateSection({ onDownload, onNext, loading }) {
+export default function TemplateSection({
+  onDownload,
+  onNext,
+  loading = false,
+  onDownloadMasterMenu,
+  loadingMasterMenu = false,
+}) {
   return (
     <div className="space-y-5">
       {/* Hero card */}
@@ -84,6 +95,24 @@ export default function TemplateSection({ onDownload, onNext, loading }) {
                   <>
                     <Download size={14} strokeWidth={2.5} />
                     Download CSV Template
+                  </>
+                )}
+              </button>
+              {/* NEW BUTTON */}
+              <button
+                onClick={onDownloadMasterMenu}
+                disabled={loadingMasterMenu}
+                className="flex items-center gap-2 bg-amber-400 text-slate-900 font-bold text-[13px] px-5 py-2.5 rounded-xl hover:bg-amber-300 transition-all shadow-lg active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {loadingMasterMenu ? (
+                  <>
+                    <Loader2 size={14} className="animate-spin" />
+                    Downloading...
+                  </>
+                ) : (
+                  <>
+                    <Download size={14} strokeWidth={2.5} />
+                    Download Master Menu
                   </>
                 )}
               </button>
