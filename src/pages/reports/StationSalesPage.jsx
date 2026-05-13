@@ -124,20 +124,14 @@ const StationSalesPage = () => {
       loading: isExportingStationSalesReport,
       loadingText: "Exporting...",
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchReport,
-      loading: isFetchingStationSalesReport,
-      loadingText: "Refreshing...",
-    },
   ];
 
   return (
     <div className="space-y-6">
       <PageHeader
         title={"Station Sales"}
+        onRefresh={fetchReport}
+        isRefreshing={isFetchingStationSalesReport}
         showBackButton
         rightContent={
           <CustomDateRangePicker

@@ -88,17 +88,6 @@ const InventoryMovementsPage = () => {
     setCurrentPage(1);
   }, [searchQuery, dateRange, selectedType]);
 
-  const actions = [
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchMovements,
-      loading: isFetchingMovements,
-      loadingText: "Refreshing...",
-    },
-  ];
-
   const columns = [
     {
       key: "id",
@@ -281,7 +270,8 @@ const InventoryMovementsPage = () => {
     <div className="space-y-6">
       <PageHeader
         title="Stock Movements"
-        actions={actions}
+        onRefresh={fetchMovements}
+        isRefreshing={isFetchingMovements}
         rightContent={
           <CustomDateRangePicker value={dateRange} onChange={setDateRange} />
         }
@@ -321,7 +311,6 @@ const InventoryMovementsPage = () => {
           ))}
         </select>
       </div>
-
 
       <SmartTable
         title="Movements"

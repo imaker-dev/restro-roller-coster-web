@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import PageHeader from "../../layout/PageHeader";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  downloadAllTableQr,
+  downloadTableQr,
   fetchAllTableQr,
   generateAllTableQr,
   generateSingleTableQr,
@@ -26,6 +28,7 @@ import {
 import StatusBadge from "../../layout/StatusBadge";
 import NoDataFound from "../../layout/NoDataFound";
 import { handleResponse } from "../../utils/helpers";
+import { downloadBlob } from "../../utils/blob";
 
 const BASE_URL = window.location.origin;
 
@@ -212,30 +215,9 @@ function GenerateAllModal({
 }
 
 // ─── QR Card ──────────────────────────────────────────────────────────────────
-function QrCard({ table, onGenerate }) {
-  const [isDownloading, setIsDownloading] = useState(false);
+function QrCard({ table, onGenerate, onDownload, tableQrToDownload }) {
   const [copied, setCopied] = useState(false);
   const hasQr = table?.qrStatus === "available";
-
-  const handleDownload = async () => {
-    if (!table?.qrImagePath || isDownloading) return;
-    setIsDownloading(true);
-    try {
-      const response = await fetch(table.qrImagePath);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `QR_${table.tableNumber}_${table.tableName.replace(/\s+/g, "_")}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error("Download failed:", err);
-    }
-    setIsDownloading(false);
-  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(table.qrUrl);
@@ -319,11 +301,11 @@ function QrCard({ table, onGenerate }) {
           <div className="flex items-center gap-1.5">
             {/* Download */}
             <button
-              onClick={handleDownload}
-              disabled={isDownloading}
+              onClick={() => onDownload({ table })}
+              disabled={tableQrToDownload}
               className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-bold hover:bg-slate-50 transition-colors disabled:opacity-50"
             >
-              {isDownloading ? (
+              {tableQrToDownload === table.tableId ? (
                 <Loader2 size={12} className="animate-spin" />
               ) : (
                 <Download size={12} />
@@ -397,6 +379,8 @@ const TablesQrPage = () => {
     generatedQr,
     isGeneratingBulkQr,
     allQrGenerated,
+    isDownloadingAllQr,
+    tableQrToDownload,
   } = useSelector((s) => s.qr);
 
   // Single modal state
@@ -460,39 +444,54 @@ const TablesQrPage = () => {
     setModalState({ type: "bulk", table: null });
   };
 
+  const handleDonloadAllQr = async () => {
+    const fileName = `table-qr-codes-${outletId}`;
+    await handleResponse(dispatch(downloadAllTableQr({ outletId })), (res) => {
+      downloadBlob({ data: res.payload, fileName });
+    });
+  };
+
+  const handleDownloadSingleQr = async ({ table }) => {
+    const fileName = `table-qr-${table?.tableNumber}`;
+
+    await handleResponse(
+      dispatch(downloadTableQr({ outletId, tableId: table.tableId })),
+      (res) => {
+        downloadBlob({ data: res.payload, fileName });
+      },
+    );
+  };
+  
   const floors = allTablesQr?.floors ?? [];
   const allTables = floors.flatMap((f) => f.tables ?? []);
 
   const actions = [
     {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchQr,
-      loading: isFetchingAllTableQr,
-      loadingText: "Refreshing...",
-    },
-    {
       label: "Generate for All",
       type: "primary",
       icon: Wand2,
       onClick: handleOpenBulkModal,
-      loading: isFetchingAllTableQr,
+      loading: isGeneratingBulkQr,
       loadingText: "Refreshing...",
     },
     {
       label: "Download All",
       type: "export",
       icon: DownloadIcon,
-      onClick: handleOpenBulkModal,
-      loading: isFetchingAllTableQr,
-      loadingText: "Refreshing...",
+      onClick: handleDonloadAllQr,
+      loading: isDownloadingAllQr,
+      loadingText: "Downloading...",
     },
   ];
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Tables QR" actions={actions} />
+      <PageHeader
+        title="Tables QR"
+        actions={actions}
+        onRefresh={fetchQr}
+        isRefreshing={isFetchingAllTableQr}
+      />
 
       {/* Content */}
       {isFetchingAllTableQr ? (
@@ -534,6 +533,8 @@ const TablesQrPage = () => {
                   <QrCard
                     key={table.tableId}
                     table={table}
+                    onDownload={handleDownloadSingleQr}
+                    tableQrToDownload={tableQrToDownload}
                     onGenerate={handleOpenSingleModal}
                   />
                 ))}

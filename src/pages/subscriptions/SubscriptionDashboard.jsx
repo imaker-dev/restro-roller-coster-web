@@ -70,23 +70,13 @@ const SubscriptionDashboard = () => {
     fetchDashboard();
   }, []);
 
-  const actions = [
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RefreshCw,
-      onClick: fetchDashboard,
-      loading: isFetchingSubscriptionDashboard,
-      loadingText: "Refreshing...",
-    },
-  ];
-
   return (
     <div className=" space-y-6">
       <PageHeader
         title="Subscription Dashboard"
+        onRefresh={fetchDashboard}
+        isRefreshing={isFetchingSubscriptionDashboard}
         showBackButton
-        actions={actions}
       />
 
       {/* ── Grid ── */}

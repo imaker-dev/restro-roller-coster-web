@@ -289,14 +289,6 @@ const DiscountReportPage = () => {
       loading: isExportingDiscountReport,
       loadingText: "Exporting...",
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchReports,
-      loading: isFetchingDiscountReport,
-      loadingText: "Refreshing...",
-    },
   ];
 
   const stats = [
@@ -348,6 +340,8 @@ const DiscountReportPage = () => {
         title="Discount Report"
         showBackButton
         actions={actions}
+        onRefresh={fetchReports}
+        isRefreshing={isFetchingDiscountReport}
         rightContent={
           <CustomDateRangePicker value={dateRange} onChange={setDateRange} />
         }

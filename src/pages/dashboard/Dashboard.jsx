@@ -68,17 +68,6 @@ export default function Dashboard() {
     }));
   }, [sales]);
 
-  const actions = [
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchStats,
-      loading: isfetchingDashboardStats,
-      loadingText: "Refreshing...",
-    },
-  ];
-
   const stats = [
     {
       title: "Total Sales",
@@ -191,12 +180,14 @@ export default function Dashboard() {
       color,
     };
   });
-  
+
   return (
     <div className="space-y-6">
       <PageHeader
         title={"Dashboard"}
         description="Overview of sales, orders, and performance."
+        onRefresh={fetchStats}
+        isRefreshing={isfetchingDashboardStats}
         rightContent={
           <CustomDateRangePicker
             value={dateRange}
@@ -204,7 +195,6 @@ export default function Dashboard() {
             defaultRange={DATE_RANGES.TODAY}
           />
         }
-        actions={actions}
       />
 
       {/* ── Stat Cards ── */}

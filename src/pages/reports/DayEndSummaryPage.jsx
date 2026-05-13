@@ -64,15 +64,7 @@ const DayEndSummaryPage = () => {
       loading: isExportingDayEndSummary,
       loadingText: "Exporting...",
       type:"export"
-    },
-    {
-      label: "Refresh",
-      icon: RotateCcw,
-      onClick: fetchReport,
-      loading: isFetchingDailyEndSummary,
-      loadingText: "Refreshing...",
-      type:"refresh"
-    },
+    }
   ];
 
   return (
@@ -85,6 +77,8 @@ const DayEndSummaryPage = () => {
             ? `${formatDate(dateRange.start, "long")} — ${formatDate(dateRange.end, "long")} (${dayCount} days)`
             : "Select a date range to view summary"
         }
+        onRefresh={fetchReport}
+        isRefreshing={isFetchingDailyEndSummary}
         rightContent={
           <CustomDateRangePicker
             value={dateRangeState}

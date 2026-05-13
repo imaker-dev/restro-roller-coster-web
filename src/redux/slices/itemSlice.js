@@ -54,8 +54,8 @@ export const updateItem = createAsyncThunk(
 );
 export const downloadMasterMenuTemplate = createAsyncThunk(
   "/download/master/menu/template",
-  async () => {
-    const res = await ItemServies.downloadMasterMenuTemplateApi();
+  async ({outletId}) => {
+    const res = await ItemServies.downloadMasterMenuTemplateApi({outletId});
     return res.data;
   },
 );

@@ -6,11 +6,14 @@ import {
   fetchSettingsByCategory,
   updateSetting,
 } from "../../redux/slices/settingSlice";
-import { Info, CheckCircle } from "lucide-react";
+import { Info, CheckCircle, ToggleLeft, Text } from "lucide-react";
 import { EditSettingModal } from "../../partial/setting/EditSettingModal";
 import { SettingConfirmationModal } from "../../partial/setting/SettingConfirmationModal";
 import { handleResponse } from "../../utils/helpers";
 import LoadingOverlay from "../../components/LoadingOverlay";
+import { formatText } from "../../utils/utils";
+import InfoCard from "../../components/InfoCard";
+import MetricPanel from "../../partial/report/daily-sales-report/MetricPanel";
 
 /* ============================= */
 /*        MAIN PAGE              */
@@ -101,7 +104,7 @@ const SettingDetailsPage = () => {
     <>
       <div className="space-y-6">
         <PageHeader
-          title={`${settingDetails?.category ? settingDetails.category.charAt(0).toUpperCase() + settingDetails.category.slice(1) : ""} Settings`}
+          title={`${settingDetails?.category ? formatText(settingDetails?.category) : ""} Settings`}
           description="Configure and manage your application settings"
           showBackButton
         />
@@ -111,12 +114,7 @@ const SettingDetailsPage = () => {
           {/* Configuration Settings - Main */}
           <div className="lg:col-span-2 space-y-4">
             {settingsArray.filter((s) => s.type !== "boolean").length > 0 && (
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                <div className="px-5 py-4 border-b border-gray-100 bg-gray-50">
-                  <h3 className="text-sm font-semibold text-gray-900">
-                    Configuration Values
-                  </h3>
-                </div>
+              <MetricPanel icon={Text} title={"Configuration Values"} noPad>
                 <div className="divide-y divide-gray-100">
                   {settingsArray
                     .filter((s) => s.type !== "boolean")
@@ -128,17 +126,12 @@ const SettingDetailsPage = () => {
                       />
                     ))}
                 </div>
-              </div>
+              </MetricPanel>
             )}
 
             {/* Boolean Toggles */}
             {settingsArray.filter((s) => s.type === "boolean").length > 0 && (
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                <div className="px-5 py-4 border-b border-gray-100 bg-gray-50">
-                  <h3 className="text-sm font-semibold text-gray-900">
-                    Feature Toggles
-                  </h3>
-                </div>
+              <MetricPanel icon={ToggleLeft} title={"Feature Toggles"} noPad>
                 <div className="divide-y divide-gray-100">
                   {settingsArray
                     .filter((s) => s.type === "boolean")
@@ -150,7 +143,7 @@ const SettingDetailsPage = () => {
                       />
                     ))}
                 </div>
-              </div>
+              </MetricPanel>
             )}
           </div>
 
@@ -191,23 +184,13 @@ const SettingDetailsPage = () => {
             </div>
 
             {/* Info Card */}
-            <div className="bg-blue-50 rounded-xl border border-blue-200 p-5">
-              <div className="flex items-start gap-3">
-                <Info
-                  size={18}
-                  className="text-blue-600 flex-shrink-0 mt-0.5"
-                />
-                <div>
-                  <p className="text-xs font-semibold text-blue-900 mb-1">
-                    Important
-                  </p>
-                  <p className="text-xs text-blue-700 leading-relaxed">
-                    Changes to settings take effect immediately. Some settings
-                    may require specific permissions or configurations.
-                  </p>
-                </div>
-              </div>
-            </div>
+            <InfoCard
+              title={"Important"}
+              description={
+                "Changes to settings take effect immediately. Some settings may require specific permissions or configurations."
+              }
+              size="sm"
+            />
 
             {/* Summary Stats */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">

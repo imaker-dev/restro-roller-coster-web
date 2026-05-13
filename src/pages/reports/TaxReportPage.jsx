@@ -248,14 +248,6 @@ const TaxReportPage = () => {
       loading: isExportingTaxReport,
       loadingText: "Exporting...",
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchReport,
-      loading: isFetchingTaxReport,
-      loadingText: "Refreshing...",
-    },
   ];
 
   return (
@@ -263,6 +255,8 @@ const TaxReportPage = () => {
       <PageHeader
         title={"Tax Report"}
         showBackButton
+        onRefresh={fetchReport}
+        isRefreshing={isFetchingTaxReport}
         rightContent={
           <CustomDateRangePicker
             value={dateRange}

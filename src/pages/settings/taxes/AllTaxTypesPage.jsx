@@ -41,14 +41,6 @@ const AllTaxTypesPage = () => {
       icon: Plus,
       onClick: () => setIsAddModalOpen(true),
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchTypes,
-      loading: isFetchingTaxTypes,
-      loadingText: "Refreshing...",
-    },
   ];
 
   const columns = [
@@ -103,7 +95,7 @@ const AllTaxTypesPage = () => {
   return (
     <>
       <div className="space-y-6">
-        <PageHeader title={"All Tax Types"} actions={actions} showBackButton />
+        <PageHeader title={"All Tax Types"} actions={actions} onRefresh={fetchTypes} isRefreshing={isFetchingTaxTypes} showBackButton />
 
         <SmartTable
           title="Tax Types"

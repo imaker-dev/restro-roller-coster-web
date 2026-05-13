@@ -130,14 +130,6 @@ const DueReportPage = () => {
       loadingText: "Exporting...",
       disabled: !customers || customers.length === 0,
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchDue,
-      loading: isFetchingDueReport,
-      loadingText: "Refreshing...",
-    },
   ];
 
   return (
@@ -145,6 +137,8 @@ const DueReportPage = () => {
       <PageHeader
         title="Due Reports"
         showBackButton
+        onRefresh={fetchDue}
+        isRefreshing={isFetchingDueReport}
         rightContent={
           <CustomDateRangePicker value={dateRange} onChange={setDateRange} />
         }

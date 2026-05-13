@@ -40,10 +40,13 @@ export default false
       updateItemApi: (id, values) => {
         return Api.put(`/menu/items/${id}`, values);
       },
-      downloadMasterMenuTemplateApi:() => {
-        return Api.get(`/bulk-upload/menu/super-admin-template`,{responseType:"blob"})
+      downloadMasterMenuTemplateApi: ({ outletId }) => {
+        return Api.get(
+          `/bulk-upload/menu/super-admin-template?outletId=${outletId}`,
+          { responseType: "blob" },
+        );
       },
-      addMasterMenuApi:({values}) => {
-        return Api.post(`/bulk-upload/menu/super-admin-template`,values)
-      }
+      addMasterMenuApi: ({ values }) => {
+        return Api.post(`/bulk-upload/menu/super-admin-template`, values);
+      },
     };

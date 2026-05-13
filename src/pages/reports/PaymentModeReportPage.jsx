@@ -178,14 +178,6 @@ const PaymentModeReportPage = () => {
       loading: isExportingPaymentModeReport,
       loadingText: "Exporting...",
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchReport,
-      loading: isFetchingPaymentModeReport,
-      loadingText: "Refreshing...",
-    },
   ];
 
   return (
@@ -194,6 +186,8 @@ const PaymentModeReportPage = () => {
         <PageHeader
           title={"Payment Mode Report"}
           showBackButton
+          onRefresh={fetchReport}
+          isRefreshing={isFetchingPaymentModeReport}
           rightContent={
             <CustomDateRangePicker
               value={dateRange}

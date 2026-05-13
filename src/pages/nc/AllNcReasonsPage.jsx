@@ -102,7 +102,13 @@ const AllNcReasonsPage = () => {
   return (
     <>
       <div className="space-y-6">
-        <PageHeader title="NC (No Charge) Reasons" actions={actions} />
+        <PageHeader
+          title="NC (No Charge) Reasons"
+          actions={actions}
+          onRefresh={fetchReasons}
+          isRefreshing={loading}
+          showBackButton
+        />
 
         <SmartTable
           title="Reasons"

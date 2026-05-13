@@ -77,14 +77,6 @@ const AllRegistrationRequestPage = () => {
       icon: Plus,
       onClick: () => navigate(ROUTE_PATHS.REGISTRATION_REQUESTS_ADD),
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchRequests,
-      loading: isFetchingAllRequests,
-      loadingText: "Refreshing...",
-    },
   ];
 
   const columns = [
@@ -237,7 +229,13 @@ const AllRegistrationRequestPage = () => {
   return (
     <>
       <div className="space-y-6">
-        <PageHeader title={"All Requests"} actions={actions} showBackButton />
+        <PageHeader
+          title={"All Requests"}
+          actions={actions}
+          onRefresh={fetchRequests}
+          isRefreshing={isFetchingAllRequests}
+          showBackButton
+        />
 
         <SmartTable
           title="Requests"

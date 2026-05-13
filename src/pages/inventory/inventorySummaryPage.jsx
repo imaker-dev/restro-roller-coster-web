@@ -153,8 +153,12 @@ const InventorySummaryPage = () => {
     (s) => s.inventory,
   );
 
+  const fetchSummary = () => {
+    if (!outletId) return;
+    dispatch(fetchStockSummary(outletId));
+  };
   useEffect(() => {
-    if (outletId) dispatch(fetchStockSummary(outletId));
+    fetchSummary();
   }, [outletId]);
 
   const report = stockSummary?.data || stockSummary || {};
@@ -210,6 +214,8 @@ const InventorySummaryPage = () => {
         <PageHeader
           title="Stock Summary"
           description="Current inventory levels, values and stock alerts"
+          onRefresh={fetchSummary}
+          isRefreshing={isFetchingStockSummary}
         />
 
         <div className=" grid grid-cols-2 lg:grid-cols-4 gap-3">

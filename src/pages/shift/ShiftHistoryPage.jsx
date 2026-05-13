@@ -79,21 +79,15 @@ const ShiftHistoryPage = () => {
       onClick: () => handleExportShiftSummaryReport(),
       loading: isExportingShiftHistory,
       loadingText: "Exporting...",
-    },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchShifts,
-      loading: isFetchingShiftHistory,
-      loadingText: "Refreshing...",
-    },
+    }
   ];
 
   return (
     <div className="space-y-6">
       <PageHeader
         title={"Shift History"}
+        onRefresh={fetchShifts}
+        isRefreshing={isFetchingShiftHistory}
         rightContent={
           <CustomDateRangePicker
             value={dateRange}

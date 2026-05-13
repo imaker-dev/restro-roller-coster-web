@@ -18,6 +18,7 @@ import {
   Info,
   Loader2,
   AlertTriangle,
+  ReceiptText,
 } from "lucide-react";
 import SubscriptionBadge from "../../partial/subscription/SubscriptionBadge";
 import MetricPanel from "../../partial/report/daily-sales-report/MetricPanel";
@@ -321,16 +322,8 @@ const MySubscriptionPage = () => {
         <PageHeader
           title="My Subscription"
           showBackButton
-          actions={[
-            {
-              label: "Refresh",
-              type: "refresh",
-              icon: RefreshCw,
-              onClick: () => dispatch(fetchMySubscription()),
-              loading: isFetchingMySubscription,
-              loadingText: "Refreshing...",
-            },
-          ]}
+          onRefresh={fetchSubscription}
+          isRefreshing={isFetchingMySubscription}
         />
 
         <div>
@@ -443,7 +436,7 @@ const MySubscriptionPage = () => {
               <ActiveHeroCard d={d} />
 
               {/* Payment info */}
-              <MetricPanel icon={Receipt} title="Payment Details">
+              <MetricPanel icon={ReceiptText} title="Payment Details">
                 <InfoRow
                   icon={IndianRupee}
                   label="Base Amount"

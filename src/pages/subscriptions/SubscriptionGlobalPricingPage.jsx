@@ -77,7 +77,7 @@ const SubscriptionGlobalPricingPage = () => {
   return (
     <>
       <div className="space-y-6">
-        <PageHeader title="Subscription Global Pricing" />
+        <PageHeader title="Subscription Global Pricing" showBackButton/>
 
         {/* ---------------- TOTAL ---------------- */}
 

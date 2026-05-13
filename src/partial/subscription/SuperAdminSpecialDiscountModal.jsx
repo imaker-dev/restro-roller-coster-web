@@ -94,7 +94,7 @@ const SuperAdminSpecialDiscountModal = ({
   return (
     <ModalBasic
       id="special-discount-modal"
-      title="Provide Special Discount"
+      title="Set Franchise Pricing"
       isOpen={isOpen}
       onClose={onClose}
     >
@@ -104,10 +104,10 @@ const SuperAdminSpecialDiscountModal = ({
         className="p-4 space-y-4"
       >
         <SelectField
-          label="Super Admin"
+          label="Franchise Owner"
           name="adminId"
           required
-          placeholder="Select super admin"
+          placeholder="Select franchise owner"
           value={formik.values.adminId}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -147,7 +147,7 @@ const SuperAdminSpecialDiscountModal = ({
           label="Notes"
           name="notes"
           required
-          placeholder="e.g. Special deal for bulk outlets"
+          placeholder="e.g. Custom pricing for premium franchise partner"
           value={formik.values.notes}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -205,7 +205,7 @@ const SuperAdminSpecialDiscountModal = ({
           size="sm"
           type="warning"
           title="Important"
-          description="This pricing overrides the default plan pricing for this super admin."
+          description="This pricing overrides the default subscription pricing for the selected franchise owner."
         />
 
         {/* Footer Buttons */}
@@ -225,7 +225,7 @@ const SuperAdminSpecialDiscountModal = ({
             className="btn bg-primary-500 text-white hover:bg-primary-600 disabled:opacity-50 flex items-center gap-2"
           >
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-            {loading ? "Applying..." : "Apply Discount"}
+            {loading ? "Applying..." : "Apply Pricing"}
           </button>
         </div>
       </form>

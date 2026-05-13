@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, RefreshCw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumb";
 import PermissionGuard from "../guard/PermissionGuard";
@@ -23,6 +23,9 @@ const PageHeader = ({
   actions = [],
   badge = null,
   rightContent = null,
+  onRefresh,
+  isRefreshing = false,
+  refreshTooltip = "Refresh data",
 }) => {
   const navigate = useNavigate();
 
@@ -60,9 +63,30 @@ const PageHeader = ({
           )}
 
           <div className="min-w-0">
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 truncate">
-              {title}
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 truncate">
+                {title}
+              </h1>
+
+              {/*  Refresh Button - Shows only when onRefresh is provided */}
+              {onRefresh && (
+                <button
+                  onClick={onRefresh}
+                  disabled={isRefreshing}
+                  className="flex-shrink-0 p-1.5 sm:p-2 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                  title={refreshTooltip}
+                  type="button"
+                >
+                  <RefreshCw
+                    className={`h-4 w-4 sm:h-5 sm:w-5 text-gray-500 hover:text-gray-700 transition-colors ${
+                      isRefreshing ? "animate-spin" : ""
+                    }`}
+                    strokeWidth={2}
+                  />
+                </button>
+              )}
+            </div>
+ 
 
             {description ? (
               <p className="text-gray-600 mt-1 text-sm sm:text-base line-clamp-2">

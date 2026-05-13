@@ -21,7 +21,7 @@ import UserAvatar from "../../components/UserAvatar";
 import InfoCard from "../../components/InfoCard";
 
 const validationSchema = Yup.object({
-  superAdminId: Yup.string().required("Please select a super admin"),
+  superAdminId: Yup.string().required("Please select a franchise"),
 });
 
 const AssignSuperAdminModal = ({
@@ -84,18 +84,13 @@ const AssignSuperAdminModal = ({
       onClose={onClose}
       modalSize="lg"
       title={
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
-            <Shield className="w-5 h-5 text-primary-600" />
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold text-slate-900">
-              Assign Administrator
-            </h2>
-            <p className="text-sm text-slate-500">
-              Grant administrative access to this outlet
-            </p>
-          </div>
+        <div>
+          <h2 className="text-lg font-semibold text-slate-900">
+            Assign Franchise Owner
+          </h2>
+          <p className="text-sm text-slate-500">
+            Assign this outlet to a franchise owner
+          </p>
         </div>
       }
     >
@@ -104,10 +99,9 @@ const AssignSuperAdminModal = ({
         autoComplete="off"
         className="p-4 space-y-5"
       >
-        {/* Outlet Summary Card */}
         {/* Outlet Summary */}
         {outlet && (
-          <div className="relative overflow-hidden rounded border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="relative overflow-hidden rounded-md border border-slate-200 bg-white p-4 shadow-sm">
             {/* Left */}
             <div className="flex items-start gap-3 min-w-0">
               <div className="min-w-0">
@@ -150,70 +144,30 @@ const AssignSuperAdminModal = ({
           <InfoCard
             title={"Currently Assigned"}
             description={
-              "This outlet already has an administrator assigned. Select a different admin below to reassign."
+              "This outlet is already assigned to a franchise owner. Select a different franchise owner below to reassign."
             }
             size="sm"
           />
         )}
 
         {/* Admin Selection */}
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-slate-700">
-            Select Administrator
-            <span className="text-red-500 ml-1">*</span>
-          </label>
 
-          <SelectField
-            name="superAdminId"
-            value={formik.values.superAdminId}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.superAdminId && formik.errors.superAdminId}
-            options={superAdminOptions || []}
-            placeholder="Search and select a super admin..."
-            loading={isFetchingSuperAdmin}
-            renderOption={(option, isSelected) => (
-              <div className="flex items-center justify-between w-full py-2">
-                <div className="flex items-center gap-3 min-w-0">
-                  <UserAvatar
-                    name={option.label}
-                    size="sm"
-                    className="shrink-0"
-                  />
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-slate-800 truncate">
-                        {option.label}
-                      </span>
-                      {option.status && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                      )}
-                    </div>
-                    <p className="text-xs text-slate-500 truncate mt-0.5">
-                      {option.subtitle}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 shrink-0 ml-3">
-                  {option.meta && (
-                    <span className="text-xs text-slate-400 font-mono">
-                      {option.meta}
-                    </span>
-                  )}
-                  {isSelected && (
-                    <div className="w-5 h-5 rounded-full bg-primary-500 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" />
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          />
-        </div>
+        <SelectField
+          name="superAdminId"
+          label={"Select Franchise Owner"}
+          required={true}
+          value={formik.values.superAdminId}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.superAdminId && formik.errors.superAdminId}
+          options={superAdminOptions || []}
+          placeholder="Search and select a super admin..."
+          loading={isFetchingSuperAdmin}
+        />
 
         {/* Selected Admin Preview */}
         {currentlyAssigned && (
-          <div className="bg-white border border-slate-200 rounded-xl p-4">
+          <div className="bg-white border border-slate-200 rounded-md p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <UserAvatar name={currentlyAssigned.name} size="md" />
@@ -269,9 +223,8 @@ const AssignSuperAdminModal = ({
 
         {/* Info Footer */}
         <InfoCard
-          title="Administrator Access"
-          description={`The assigned administrator will have full control over this outlet's operations, 
-            including menu management, staff coordination, and reporting.`}
+          title="Franchise Owner Access"
+          description={`The assigned franchise owner will have full access to manage this outlet's operations, staff, pricing, and reporting.`}
           size="sm"
         />
 
@@ -299,7 +252,7 @@ const AssignSuperAdminModal = ({
             ) : (
               <>
                 <Shield className="w-4 h-4" />
-                Assign Admin
+                Assign Franchise Owner
               </>
             )}
           </button>

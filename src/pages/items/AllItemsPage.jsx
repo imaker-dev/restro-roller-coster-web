@@ -214,14 +214,6 @@ const AllItemsPage = () => {
       icon: Plus,
       onClick: () => navigate(ROUTE_PATHS.MENU_ITEMS_BULK_ADD),
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchItems,
-      loading: loading,
-      loadingText: "Refreshing...",
-    },
   ];
 
   const categoryOptions =
@@ -270,7 +262,12 @@ const AllItemsPage = () => {
 
   return (
     <div className="space-y-6">
-      <PageHeader title={"All Items"} actions={actions} />
+      <PageHeader
+        title={"All Items"}
+        actions={actions}
+        onRefresh={fetchItems}
+        isRefreshing={loading}
+      />
 
       <div className="flex items-center justify-between gap-4">
         {/* Search Bar */}

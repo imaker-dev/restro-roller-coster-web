@@ -32,6 +32,7 @@ import LoadingOverlay from "../../components/LoadingOverlay";
 import SmartTable from "../../components/SmartTable";
 import { formatText } from "../../utils/utils";
 import StatusBadge from "../../layout/StatusBadge";
+import SubscriptionBadge from "../../partial/subscription/SubscriptionBadge";
 
 const SuperAdminDetailsPage = () => {
   const dispatch = useDispatch();
@@ -167,7 +168,7 @@ const SuperAdminDetailsPage = () => {
 
         return (
           <div className="flex flex-col">
-            <StatusBadge value={plan?.status} size="sm" />
+            <SubscriptionBadge status={plan.status} size="sm" />
 
             {plan?.end_date && (
               <span className="text-[10px] text-slate-500 mt-1">
@@ -226,56 +227,6 @@ const SuperAdminDetailsPage = () => {
     },
 
     /* ===============================
-     OPERATIONS
-  =============================== */
-    {
-      key: "operations",
-      label: "Operations",
-
-      render: (row) => (
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2">
-            <UtensilsCrossed size={13} className="text-slate-400" />
-
-            <span className="text-[11px] font-bold text-slate-700">
-              {formatText(row.outlet_type)}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3 text-[10px] text-slate-500">
-            <span>{row.floor_count ?? 0} floors</span>
-            <span>{row.table_count ?? 0} tables</span>
-          </div>
-        </div>
-      ),
-    },
-
-    /* ===============================
-     TIMING
-  =============================== */
-    {
-      key: "timing",
-      label: "Timing",
-
-      render: (row) => {
-        if (row.is_24_hours) {
-          return (
-            <span className="px-2 py-1 text-[10px] font-bold rounded-full bg-emerald-100 text-emerald-700">
-              24 Hours
-            </span>
-          );
-        }
-
-        return (
-          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-600">
-            <Clock size={13} className="text-slate-400" />
-            {row.opening_time?.slice(0, 5)} - {row.closing_time?.slice(0, 5)}
-          </div>
-        );
-      },
-    },
-
-    /* ===============================
      STATUS
   =============================== */
     {
@@ -302,7 +253,7 @@ const SuperAdminDetailsPage = () => {
 
   return (
     <div className="space-y-8 pb-8">
-      <PageHeader title="Super Admin Details" showBackButton />
+      <PageHeader title="Franchise Details" showBackButton />
 
       {/* Hero Section */}
       <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100">
@@ -389,7 +340,6 @@ const SuperAdminDetailsPage = () => {
         // actions={rowActions}
         loading={isFetchingSuperAdminDetails}
       />
-
     </div>
   );
 };

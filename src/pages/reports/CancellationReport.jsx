@@ -143,14 +143,6 @@ const CancellationReport = () => {
       loading: isExportingCancellationReport,
       loadingText: "Exporting...",
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchReport,
-      loading: isFetchingCancellationReport,
-      loadingText: "Refreshing...",
-    },
   ];
 
   return (
@@ -158,6 +150,8 @@ const CancellationReport = () => {
       <PageHeader
         title={"Cancellation Report"}
         showBackButton
+        onRefresh={fetchReport}
+        isRefreshing={isFetchingCancellationReport}
         rightContent={
           <CustomDateRangePicker
             value={dateRange}

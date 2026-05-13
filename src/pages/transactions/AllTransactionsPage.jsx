@@ -48,17 +48,6 @@ const AllTransactionsPage = () => {
     fetchTransactions();
   }, [currentPage, itemsPerPage, search, dateRange]);
 
-  const actions = [
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchTransactions,
-      loading: isFetchingTransactions,
-      loadingText: "Refreshing...",
-    },
-  ];
-
   const columns = [
     {
       key: "invoice",
@@ -180,38 +169,6 @@ const AllTransactionsPage = () => {
     },
 
     {
-      key: "admin",
-      label: "User",
-      render: (row) => (
-        <div className="flex flex-col">
-          <span className="text-[12px] font-semibold text-slate-700">
-            {row.superAdmin?.name}
-          </span>
-
-          <span className="text-[10px] text-slate-400">
-            {row.superAdmin?.email}
-          </span>
-        </div>
-      ),
-    },
-
-    {
-      key: "contact",
-      label: "Outlet Contact",
-      render: (row) => (
-        <div className="flex flex-col">
-          <span className="text-[12px] font-semibold text-slate-700">
-            {row.outlet?.phone}
-          </span>
-
-          <span className="text-[10px] text-slate-400">
-            {row.outlet?.email}
-          </span>
-        </div>
-      ),
-    },
-
-    {
       key: "createdAt",
       label: "Created",
       render: (row) => (
@@ -268,7 +225,8 @@ const AllTransactionsPage = () => {
         rightContent={
           <CustomDateRangePicker value={dateRange} onChange={setDateRange} />
         }
-        actions={actions}
+        onRefresh={fetchTransactions}
+        isRefreshing={isFetchingTransactions}
       />
 
       <SearchBar onSearch={(v) => setSearch(v)} />

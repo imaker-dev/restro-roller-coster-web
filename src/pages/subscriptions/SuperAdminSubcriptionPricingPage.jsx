@@ -151,18 +151,20 @@ const SuperAdminSubcriptionPricingPage = () => {
     <>
       <div className="space-y-6">
         <PageHeader
-          title={"Super Admin Subscriptions"}
+          title={"Franchise Special Pricing"}
           actions={actions}
           showBackButton
         />
 
         <SmartTable
-          title="Super Admin Dicount"
+          title={"Franchise Pricing"}
           totalcount={allSuperAdminSubscriptionPricing?.length}
           data={allSuperAdminSubscriptionPricing}
           columns={columns}
           actions={rowActions}
           loading={isFetchingSuperAdminSubscriptionPricing}
+          emptyMessage="No Franchise Pricing Found"
+          emptyDescription="Special pricing for franchise owners has not been configured yet."
         />
       </div>
 

@@ -41,7 +41,9 @@ const AddBulkItemPage = () => {
   const navigate = useNavigate();
 
   const { outletId } = useSelector((state) => state.auth);
-  const { isDownloadingMasterMenuTemplate } = useSelector((state) => state.item);
+  const { isDownloadingMasterMenuTemplate } = useSelector(
+    (state) => state.item,
+  );
   const {
     loadingTemplate,
     isValidating,
@@ -73,14 +75,17 @@ const AddBulkItemPage = () => {
   };
 
   const downloadMasterMenu = async () => {
-    await handleResponse(dispatch(downloadMasterMenuTemplate()),(res) => {
-      //  downloadBlob({
-      //   data: res.payload,
-      //   fileName: "Master_Menu",
-      // });
-    })
-  // your API call
-};
+    await handleResponse(
+      dispatch(downloadMasterMenuTemplate({ outletId })),
+      (res) => {
+        downloadBlob({
+          data: res.payload,
+          fileName: "Master_Menu",
+        });
+      },
+    );
+    // your API call
+  };
 
   const handleFileSelected = async (selectedFile) => {
     const fd = new FormData();
@@ -146,7 +151,7 @@ const AddBulkItemPage = () => {
               loadingMasterMenu={isDownloadingMasterMenuTemplate}
             />
           )}
-          
+
           {step === 2 && (
             <UploadSection
               onFileSelected={handleFileSelected}

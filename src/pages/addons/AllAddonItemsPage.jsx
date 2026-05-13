@@ -136,6 +136,8 @@ const AllAddonItemsPage = () => {
           title="Addons"
           description="Create, update, and manage add-on items available across the menu."
           actions={actions}
+          onRefresh={fetchAddonItems}
+          isRefreshing={isFetchingAddonItems}
           showBackButton
         />
 

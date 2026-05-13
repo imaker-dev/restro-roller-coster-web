@@ -36,6 +36,7 @@
     "tailwind-merge": "^3.4.1",
     "tailwindcss": "^4.1.18",
     "tippy.js": "^6.3.7",
+    "uuid": "^14.0.0",
     "yup": "^1.7.1"
   },
   "devDependencies": {

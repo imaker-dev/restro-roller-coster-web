@@ -81,6 +81,24 @@ export default function TemplateSection({
               format — then upload it in the next step.
             </p>
             <div className="flex flex-wrap gap-3 mt-5">
+                            {/* NEW BUTTON */}
+              <button
+                onClick={onDownloadMasterMenu}
+                disabled={loadingMasterMenu}
+                className="flex items-center gap-2 bg-amber-400 text-slate-900 font-bold text-[13px] px-5 py-2.5 rounded-xl hover:bg-amber-300 transition-all shadow-lg active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {loadingMasterMenu ? (
+                  <>
+                    <Loader2 size={14} className="animate-spin" />
+                    Downloading...
+                  </>
+                ) : (
+                  <>
+                    <Download size={14} strokeWidth={2.5} />
+                    Download Franchise Menu
+                  </>
+                )}
+              </button>
               <button
                 onClick={onDownload}
                 disabled={loading}
@@ -98,24 +116,7 @@ export default function TemplateSection({
                   </>
                 )}
               </button>
-              {/* NEW BUTTON */}
-              <button
-                onClick={onDownloadMasterMenu}
-                disabled={loadingMasterMenu}
-                className="flex items-center gap-2 bg-amber-400 text-slate-900 font-bold text-[13px] px-5 py-2.5 rounded-xl hover:bg-amber-300 transition-all shadow-lg active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                {loadingMasterMenu ? (
-                  <>
-                    <Loader2 size={14} className="animate-spin" />
-                    Downloading...
-                  </>
-                ) : (
-                  <>
-                    <Download size={14} strokeWidth={2.5} />
-                    Download Master Menu
-                  </>
-                )}
-              </button>
+
               <button
                 onClick={onNext}
                 className="flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white font-semibold text-[13px] px-5 py-2.5 rounded-xl border border-white/20 transition-all"

@@ -36,20 +36,14 @@ export default function LiveOperationsPage() {
 
   if (isFetchingLiveOperations) return <LoadingOverlay />;
 
-  const actions = [
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchStats,
-      loading: isFetchingLiveOperations,
-      loadingText: "Refreshing...",
-    },
-  ];
-
   return (
     <div className="space-y-3 sm:space-y-5">
-      <PageHeader title="Live Orders & Tables" actions={actions} showBackButton />
+      <PageHeader
+        title="Live Orders & Tables"
+        onRefresh={fetchStats}
+        isRefreshing={isFetchingLiveOperations}
+        showBackButton
+      />
       <Tabs
         active={activeTab}
         onChange={(tab) => setActiveTab(tab)}

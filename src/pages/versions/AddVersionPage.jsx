@@ -94,6 +94,18 @@ const PLATFORMS = [
     minVersionPlaceholder: "e.g. macOS 12 Monterey",
     hasSha: true,
   },
+  {
+    key: "offline_exe",
+    label: "Offline Windows",
+    subtitle: "Offline .exe Package",
+    icon: Package,
+    color: "amber",
+    urlLabel: "Offline Installer URL",
+    urlPlaceholder: "https://cdn.example.com/releases/offline-setup-2.0.5.exe",
+    minVersionLabel: "Min. Windows Version",
+    minVersionPlaceholder: "e.g. Windows 10",
+    hasSha: true,
+  },
   // {
   //   key: "linux",
   //   label: "Linux",

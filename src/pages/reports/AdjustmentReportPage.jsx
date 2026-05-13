@@ -76,14 +76,6 @@ const AdjustmentReportPage = () => {
       loading: isExportingAdjustmentReport,
       loadingText: "Exporting...",
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchReport,
-      loading: isFetchingAdjustmentReport,
-      loadingText: "Refreshing...",
-    },
   ];
 
   const columns = [
@@ -271,6 +263,8 @@ const AdjustmentReportPage = () => {
         title={"Adjustment Report"}
         showBackButton
         actions={actions}
+        onRefresh={fetchReport}
+        isRefreshing={isFetchingAdjustmentReport}
         rightContent={
           <CustomDateRangePicker value={dateRange} onChange={setDateRange} />
         }

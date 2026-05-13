@@ -774,6 +774,8 @@ const NcReportPage = () => {
         rightContent={
           <CustomDateRangePicker value={dateRange} onChange={setDateRange} />
         }
+        onRefresh={fetchReport}
+        isRefreshing={isFetchingNcReport}
         actions={[
           {
             label: "Export",
@@ -782,14 +784,6 @@ const NcReportPage = () => {
             onClick: () => handleExportNcReport(),
             loading: isExportingNcReport,
             loadingText: "Exporting...",
-          },
-          {
-            label: "Refresh",
-            type: "refresh",
-            icon: RotateCcw,
-            onClick: fetchReport,
-            loading: isFetchingNcReport,
-            loadingText: "Refreshing...",
           },
         ]}
       />

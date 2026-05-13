@@ -28,6 +28,7 @@ import {
   Activity,
   QrCode,
   Trash2,
+  CheckCircle2,
 } from "lucide-react";
 
 import { ROLES } from "../constants";
@@ -39,7 +40,7 @@ export const navConfig = [
     roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
     items: [
       {
-        name: "Dashboard",
+        name: "Main Dashboard",
         icon: Home,
         path: ROUTE_PATHS.HOME,
         roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER],
@@ -348,7 +349,27 @@ export const navConfig = [
   },
 
   {
-    title: "Organization",
+    title: "Franchise Management",
+    roles: [ROLES.MASTER],
+    items: [
+      {
+        name: "Franchise Partners",
+        icon: Users,
+        path: ROUTE_PATHS.ALL_SUPER_ADMINS,
+        roles: [ROLES.MASTER],
+      },
+
+      {
+        name: "Franchise Pricing",
+        icon: Percent,
+        path: ROUTE_PATHS.SUPER_ADMIN_SUBSCRIPTION_PRICING,
+        roles: [ROLES.MASTER],
+      },
+    ],
+  },
+
+  {
+    title: "Outlet Management",
     roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
     items: [
       {
@@ -368,6 +389,12 @@ export const navConfig = [
         icon: Users,
         path: ROUTE_PATHS.ALL_USERS,
         roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER],
+      },
+      {
+        name: "Outlet Pricing",
+        icon: Percent,
+        path: ROUTE_PATHS.OUTLETS_SUBSCRIPTION_PRICING,
+        roles: [ROLES.MASTER],
       },
     ],
   },
@@ -395,23 +422,48 @@ export const navConfig = [
         roles: [ROLES.MASTER],
       },
       {
-        name: "Global Pricing",
+        name: "Base Pricing",
         icon: Percent,
         path: ROUTE_PATHS.SUBSCRIPTION_GLOBAL_PRICING,
         roles: [ROLES.MASTER],
       },
+    ],
+  },
 
+  {
+    title: "Outlet Approvals",
+    roles: [ROLES.MASTER],
+    items: [
       {
-        name: "Super Admin Pricing",
-        icon: Users,
-        path: ROUTE_PATHS.SUPER_ADMIN_SUBSCRIPTION_PRICING,
+        name: "Outlet Requests",
+        icon: ClipboardList,
+        path: ROUTE_PATHS.REGISTRATION_REQUESTS,
         roles: [ROLES.MASTER],
       },
 
       {
-        name: "Outlet Pricing",
-        icon: Building2,
-        path: ROUTE_PATHS.OUTLETS_SUBSCRIPTION_PRICING,
+        name: "Approved Outlets",
+        icon: CheckCircle2,
+        path: ROUTE_PATHS.TOKEN_GENERATION_LOGS,
+        roles: [ROLES.MASTER],
+      },
+    ],
+  },
+
+  {
+    title: "Platform",
+    roles: [ROLES.MASTER],
+    items: [
+      {
+        name: "App Versions",
+        icon: Smartphone,
+        path: ROUTE_PATHS.ALL_VERSIONS,
+        roles: [ROLES.MASTER],
+      },
+      {
+        name: "Support",
+        icon: Headphones,
+        path: ROUTE_PATHS.SUPPORT_CHAT,
         roles: [ROLES.MASTER],
       },
     ],
@@ -426,50 +478,6 @@ export const navConfig = [
         icon: Settings,
         path: ROUTE_PATHS.ALL_SETTINGS,
         roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
-      },
-    ],
-  },
-
-  {
-    title: "Requests & Logs",
-    roles: [ROLES.MASTER],
-    items: [
-      {
-        name: "Registration Requests",
-        icon: ClipboardList,
-        path: ROUTE_PATHS.REGISTRATION_REQUESTS,
-        roles: [ROLES.MASTER],
-      },
-      {
-        name: "Token Generation Logs",
-        icon: Activity,
-        path: ROUTE_PATHS.TOKEN_GENERATION_LOGS,
-        roles: [ROLES.MASTER],
-      },
-    ],
-  },
-
-  {
-    title: "Master Control",
-    roles: [ROLES.MASTER],
-    items: [
-      {
-        name: "Franchise Partners",
-        icon: Users,
-        path: ROUTE_PATHS.ALL_SUPER_ADMINS,
-        roles: [ROLES.MASTER],
-      },
-      {
-        name: "App Versions",
-        icon: Smartphone,
-        path: ROUTE_PATHS.ALL_VERSIONS,
-        roles: [ROLES.MASTER],
-      },
-      {
-        name: "Support",
-        icon: Headphones,
-        path: ROUTE_PATHS.SUPPORT_CHAT,
-        roles: [ROLES.MASTER],
       },
     ],
   },

@@ -186,7 +186,12 @@ const AllCategoriesPage = () => {
   return (
     <>
       <div className="space-y-6">
-        <PageHeader title={"All Categories"} actions={actions} />
+        <PageHeader
+          title={"All Categories"}
+          actions={actions}
+          onRefresh={fetchCategories}
+          isRefreshing={loading}
+        />
 
         <div className="flex items-center justify-between gap-4">
           {/* Search Bar */}

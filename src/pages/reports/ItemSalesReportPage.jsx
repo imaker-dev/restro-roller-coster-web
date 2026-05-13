@@ -171,14 +171,6 @@ const ItemSalesReportPage = () => {
       loading: isExportingItemSalesReport,
       loadingText: "Exporting...",
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchReport,
-      loading: isFetchingItemSalesReport,
-      loadingText: "Refreshing...",
-    },
   ];
 
   return (
@@ -187,6 +179,8 @@ const ItemSalesReportPage = () => {
       <PageHeader
         title={"Item Sales Report"}
         showBackButton
+        onRefresh={fetchReport}
+        isRefreshing={isFetchingItemSalesReport}
         rightContent={
           <CustomDateRangePicker
             value={dateRange}

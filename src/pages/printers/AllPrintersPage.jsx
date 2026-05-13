@@ -166,14 +166,6 @@ const AllPrintersPage = () => {
       icon: Plus,
       onClick: () => setShowPrinterModal(true),
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchPrinters,
-      loading: loading,
-      loadingText: "Refreshing...",
-    },
   ];
 
   const clearPrinterStates = () => {
@@ -196,7 +188,12 @@ const AllPrintersPage = () => {
   return (
     <>
       <div className="space-y-6">
-        <PageHeader title={"All Printers"} actions={actions} />
+        <PageHeader
+          title={"All Printers"}
+          actions={actions}
+          onRefresh={fetchPrinters}
+          isRefreshing={loading}
+        />
 
         <SmartTable
           title="Printers"

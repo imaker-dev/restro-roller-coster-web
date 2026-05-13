@@ -172,17 +172,6 @@ const SuperAdminDashboard = () => {
     fetchDashboard();
   }, [sortBy]);
 
-  const actions = [
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchDashboard,
-      loading: isfetchingSuperAdminDashboard,
-      loadingText: "Refreshing...",
-    },
-  ];
-
   const stats = [
     {
       icon: Store,
@@ -215,7 +204,8 @@ const SuperAdminDashboard = () => {
       <PageHeader
         title="Super Admin Dashboard"
         description="Overview of sales, orders, and performance."
-        actions={actions}
+        onRefresh={fetchDashboard}
+        isRefreshing={isfetchingSuperAdminDashboard}
       />
 
       {/* ── Summary Stats ── */}

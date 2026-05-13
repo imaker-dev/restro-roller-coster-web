@@ -194,14 +194,6 @@ const AllTablesPage = () => {
         setShowSectionModal(true);
       },
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchTables,
-      loading: loading,
-      loadingText: "Refreshing...",
-    },
   ];
 
   return (
@@ -213,6 +205,8 @@ const AllTablesPage = () => {
               {floor_name} — Table Board
             </span>
           }
+          onRefresh={fetchTables}
+          isRefreshing={loading}
           showBackButton
           actions={actions}
         />

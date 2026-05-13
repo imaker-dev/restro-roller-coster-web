@@ -63,14 +63,6 @@ const DailySalesReportPage = () => {
       loading: isExportingDailySalesReport,
       loadingText: "Exporting...",
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchReport,
-      loading: isFetchingDailyReports,
-      loadingText: "Refreshing...",
-    },
   ];
 
   const {
@@ -93,6 +85,8 @@ const DailySalesReportPage = () => {
             ? `${formatDate(dr.start, "long")} — ${formatDate(dr.end, "long")} · ${dayCount} day${dayCount !== 1 ? "s" : ""}`
             : "Select a date range to view report"
         }
+        onRefresh={fetchReport}
+        isRefreshing={isFetchingDailyReports}
         rightContent={
           <CustomDateRangePicker value={dateRange} onChange={setDateRange} />
         }

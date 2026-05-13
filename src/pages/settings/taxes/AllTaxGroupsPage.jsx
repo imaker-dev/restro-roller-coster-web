@@ -188,14 +188,6 @@ const AllTaxGroupsPage = () => {
       icon: Plus,
       onClick: () => setShowTaxGroupModal(true),
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchTaxGroups,
-      loading: loading,
-      loadingText: "Refreshing...",
-    },
   ];
 
   const handleAddTaxGroup = async ({ id, values, resetForm }) => {
@@ -210,7 +202,7 @@ const AllTaxGroupsPage = () => {
   return (
     <>
       <div className="space-y-6">
-        <PageHeader title={"All Tax Groups"} actions={actions} showBackButton />
+        <PageHeader title={"All Tax Groups"} actions={actions} onRefresh={fetchTaxGroups} isRefreshing={loading} showBackButton />
 
         <SmartTable
           title="All Tax groups"

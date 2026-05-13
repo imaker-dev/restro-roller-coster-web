@@ -51,14 +51,6 @@ const AllTaxComponentsPage = () => {
       icon: Plus,
       onClick: () => setIsAddModalOpen(true),
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchComponents,
-      loading: isFetchingTaxComponents,
-      loadingText: "Refreshing...",
-    },
   ];
 
   const columns = [
@@ -139,6 +131,8 @@ const AllTaxComponentsPage = () => {
         <PageHeader
           title={"All Tax Components"}
           actions={actions}
+          onRefresh={fetchComponents}
+          isRefreshing={isFetchingTaxComponents}
           showBackButton
         />
 

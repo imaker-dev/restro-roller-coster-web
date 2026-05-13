@@ -186,14 +186,6 @@ const ServiceTypeBreakdownReportPage = () => {
       loading: isExportingServiceTypeBreakdownReport,
       loadingText: "Exporting...",
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchReport,
-      loading: isFetchingServiceTypeBreakdownReport,
-      loadingText: "Refreshing...",
-    },
   ];
 
   return (
@@ -202,6 +194,8 @@ const ServiceTypeBreakdownReportPage = () => {
       <PageHeader
         title="Service Type Breakdown"
         showBackButton
+        onRefresh={fetchReport}
+        isRefreshing={isFetchingServiceTypeBreakdownReport}
         rightContent={
           <CustomDateRangePicker
             value={dateRange}

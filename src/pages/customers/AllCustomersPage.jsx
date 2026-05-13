@@ -22,8 +22,13 @@ const AllCustomersPage = () => {
   const { allCustomers, loading } = useSelector((state) => state.customer);
   const { customers, pagination, summary } = allCustomers || {};
 
-  useEffect(() => {
+  const fetchCustomers = () => {
+    if (!outletId) return;
     dispatch(fetchAllCustomers({ outletId, search: searchTerm }));
+  };
+
+  useEffect(() => {
+    fetchCustomers();
   }, [outletId, searchTerm]);
 
   const columns = [
@@ -128,7 +133,12 @@ const AllCustomersPage = () => {
 
   return (
     <div className="space-y-6">
-      <PageHeader title={"All Customers"} />
+      <PageHeader
+        title={"All Customers"}
+        onRefresh={fetchCustomers}
+        isRefreshing={loading}
+        showBackButton
+      />
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {customerStats.map((card, i) => (
           <StatCard
@@ -141,7 +151,7 @@ const AllCustomersPage = () => {
           />
         ))}
       </div>
-      
+
       <SearchBar
         onSearch={(v) => setSearchTerm(v)}
         placeholder="Search by customer details..."

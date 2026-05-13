@@ -197,7 +197,10 @@ const AllAddonsGroup = () => {
         <PageHeader
           title="Addon Groups"
           description="Create, update, and manage groups of selectable add-ons for menu items."
+          onRefresh={fetchGroups}
+          isRefreshing={loading}
           actions={actions}
+          showBackButton
         />
 
         {/* Table */}

@@ -92,9 +92,13 @@ const OutsideCollectionReportPage = () => {
     (s) => s.outsideCollection,
   );
 
-  useEffect(() => {
+  const fetchOutsideCollection = () => {
     if (!outletId || !dateRange?.startDate || !dateRange?.endDate) return;
     dispatch(fetchAllOutsideCollection({ outletId, dateRange }));
+  };
+  
+  useEffect(() => {
+    fetchOutsideCollection();
   }, [outletId, dateRange]);
 
   const { collections, summary, pagination } = outsideCollections || {};
@@ -104,6 +108,8 @@ const OutsideCollectionReportPage = () => {
       <PageHeader
         title="Outside Collection Report"
         showBackButton
+        onRefresh={fetchOutsideCollection}
+        isRefreshing={isFetchingOutsideCollection}
         rightContent={
           <CustomDateRangePicker value={dateRange} onChange={setDateRange} />
         }

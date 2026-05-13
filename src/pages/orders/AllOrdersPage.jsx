@@ -206,14 +206,6 @@ const AllOrdersPage = () => {
       loading: isExportingOrdersReport,
       loadingText: "Exporting...",
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchOrders,
-      loading: loading,
-      loadingText: "Refreshing...",
-    },
   ];
 
   const ORDER_STATUS_OPTIONS = Object.values(ORDER_STATUSES).map((status) => ({
@@ -282,6 +274,8 @@ const AllOrdersPage = () => {
         <PageHeader
           title={"All Orders"}
           actions={actions}
+          onRefresh={fetchOrders}
+          isRefreshing={loading}
           rightContent={
             <CustomDateRangePicker
               value={dateRange}

@@ -454,6 +454,8 @@ export default function PublicMenuPage() {
     setScreen(SCREENS.SESSION);
   };
 
+  console.log(showExpirationOverlay)
+
   // Handle expiration overlay close
   const handleExpirationClose = () => {
     setShowExpirationOverlay(false);

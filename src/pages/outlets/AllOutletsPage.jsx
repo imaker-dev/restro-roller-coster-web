@@ -206,14 +206,6 @@ const AllOutletsPage = () => {
       onClick: () => navigate(ROUTE_PATHS.OUTLET_ADD),
       roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
     },
-    {
-      label: "Refresh",
-      type: "refresh",
-      icon: RotateCcw,
-      onClick: fetchOutlets,
-      loading: loading,
-      loadingText: "Refreshing...",
-    },
   ];
 
   const handleAssignSuperAdmin = async ({
@@ -233,7 +225,12 @@ const AllOutletsPage = () => {
   return (
     <>
       <div className="space-y-6">
-        <PageHeader title={"All Outlets"} actions={actions} />
+        <PageHeader
+          title={"All Outlets"}
+          actions={actions}
+          onRefresh={fetchOutlets}
+          isRefreshing={loading}
+        />
 
         <SearchBar onSearch={(v) => setSearchTerm(v)} />
 
