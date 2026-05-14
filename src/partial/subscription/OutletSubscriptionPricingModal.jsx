@@ -1,23 +1,15 @@
-import React, { useEffect } from "react";
+// components/modals/OutletPricingModal.jsx
+import React from "react";
 import ModalBasic from "../../components/ModalBasic";
+import { InputField } from "../../components/fields/InputField";
+import InfoCard from "../../components/InfoCard";
+import { Loader2 } from "lucide-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Loader2 } from "lucide-react";
-import { InputField } from "../../components/fields/InputField";
-import { SelectField } from "../../components/fields/SelectField";
-import { TextareaField } from "../../components/fields/TextareaField";
-import InfoCard from "../../components/InfoCard";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchAllSuperAdmins } from "../../redux/slices/adminSlice";
 import { formatNumber } from "../../utils/numberFormatter";
 import { CURRENCY } from "../../constants";
 
 const validationSchema = Yup.object({
-  adminId: Yup.number()
-    .typeError("Admin is required")
-    .required("Admin is required")
-    .positive("Invalid admin"),
-
   basePrice: Yup.number()
     .typeError("Base price must be a number")
     .required("Base price is required")
@@ -30,53 +22,23 @@ const validationSchema = Yup.object({
     .min(0, "GST cannot be negative")
     .max(100, "GST cannot exceed 100%"),
 
-  notes: Yup.string()
-    .trim()
-    .required("Notes are required")
-    .min(3, "Too short")
-    .max(200, "Too long"),
+  notes: Yup.string().max(500, "Notes cannot exceed 500 characters").nullable(),
 });
 
-const SuperAdminSpecialDiscountModal = ({
+const OutletPricingModal = ({
   isOpen,
   onClose,
+  outlet,
   onSubmit,
   loading = false,
 }) => {
-  const dispatch = useDispatch();
-  const { allSuperAdmins, isFetchingSuperAdmin } = useSelector(
-    (state) => state.admin,
-  );
-  const { data } = allSuperAdmins || {};
+  /* ---------------- CALCULATIONS ---------------- */
 
-  useEffect(() => {
-    if (isOpen) {
-      dispatch(fetchAllSuperAdmins());
-    }
-  }, [isOpen, dispatch]);
-
-  const formik = useFormik({
-    initialValues: {
-      adminId: "",
-      basePrice: "",
-      gstPercentage: "",
-      notes: "",
-    },
-    validationSchema,
-    onSubmit: async (values, { resetForm }) => {
-      const payload = {
-        basePrice: parseFloat(values.basePrice),
-        gstPercentage: parseFloat(values.gstPercentage),
-        notes: values.notes,
-      };
-
-      await onSubmit({
-        adminId: parseInt(values.adminId),
-        values: payload,
-        resetForm,
-      });
-    },
-  });
+  const calculateGSTAmount = (basePrice, gstPercentage) => {
+    const base = parseFloat(basePrice) || 0;
+    const gst = parseFloat(gstPercentage) || 0;
+    return (base * gst) / 100;
+  };
 
   const calculateTotalPrice = (basePrice, gstPercentage) => {
     const base = parseFloat(basePrice) || 0;
@@ -84,49 +46,93 @@ const SuperAdminSpecialDiscountModal = ({
     return base + (base * gst) / 100;
   };
 
-  const adminOptions = data
-    ? data.map((admin) => ({
-        label: `${admin.name} (${admin.email})`,
-        value: admin.id,
-      }))
-    : [];
+  /* ---------------- FORMIK ---------------- */
+
+  const formik = useFormik({
+    enableReinitialize: true,
+
+    initialValues: {
+      basePrice: outlet?.pricing?.basePrice || "",
+      gstPercentage: outlet?.pricing?.gstPercentage || "",
+      notes: "",
+    },
+
+    validationSchema,
+
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        await onSubmit({
+          outletId: outlet.id,
+          values: {
+            basePrice: parseFloat(values.basePrice),
+            gstPercentage: parseFloat(values.gstPercentage),
+            notes: values.notes || null,
+          },
+          resetForm,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  });
+
+  /* ---------------- RENDER ---------------- */
 
   return (
     <ModalBasic
-      id="special-discount-modal"
-      title="Set Franchise Pricing"
+      id="outlet-pricing-modal"
+      title="Update Outlet Pricing"
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => {
+        formik.resetForm();
+        onClose();
+      }}
     >
       <form
         onSubmit={formik.handleSubmit}
         autoComplete="off"
-        className="p-4 space-y-4"
+        className="p-5 space-y-5"
       >
-        <SelectField
-          label="Franchise Owner"
-          name="adminId"
-          required
-          placeholder="Select franchise owner"
-          value={formik.values.adminId}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.adminId && formik.errors.adminId}
-          options={adminOptions}
-          loading={isFetchingSuperAdmin}
-        />
+        {/* ---------------- OUTLET INFO ---------------- */}
 
-        <div className="grid grid-cols-2 gap-4">
+        {outlet && (
+          <div className="flex items-center justify-between rounded-md bg-slate-50 border border-slate-200 px-4 py-3">
+            <div>
+              <p className="text-sm font-bold text-slate-800">{outlet.name}</p>
+
+              <p className="text-[11px] text-slate-500 mt-0.5">
+                {outlet.address?.city}, {outlet.address?.state}
+              </p>
+            </div>
+
+            <div className="text-right">
+              <p className="text-[10px] text-slate-400 uppercase tracking-wide">
+                Pricing
+              </p>
+
+              <p className="text-base font-black text-slate-900 tabular-nums">
+                {outlet.pricing?.totalPrice
+                  ? formatNumber(outlet.pricing.totalPrice, true)
+                  : "--"}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* ---------------- INPUTS ---------------- */}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputField
-            label={`Base Price (${CURRENCY.SYMBOL})`}
+            label={`Base Price ${CURRENCY.SYMBOL}`}
             name="basePrice"
             type="number"
             required
-            placeholder="e.g. 10000"
+            placeholder="Enter base price"
             value={formik.values.basePrice}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched.basePrice && formik.errors.basePrice}
+            autoComplete="off"
           />
 
           <InputField
@@ -134,27 +140,32 @@ const SuperAdminSpecialDiscountModal = ({
             name="gstPercentage"
             type="number"
             required
-            placeholder="e.g. 18"
+            placeholder="Enter GST percentage"
             value={formik.values.gstPercentage}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched.gstPercentage && formik.errors.gstPercentage}
+            autoComplete="off"
             step="0.01"
           />
         </div>
 
+        {/* ---------------- NOTES ---------------- */}
+
         <InputField
           label="Notes"
           name="notes"
-          required
-          placeholder="e.g. Custom pricing for premium franchise partner"
+          type="text"
+          placeholder="e.g., Promotional rate for first year"
           value={formik.values.notes}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.notes && formik.errors.notes}
+          autoComplete="off"
         />
 
-        {/* Live Preview */}
+        {/* ---------------- LIVE PREVIEW ---------------- */}
+
         {(formik.values.basePrice || formik.values.gstPercentage) && (
           <div className="rounded-xl border border-slate-200 bg-white px-4 py-4 sm:px-5">
             <div className="flex items-end justify-between gap-4 sm:gap-6">
@@ -195,18 +206,24 @@ const SuperAdminSpecialDiscountModal = ({
           </div>
         )}
 
+        {/* ---------------- INFO ---------------- */}
+
         <InfoCard
           size="sm"
           type="warning"
-          title="Important"
-          description="This pricing overrides the default subscription pricing for the selected franchise owner."
+          title="Outlet-Specific Pricing"
+          description="This will override the global subscription pricing for this outlet. The changes will apply from the next billing cycle."
         />
 
-        {/* Footer Buttons */}
-        <div className="flex justify-end gap-3 pt-4">
+        {/* ---------------- ACTIONS ---------------- */}
+
+        <div className="flex items-center justify-end gap-3 pt-2">
           <button
             type="button"
-            onClick={onClose}
+            onClick={() => {
+              formik.resetForm();
+              onClose();
+            }}
             className="btn border border-slate-200 text-slate-600 hover:bg-slate-50"
             disabled={loading}
           >
@@ -219,7 +236,7 @@ const SuperAdminSpecialDiscountModal = ({
             className="btn bg-primary-500 text-white hover:bg-primary-600 disabled:opacity-50 flex items-center gap-2"
           >
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-            {loading ? "Applying..." : "Apply Pricing"}
+            {loading ? "Updating Pricing..." : "Update Outlet Pricing"}
           </button>
         </div>
       </form>
@@ -227,4 +244,4 @@ const SuperAdminSpecialDiscountModal = ({
   );
 };
 
-export default SuperAdminSpecialDiscountModal;
+export default OutletPricingModal;

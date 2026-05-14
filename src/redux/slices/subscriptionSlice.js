@@ -54,6 +54,17 @@ export const setCustomPricingForSuperAdmin = createAsyncThunk(
   },
 );
 
+/* ---------------- REMOVE CUSTOM SUPER ADMIN PRICING ---------------- */
+export const removeCustomPricingForSuperAdmin = createAsyncThunk(
+  "/remove/custom/pricing/super/admin",
+  async ({ adminId }) => {
+    const res = await SubscriptionServices.removeCustomPricingForSuperAdmin({
+      adminId,
+    });
+    return res.data;
+  },
+);
+
 /* ---------------- GET ALL SUBSCRIPTIONS ---------------- */
 export const fetchAllSubscriptions = createAsyncThunk(
   "/fetch/all/subscriptions",
@@ -121,6 +132,42 @@ export const fetchMySubscription = createAsyncThunk(
   },
 );
 
+/* ---------------- OUTLET SUBSCRIPTION PRICING ---------------- */
+export const fetchOutletSubscriptionPricing = createAsyncThunk(
+  "/fetch/outlet/subscription/pricing",
+  async ({ page, limit, search }) => {
+    const res = await SubscriptionServices.getOutletSubscriptionPricingApi({
+      page,
+      limit,
+      search,
+    });
+    return res.data;
+  },
+);
+
+/* ---------------- UPDATE OUTLET SUBSCRIPTION PRICING ---------------- */
+export const updateOutletSubscriptionPricing = createAsyncThunk(
+  "/update/outlet/subscription/pricing",
+  async ({ outletId, values }) => {
+    const res = await SubscriptionServices.updateOutletSubscriptionPricingApi({
+      outletId,
+      values,
+    });
+    return res.data;
+  },
+);
+
+/* ---------------- REMOVE OUTLET SUBSCRIPTION PRICING ---------------- */
+export const removeOutletSubscriptionPricing = createAsyncThunk(
+  "/remove/outlet/subscription/pricing",
+  async ({ outletId }) => {
+    const res = await SubscriptionServices.removeOutletSubscriptionPricingApi({
+      outletId,
+    });
+    return res.data;
+  },
+);
+
 /* ---------------- SLICE ---------------- */
 
 const subscriptionSlice = createSlice({
@@ -149,8 +196,15 @@ const subscriptionSlice = createSlice({
     isFetchingMySubscription: false,
     mySubscriptionData: null,
 
+    isFetchingOutletSubscriptionPricing: false,
+    outletSubscriptionPricing: null,
+
     isFetchingSuperAdminOutletsPricing: false,
     superAdminOutletsPricing: null,
+    isRemovingSuperAdminCustomPricing: false,
+
+    isUpdatingOutletSubscriptionPricing: false,
+    isRemovingOutletSubscriptionPricing: false,
   },
 
   reducers: {},
@@ -227,6 +281,20 @@ const subscriptionSlice = createSlice({
       })
       .addCase(setCustomPricingForSuperAdmin.rejected, (state, action) => {
         state.isSettingSuperAdminCustomPricing = false;
+        toast.error(action?.error?.message);
+      })
+
+      /* ---------------- REMOVE CUSTOM SUPER ADMIN PRICING ---------------- */
+
+      .addCase(removeCustomPricingForSuperAdmin.pending, (state) => {
+        state.isRemovingSuperAdminCustomPricing = true;
+      })
+      .addCase(removeCustomPricingForSuperAdmin.fulfilled, (state, action) => {
+        state.isRemovingSuperAdminCustomPricing = false;
+        toast.success(action.payload.message);
+      })
+      .addCase(removeCustomPricingForSuperAdmin.rejected, (state, action) => {
+        state.isRemovingSuperAdminCustomPricing = false;
         toast.error(action?.error?.message);
       })
 
@@ -312,7 +380,46 @@ const subscriptionSlice = createSlice({
       .addCase(fetchMySubscription.rejected, (state, action) => {
         state.isFetchingMySubscription = false;
         toast.error(action?.error?.message);
-      });
+      })
+
+      /* ---------------- OUTLET SUBSCRIPTION PRICING ---------------- */
+      .addCase(fetchOutletSubscriptionPricing.pending, (state) => {
+        state.isFetchingOutletSubscriptionPricing = true;
+      })
+      .addCase(fetchOutletSubscriptionPricing.fulfilled, (state, action) => {
+        state.isFetchingOutletSubscriptionPricing = false;
+        state.outletSubscriptionPricing = action.payload.data;
+      })
+      .addCase(fetchOutletSubscriptionPricing.rejected, (state, action) => {
+        state.isFetchingOutletSubscriptionPricing = false;
+        toast.error(action?.error?.message);
+      })
+
+      /* ---------------- UPDATE OUTLET SUBSCRIPTION PRICING ---------------- */
+      .addCase(updateOutletSubscriptionPricing.pending, (state) => {
+        state.isUpdatingOutletSubscriptionPricing = true;
+      })
+      .addCase(updateOutletSubscriptionPricing.fulfilled, (state, action) => {
+        state.isUpdatingOutletSubscriptionPricing = false;
+        toast.success(action.payload.message);
+      })
+      .addCase(updateOutletSubscriptionPricing.rejected, (state, action) => {
+        state.isUpdatingOutletSubscriptionPricing = false;
+        toast.error(action?.error?.message);
+      })
+
+      /* ---------------- REMOVE OUTLET SUBSCRIPTION PRICING ---------------- */
+      .addCase(removeOutletSubscriptionPricing.pending, (state) => {
+        state.isRemovingOutletSubscriptionPricing = true;
+      })
+      .addCase(removeOutletSubscriptionPricing.fulfilled, (state, action) => {
+        state.isRemovingOutletSubscriptionPricing = false;
+        toast.success(action.payload.message);
+      })
+      .addCase(removeOutletSubscriptionPricing.rejected, (state, action) => {
+        state.isRemovingOutletSubscriptionPricing = false;
+        toast.error(action?.error?.message);
+      })
   },
 });
 

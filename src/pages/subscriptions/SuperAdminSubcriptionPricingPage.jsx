@@ -3,9 +3,10 @@ import PageHeader from "../../layout/PageHeader";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAllSuperAdminSubscriptionPricing,
+  removeCustomPricingForSuperAdmin,
   setCustomPricingForSuperAdmin,
 } from "../../redux/slices/subscriptionSlice";
-import { Building2, Eye, Plus, User } from "lucide-react";
+import { Building2, CircleMinus, Eye, Plus, Trash2, User } from "lucide-react";
 import SuperAdminSpecialDiscountModal from "../../partial/subscription/SuperAdminSpecialDiscountModal";
 import { handleResponse } from "../../utils/helpers";
 import { formatDate } from "../../utils/dateFormatter";
@@ -14,17 +15,21 @@ import SmartTable from "../../components/SmartTable";
 import UserAvatar from "../../components/UserAvatar";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "../../config/paths";
+import ModalAction from "../../components/ModalAction";
 
 const SuperAdminSubcriptionPricingPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showRemoveConfirm, setShowRemoveConfirm] = useState(false);
+  const [selectedPricing, setSelectedPricing] = useState(null);
 
   const {
     isFetchingSuperAdminSubscriptionPricing,
     allSuperAdminSubscriptionPricing,
     isSettingSuperAdminCustomPricing,
+    isRemovingSuperAdminCustomPricing,
   } = useSelector((state) => state.subscription);
 
   const fetchPricing = () => {
@@ -125,6 +130,15 @@ const SuperAdminSubcriptionPricingPage = () => {
           `${ROUTE_PATHS.SUPER_ADMIN_OUTLET_SUBSCRIPTION}?userId=${row.user_id}`,
         ),
     },
+    {
+      label: "Remove Special Pricing",
+      icon: CircleMinus,
+      color: "red",
+      onClick: (row) => {
+        setSelectedPricing(row);
+        setShowRemoveConfirm(true);
+      },
+    },
   ];
 
   const actions = [
@@ -135,6 +149,11 @@ const SuperAdminSubcriptionPricingPage = () => {
       onClick: () => setIsModalOpen(true),
     },
   ];
+
+  const resetPricingUi = () => {
+    setShowRemoveConfirm(false);
+    setSelectedPricing(null);
+  };
 
   const handleSpecialDiscount = async ({ adminId, values, resetForm }) => {
     await handleResponse(
@@ -147,11 +166,23 @@ const SuperAdminSubcriptionPricingPage = () => {
     );
   };
 
+  const handleRemoveSpecialPricing = async ({ adminId }) => {
+    await handleResponse(
+      dispatch(removeCustomPricingForSuperAdmin({ adminId })),
+      () => {
+        fetchPricing();
+        resetPricingUi();
+      },
+    );
+  };
+
   return (
     <>
       <div className="space-y-6">
         <PageHeader
           title={"Franchise Special Pricing"}
+          onRefresh={fetchPricing}
+          isRefreshing={isFetchingSuperAdminSubscriptionPricing}
           actions={actions}
           showBackButton
         />
@@ -173,6 +204,24 @@ const SuperAdminSubcriptionPricingPage = () => {
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSpecialDiscount}
         loading={isSettingSuperAdminCustomPricing}
+      />
+
+      <ModalAction
+        id="remove-franchise-pricing-confirm"
+        cfg="destructive"
+        sz="sm"
+        title="Remove Special Pricing"
+        description={`Are you sure you want to remove the special pricing for "${selectedPricing?.user_name}"? Default subscription pricing will be applied to all outlets under this franchise.`}
+        confirmText="Remove Pricing"
+        cancelText="Cancel"
+        loading={isRemovingSuperAdminCustomPricing}
+        isOpen={showRemoveConfirm}
+        onClose={resetPricingUi}
+        onConfirm={() => {
+          handleRemoveSpecialPricing({
+            adminId: selectedPricing?.user_id,
+          });
+        }}
       />
     </>
   );

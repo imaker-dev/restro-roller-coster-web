@@ -21,6 +21,9 @@ export default false
       setCustomPricingForSuperAdmin: ({ adminId, values }) => {
         return Api.post(`/subscriptions/pricing/super-admin/${adminId}`, values);
       },
+      removeCustomPricingForSuperAdmin: ({ adminId }) => {
+        return Api.delete(`/subscriptions/pricing/super-admin/${adminId}`);
+      },
       getAllSubscriptionsApi: ({ page, limit, search }) => {
         const params = cleanParams({
           page,
@@ -43,5 +46,15 @@ export default false
       },
       getMySubscriptionApi:() => {
         return Api.get(`/subscriptions/my`)
-      }
+      },
+      getOutletSubscriptionPricingApi: ({page,limit,search}) => {
+        const params = cleanParams({page,limit,search})
+        return Api.get(`/outlets/master-dashboard`, { params });
+      },
+      updateOutletSubscriptionPricingApi: ({ outletId, values }) => {
+        return Api.post(`/subscriptions/pricing/outlet/${outletId}`,values);
+      },
+      removeOutletSubscriptionPricingApi: ({ outletId }) => {
+        return Api.delete(`/subscriptions/pricing/outlet/${outletId}`);
+      },
     };

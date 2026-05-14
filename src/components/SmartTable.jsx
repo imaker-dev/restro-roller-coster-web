@@ -340,6 +340,14 @@ export default function SmartTable({
                         <td className="px-6 py-3 text-right">
                           <div className="flex justify-end gap-2">
                             {visibleActions.map((action, actionIndex) => {
+
+                              const isHidden =
+                                typeof action.hidden === "function"
+                                  ? action.hidden(row)
+                                  : Boolean(action.hidden);
+
+                              if (isHidden) return null;
+
                               /* ================================
      🔹 ACTION MENU (submenu)
   ================================= */
