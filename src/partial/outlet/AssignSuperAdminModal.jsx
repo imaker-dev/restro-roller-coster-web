@@ -12,6 +12,7 @@ import {
   ArrowRight,
   Check,
   Info,
+  Mail,
 } from "lucide-react";
 import { SelectField } from "../../components/fields/SelectField";
 import { useDispatch, useSelector } from "react-redux";
@@ -83,57 +84,47 @@ const AssignSuperAdminModal = ({
       isOpen={isOpen}
       onClose={onClose}
       modalSize="lg"
-      title={
-        <div>
-          <h2 className="text-lg font-semibold text-slate-900">
-            Assign Franchise Owner
-          </h2>
-          <p className="text-sm text-slate-500">
-            Assign this outlet to a franchise owner
-          </p>
-        </div>
-      }
+      title={"Assign this outlet to a franchise owner"}
     >
       <form
         onSubmit={formik.handleSubmit}
         autoComplete="off"
-        className="p-4 space-y-5"
+        className="p-4 space-y-4"
       >
         {/* Outlet Summary */}
         {outlet && (
-          <div className="relative overflow-hidden rounded-md border border-slate-200 bg-white p-4 shadow-sm">
-            {/* Left */}
-            <div className="flex items-start gap-3 min-w-0">
-              <div className="min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="text-sm font-bold text-slate-900 truncate">
-                    {outlet.name}
-                  </h3>
+          <div className="group relative overflow-hidden rounded-lg border border-slate-200 bg-white px-4 py-3 transition-all duration-200 hover:border-slate-300 hover:shadow-md">
+            {/* Content */}
+            <div className="min-w-0 flex-1">
+              {/* Header */}
+              <h3 className="truncate text-sm font-semibold tracking-tight text-slate-900">
+                {outlet.name}
+              </h3>
 
-                  <StatusBadge value={outlet.is_active} size="sm" />
-                </div>
+              {/* Legal Name */}
+              {outlet.legal_name && (
+                <p className="mt-0.5 truncate text-xs text-slate-500">
+                  {outlet.legal_name}
+                </p>
+              )}
 
-                {outlet.legal_name && (
-                  <p className="text-xs text-slate-500 truncate mt-0.5">
-                    {outlet.legal_name}
-                  </p>
-                )}
-
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-[11px] text-slate-500">
-                  {(outlet.city || outlet.state) && (
-                    <span className="flex items-center gap-1">
-                      <MapPin className="w-3 h-3" />
+              {/* Meta */}
+              <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-slate-500">
+                {(outlet.city || outlet.state) && (
+                  <span className="flex items-center gap-1.5">
+                    <MapPin className="h-3.5 w-3.5 text-slate-400" />
+                    <span className="truncate">
                       {[outlet.city, outlet.state].filter(Boolean).join(", ")}
                     </span>
-                  )}
+                  </span>
+                )}
 
-                  {outlet.phone && (
-                    <span className="flex items-center gap-1">
-                      <Phone className="w-3 h-3" />
-                      {outlet.phone}
-                    </span>
-                  )}
-                </div>
+                {outlet.phone && (
+                  <span className="flex items-center gap-1.5">
+                    <Phone className="h-3.5 w-3.5 text-slate-400" />
+                    {outlet.phone}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -167,37 +158,42 @@ const AssignSuperAdminModal = ({
 
         {/* Selected Admin Preview */}
         {currentlyAssigned && (
-          <div className="bg-white border border-slate-200 rounded-md p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <UserAvatar name={currentlyAssigned.name} size="md" />
-                <div>
-                  <p className="text-sm font-semibold text-slate-800">
+          <div className="group relative overflow-hidden rounded-lg border border-slate-200/80 bg-white px-4 py-3 transition-all duration-200 hover:border-slate-300 hover:shadow-md">
+            <div className="flex items-start gap-3">
+              {/* Avatar */}
+              <UserAvatar name={currentlyAssigned.name} />
+
+              {/* Content */}
+              <div className="min-w-0 flex-1">
+                {/* Name */}
+                <div className="flex items-center gap-2">
+                  <p className="truncate text-sm font-semibold tracking-tight text-slate-900">
                     {currentlyAssigned.name}
                   </p>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    {currentlyAssigned.email}
-                  </p>
+
+   
+                </div>
+
+                {/* Contact Info */}
+                <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500">
+                  {currentlyAssigned.email && (
+                    <span className="flex min-w-0 items-center gap-1.5 truncate">
+                      <Mail className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+                      <span className="truncate">
+                        {currentlyAssigned.email}
+                      </span>
+                    </span>
+                  )}
+
+                  {currentlyAssigned.phone && (
+                    <span className="flex items-center gap-1.5">
+                      <Phone className="h-3.5 w-3.5 text-slate-400" />
+                      <span>{currentlyAssigned.phone}</span>
+                    </span>
+                  )}
                 </div>
               </div>
-              <StatusBadge value={currentlyAssigned.isActive} size="sm" />
             </div>
-
-            {(currentlyAssigned.phone || currentlyAssigned.employeeCode) && (
-              <div className="mt-3 pt-3 border-t border-slate-100 flex items-center gap-4 text-xs text-slate-500">
-                {currentlyAssigned.phone && (
-                  <span className="flex items-center gap-1.5">
-                    <Phone className="w-3 h-3" />
-                    {currentlyAssigned.phone}
-                  </span>
-                )}
-                {currentlyAssigned.employeeCode && (
-                  <span className="font-mono text-slate-400">
-                    #{currentlyAssigned.employeeCode}
-                  </span>
-                )}
-              </div>
-            )}
           </div>
         )}
 

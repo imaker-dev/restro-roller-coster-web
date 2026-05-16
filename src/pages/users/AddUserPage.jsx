@@ -6,7 +6,7 @@ import AccordionSection from "../../components/AccordionSection";
 
 import { InputField } from "../../components/fields/InputField";
 import { SelectField } from "../../components/fields/SelectField";
-import { User, Shield, User2, Mail, Loader2, RefreshCw } from "lucide-react";
+import { User, Shield, User2, Mail, Loader2, RefreshCw, Upload } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllRoles } from "../../redux/slices/roleSlice";
 import { fetchAllFloors } from "../../redux/slices/floorSlice";
@@ -440,18 +440,17 @@ const AddUserPage = () => {
                   <button
                     type="submit"
                     disabled={isCreatingUser || isupdatingUser}
-                    className="btn bg-primary-500 text-white flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="btn bg-primary-500 hover:bg-primary-600 text-white flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                   >
-                    {isCreatingUser || isupdatingUser ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        {userId ? "Updating..." : "Creating..."}
-                      </>
-                    ) : userId ? (
+                    <Upload className="w-4 h-4"/>
+                    {
+                       userId ? (
                       "Update Staff"
                     ) : (
                       "Create Staff"
-                    )}
+                    )
+                    }
+                   
                   </button>
                 </div>
               </Form>

@@ -62,7 +62,6 @@ const MyProfilePage = () => {
               <UserAvatar
                 name={d?.name}
                 size="xl"
-                className="w-20 h-20"
                 verified={d?.isVerified === 1 ? true : false}
               />
 

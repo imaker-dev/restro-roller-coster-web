@@ -67,11 +67,10 @@ const printerSlice = createSlice({
         toast.error(action.error.message);
       })
       .addCase(testPrinter.pending, (state,action) => {
-        state.printerTestingId = action.meta.arg.station;
+        state.printerTestingId = action.meta.arg.printerId;
       })
       .addCase(testPrinter.fulfilled, (state, action) => {
         state.printerTestingId = null;
-        toast.success(action.payload.message)
       })
       .addCase(testPrinter.rejected, (state, action) => {
         state.printerTestingId = null;

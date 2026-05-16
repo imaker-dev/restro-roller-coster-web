@@ -129,14 +129,14 @@ const TableCard = ({
           )}
         </div>
 
-        {table.order_number && (
+        {/* {table.order_number && (
           <div className="mt-3 text-xs text-gray-700 bg-gray-50 p-2 rounded">
             <p>Guest: {table.guest_name || "-"}</p>
             <p>Guests Count: {table.guest_count}</p>
             <p>Order #: {table.order_number}</p>
             <p>Total: {formatNumber(table.total_amount, true)}</p>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

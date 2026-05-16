@@ -265,7 +265,7 @@ const AllTablesPage = () => {
                   </div>
 
                   <div className="flex gap-3">
-                    {canShowMergeButton && (
+                    {/* {canShowMergeButton && (
                       <button
                         onClick={() =>
                           isActive
@@ -281,7 +281,7 @@ const AllTablesPage = () => {
                       >
                         {isActive ? "Cancel Merge" : "Merge Tables"}
                       </button>
-                    )}
+                    )} */}
 
                     {!mergeMode && (
                       <>

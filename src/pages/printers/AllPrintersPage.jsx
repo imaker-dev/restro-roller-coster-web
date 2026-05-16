@@ -16,6 +16,7 @@ import { handleResponse } from "../../utils/helpers";
 import { fetchAllStations } from "../../redux/slices/stationSlice";
 import StatCard from "../../components/StatCard";
 import { formatText } from "../../utils/utils";
+import PrinterTestResultModal from "../../partial/printers/PrinterTestResultModal";
 
 const AllPrintersPage = () => {
   const dispatch = useDispatch();
@@ -34,6 +35,8 @@ const AllPrintersPage = () => {
   const [showPrinterModal, setShowPrinterModal] = useState(false);
   const [selectedPrinter, setSelectedPrinter] = useState(null);
 
+  const [printerTestResult, setPrinterTestResult] = useState(null);
+
   const fetchPrinters = () => {
     dispatch(fetchAllPrinters(outletId));
   };
@@ -47,10 +50,16 @@ const AllPrintersPage = () => {
     }
   }, [outletId]);
 
-  const handlePrintTest = (row) => {
-    dispatch(
+  const handlePrintTest = async(row) => {
+    await handleResponse(dispatch(
       testPrinter({ outletId, station: row?.station, printerId: row.id }),
-    );
+    ),(res) => {
+      setPrinterTestResult({
+        data: res.payload.data,
+        name: row.name,
+      });
+    })
+    
   };
 
   const columns = [
@@ -156,6 +165,7 @@ const AllPrintersPage = () => {
         handlePrintTest(row);
       },
       loading: (row) => row.id === printerTestingId,
+      disabled:printerTestingId
     },
   ];
 
@@ -216,6 +226,13 @@ const AllPrintersPage = () => {
         stations={allStations}
         loading={isCreatingPrinter || isUpdatingPrinter}
       />
+
+      <PrinterTestResultModal
+  isOpen={!!printerTestResult}
+  onClose={() => setPrinterTestResult(null)}
+  printerData={printerTestResult?.data}
+  printerName={printerTestResult?.name}
+/>
     </>
   );
 };

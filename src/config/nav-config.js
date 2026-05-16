@@ -29,6 +29,7 @@ import {
   QrCode,
   Trash2,
   CheckCircle2,
+  Armchair,
 } from "lucide-react";
 
 import { ROLES } from "../constants";
@@ -109,7 +110,7 @@ export const navConfig = [
         roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER],
       },
       {
-        name: "Stations",
+        name: "Kitchen/Stations",
         icon: Monitor,
         path: ROUTE_PATHS.ALL_STATIONS,
         roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER],
@@ -122,7 +123,7 @@ export const navConfig = [
       },
       {
         name: "Tables & Floors",
-        icon: LayoutGrid,
+        icon: Armchair,
         path: ROUTE_PATHS.ALL_FLOORS,
         roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER],
       },

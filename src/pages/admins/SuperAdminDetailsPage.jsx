@@ -22,6 +22,7 @@ import {
   ChevronUp,
   IndianRupee,
   UtensilsCrossed,
+  Eye,
 } from "lucide-react";
 import UserAvatar from "../../components/UserAvatar";
 import RoleBadge from "../../partial/user/RoleBadge";
@@ -33,9 +34,12 @@ import SmartTable from "../../components/SmartTable";
 import { formatText } from "../../utils/utils";
 import StatusBadge from "../../layout/StatusBadge";
 import SubscriptionBadge from "../../partial/subscription/SubscriptionBadge";
+import { ROUTE_PATHS } from "../../config/paths";
+import { useNavigate } from "react-router-dom";
 
 const SuperAdminDetailsPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { userId } = useQueryParams();
   const { isFetchingSuperAdminDetails, superAdminDetails } = useSelector(
     (state) => state.admin,
@@ -69,26 +73,19 @@ const SuperAdminDetailsPage = () => {
       key: "outlet",
       label: "Outlet",
       render: (row) => (
-        <div className="flex items-start gap-3 min-w-0">
-          <div className="h-10 w-10 rounded-xl bg-slate-100 flex items-center justify-center shrink-0">
-            <Building2 className="h-5 w-5 text-slate-500" />
-          </div>
-
-          <div className="flex flex-col min-w-0">
-            <p className="text-xs font-extrabold text-slate-800 truncate">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2">
+            <Building2 className="w-4 h-4 text-slate-400" />
+            <span className="font-semibold text-slate-800 truncate">
               {row.name}
-            </p>
-
-            <p className="text-[11px] font-bold text-slate-500 truncate">
-              {row.code}
-            </p>
-
-            {row.legal_name && (
-              <p className="text-[10px] text-slate-400 truncate mt-0.5">
-                {row.legal_name}
-              </p>
-            )}
+            </span>
           </div>
+
+          {row.legal_name && (
+            <span className="text-xs text-slate-500 truncate">
+              {row.legal_name}
+            </span>
+          )}
         </div>
       ),
     },
@@ -99,26 +96,15 @@ const SuperAdminDetailsPage = () => {
     {
       key: "location",
       label: "Location",
-
+      sortable: true,
       render: (row) => (
-        <div className="flex items-start gap-2">
-          <MapPin size={14} className="text-slate-400 mt-0.5 shrink-0" />
-
-          <div className="flex flex-col min-w-0">
-            <span className="text-[12px] font-bold text-slate-700">
-              {row.city || "-"}
+        <div className="flex items-start gap-2 text-slate-700 max-w-[220px]">
+          <MapPin className="w-4 h-4 text-slate-400 mt-0.5 shrink-0" />
+          <div className="flex flex-col text-sm leading-tight">
+            <span>{row.city || "-"}</span>
+            <span className="text-xs text-slate-500">
+              {row.state || ""} {row.country ? `• ${row.country}` : ""}
             </span>
-
-            <span className="text-[10px] text-slate-400">
-              {row.state}
-              {row.country ? ` • ${row.country}` : ""}
-            </span>
-
-            {row.postal_code && (
-              <span className="text-[10px] text-slate-300">
-                PIN: {row.postal_code}
-              </span>
-            )}
           </div>
         </div>
       ),
@@ -130,28 +116,18 @@ const SuperAdminDetailsPage = () => {
     {
       key: "contact",
       label: "Contact",
-
+      sortable: false,
       render: (row) => (
-        <div className="flex flex-col gap-1">
-          {row.phone && (
-            <div className="flex items-center gap-1.5">
-              <Phone size={13} className="text-slate-400" />
+        <div className="flex flex-col gap-1 text-sm">
+          <div className="flex items-center gap-2 text-slate-600">
+            <Phone className="w-4 h-4 text-slate-400" />
+            {row.phone || "-"}
+          </div>
 
-              <span className="text-[11px] font-semibold text-slate-700">
-                {row.phone}
-              </span>
-            </div>
-          )}
-
-          {row.email && (
-            <div className="flex items-center gap-1.5">
-              <Mail size={13} className="text-slate-400" />
-
-              <span className="text-[10px] text-slate-500 truncate max-w-[160px]">
-                {row.email}
-              </span>
-            </div>
-          )}
+          <div className="flex items-center gap-2 text-slate-500 text-xs">
+            <Mail className="w-4 h-4 text-slate-400" />
+            <span className="truncate max-w-[160px]">{row.email || "-"}</span>
+          </div>
         </div>
       ),
     },
@@ -171,13 +147,13 @@ const SuperAdminDetailsPage = () => {
             <SubscriptionBadge status={plan.status} size="sm" />
 
             {plan?.end_date && (
-              <span className="text-[10px] text-slate-500 mt-1">
+              <span className="text-[11px] text-slate-500 mt-1">
                 Ends: {formatDate(plan.end_date, "long")}
               </span>
             )}
 
             {plan?.grace_period_end && (
-              <span className="text-[10px] text-orange-500">
+              <span className="text-[11px] text-orange-500">
                 Grace: {formatDate(plan.grace_period_end, "long")}
               </span>
             )}
@@ -199,23 +175,22 @@ const SuperAdminDetailsPage = () => {
         return (
           <div className="flex flex-col">
             {plan?.base_price ? (
-              <>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-extrabold text-slate-800 tabular-nums">
-                    {formatNumber(plan.base_price, true)}
+              <div className="flex flex-col">
+                <span className="text-[14px] font-black text-slate-800 tabular-nums">
+                  {plan?.price ? formatNumber(plan.price, true) : "-"}
+                </span>
+
+                <span className="text-[10px] text-slate-400 mt-0.5">
+                  Base:{" "}
+                  {plan?.base_price ? formatNumber(plan.base_price, true) : "-"}
+                </span>
+
+                {plan?.gst_percentage != null && (
+                  <span className="text-[10px] text-slate-400">
+                    GST: {plan.gst_percentage}%
                   </span>
-
-                  {plan?.gst_percentage && (
-                    <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold text-blue-600">
-                      +{plan.gst_percentage}%
-                    </span>
-                  )}
-                </div>
-
-                <p className="text-[11px] font-semibold text-emerald-600 tabular-nums mt-0.5">
-                  {formatNumber(plan.price, true)} total
-                </p>
-              </>
+                )}
+              </div>
             ) : (
               <span className="text-[10px] italic text-slate-300">
                 No pricing
@@ -235,19 +210,14 @@ const SuperAdminDetailsPage = () => {
 
       render: (row) => <StatusBadge value={row.is_active} size="sm" />,
     },
+  ];
 
-    /* ===============================
-     CREATED
-  =============================== */
+  const rowActions = [
     {
-      key: "created_at",
-      label: "Created",
-
-      render: (row) => (
-        <div className="text-[11px] font-semibold text-slate-600">
-          {formatDate(row.created_at, "longTime")}
-        </div>
-      ),
+      label: "View",
+      icon: Eye,
+      onClick: (row) =>
+        navigate(`${ROUTE_PATHS.OUTLET_DETAILS}?outletId=${row.id}`),
     },
   ];
 
@@ -337,7 +307,7 @@ const SuperAdminDetailsPage = () => {
         totalcount={outlets?.length}
         data={outlets}
         columns={columns}
-        // actions={rowActions}
+        actions={rowActions}
         loading={isFetchingSuperAdminDetails}
       />
     </div>

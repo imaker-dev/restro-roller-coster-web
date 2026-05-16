@@ -236,7 +236,7 @@ const AllUsersPage = () => {
   return (
     <>
       <div className="space-y-6">
-        <PageHeader title={"All Users"} actions={actions} />
+        <PageHeader title={"All Users"} actions={actions} onRefresh={fetchUsers} isRefreshing={loading} />
 
         {/* Search Bar */}
         <SearchBar

@@ -9,6 +9,7 @@ import {
 import SmartTable from "../../components/SmartTable";
 import {
   Building2,
+  CalendarDays,
   Clock,
   Edit2,
   Eye,
@@ -18,6 +19,7 @@ import {
   Plus,
   RotateCcw,
   Trash2,
+  User,
   UserPlus,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -28,6 +30,8 @@ import SearchBar from "../../components/SearchBar";
 import OutletDetailsDrawer from "../../partial/outlet/OutletDetailsDrawer";
 import AssignSuperAdminModal from "../../partial/outlet/AssignSuperAdminModal";
 import { handleResponse } from "../../utils/helpers";
+import SubscriptionBadge from "../../partial/subscription/SubscriptionBadge";
+import { formatDate } from "../../utils/dateFormatter";
 
 const AllOutletsPage = () => {
   const dispatch = useDispatch();
@@ -119,32 +123,57 @@ const AllOutletsPage = () => {
     },
 
     /* ===============================
-     TIMING
-  =============================== */
+   SUBSCRIPTION
+================================ */
     {
-      key: "timing",
-      label: "Operating Hours",
+      key: "subscription",
+      label: "Subscription",
       sortable: false,
       render: (row) => {
-        if (row.is_24_hours) {
-          return (
-            <span className="px-2 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700">
-              24 Hours
-            </span>
-          );
-        }
+        const plan = row.subscription_plan;
 
-        if (!row.opening_time || !row.closing_time) {
+        if (!plan) {
           return <span className="text-slate-400">-</span>;
         }
 
         return (
-          <div className="flex items-center gap-2 text-slate-600 text-sm">
-            <Clock className="w-4 h-4 text-slate-400" />
-            {row.opening_time.slice(0, 5)} - {row.closing_time.slice(0, 5)}
+          <div className="flex flex-col gap-1 min-w-[170px]">
+            <SubscriptionBadge status={plan.status} size="sm" />
+
+            {plan.end_date && (
+              <div className="text-xs text-slate-600">
+                Ends: {formatDate(plan.end_date, "long")}
+              </div>
+            )}
+
+            {plan.grace_period_end && plan.status !== "active" && (
+              <div className="text-[11px] text-amber-600">
+                Grace till {formatDate(plan.grace_period_end, "long")}
+              </div>
+            )}
           </div>
         );
       },
+    },
+
+    /* ===============================
+   CREATED BY
+================================ */
+    {
+      key: "created_by",
+      label: "Created By",
+      sortable: true,
+      render: (row) => (
+        <div className="min-w-0 flex flex-col">
+          <span className="text-sm font-semibold text-slate-800 truncate">
+            {row.created_by?.name || row.created_by || "System"}
+          </span>
+
+          <span className="text-xs text-slate-500">
+            {row.created_at ? formatDate(row.created_at, "long") : "-"}
+          </span>
+        </div>
+      ),
     },
 
     /* ===============================
@@ -162,9 +191,9 @@ const AllOutletsPage = () => {
     {
       label: "View",
       icon: Eye,
-      onClick: (row) => setSelectedOutlet(row),
-      // onClick: (row) =>
-      //   navigate(`${ROUTE_PATHS.OUTLET_DETAILS}?outletId=${row.id}`),
+      // onClick: (row) => setSelectedOutlet(row),
+      onClick: (row) =>
+        navigate(`${ROUTE_PATHS.OUTLET_DETAILS}?outletId=${row.id}`),
     },
     {
       label: "Assign",

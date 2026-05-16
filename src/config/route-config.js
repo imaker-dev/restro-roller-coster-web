@@ -257,10 +257,10 @@ const routeConfig = [
   // System
   { path: ROUTE_PATHS.ALL_SETTINGS, element: AllSettingsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN] },
   { path: ROUTE_PATHS.SETTING_DETAILS, element: SettingDetailsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN] },
-  { path: ROUTE_PATHS.SUPPORT_CHAT, element: SupportChatPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
-  { path: ROUTE_PATHS.ALL_VERSIONS, element: AllVersionsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
-  { path: ROUTE_PATHS.VERSION_ADD, element: AddVersionPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
-  { path: ROUTE_PATHS.VERSION_DETAILS, element: VersionDetailsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
+  { path: ROUTE_PATHS.SUPPORT_CHAT, element: SupportChatPage, roles: [ROLES.MASTER] },
+  { path: ROUTE_PATHS.ALL_VERSIONS, element: AllVersionsPage, roles: [ROLES.MASTER] },
+  { path: ROUTE_PATHS.VERSION_ADD, element: AddVersionPage, roles: [ROLES.MASTER] },
+  { path: ROUTE_PATHS.VERSION_DETAILS, element: VersionDetailsPage, roles: [ROLES.MASTER] },
 
   // Public
   { path: ROUTE_PATHS.GUIDE, element: SetupGuide, public: true },

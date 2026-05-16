@@ -19,7 +19,7 @@ import CurrentOrderStatusScreen from "../../partial/self-order/CurrentOrderStatu
 import ItemDetailSheet from "../../partial/self-order/ItemDetailSheet";
 import { AlertCircle } from "lucide-react";
 import MenuContentScreen from "../../partial/self-order/MenuContentScreen";
-import { TOKEN_KEYS } from "../../constants";
+import { FOOD_TYPES, TOKEN_KEYS } from "../../constants";
 import { connectSocket } from "../../socket/socket";
 import { JOIN_OUTLET, SELF_ORDER_UPDATED } from "../../socket/socketEvents";
 import ExpirationOverlay from "../../partial/self-order/ExpirationOverlay";
@@ -152,6 +152,12 @@ function useMenuFiltering(publicMenuData) {
   const categories = publicMenuData?.menu || [];
   const allItems = categories.flatMap((c) => c.items || []);
 
+  const availableTypes = {
+    veg: allItems.some((i) => i.type === FOOD_TYPES.VEG),
+    egg: allItems.some((i) => i.type === FOOD_TYPES.EGG),
+    nonveg: allItems.some((i) => i.type === FOOD_TYPES.NON_VEG),
+  };
+
   const filteredItems = (() => {
     let items =
       filters.activeCategory === "All"
@@ -189,6 +195,7 @@ function useMenuFiltering(publicMenuData) {
     filteredItems,
     categories,
     allItems,
+    availableTypes,
     updateFilters,
     handleCategoryClick,
   };
@@ -359,6 +366,7 @@ export default function PublicMenuPage() {
     filters,
     filteredItems,
     categories,
+    availableTypes,
     updateFilters,
     handleCategoryClick,
   } = useMenuFiltering(publicMenuData);
@@ -454,8 +462,6 @@ export default function PublicMenuPage() {
     setScreen(SCREENS.SESSION);
   };
 
-  console.log(showExpirationOverlay)
-
   // Handle expiration overlay close
   const handleExpirationClose = () => {
     setShowExpirationOverlay(false);
@@ -547,6 +553,7 @@ export default function PublicMenuPage() {
         onSelectItem={handleSelectItem}
         onQuickAdd={handleQuickAddWithDetail}
         onChangeQty={handleChangeQty}
+        availableTypes={availableTypes}
       />
 
       {/* Item Detail Sheet - rendered here to maintain state */}

@@ -281,7 +281,7 @@ const AllSubscriptionsListPage = () => {
   return (
     <>
       <div className="space-y-6">
-        <PageHeader title={"All Subscriptions"} />
+        <PageHeader title={"All Subscriptions"} onRefresh={fetchSubscriptions} isRefreshing={isFetchingSubscriptions} showBackButton />
 
         <SearchBar onSearch={(v) => setSearchTerm(v)} />
         <SmartTable

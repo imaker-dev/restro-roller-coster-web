@@ -121,6 +121,7 @@ const AddOutletPage = () => {
     outletType: Yup.string().required("Outlet type is required"),
 
     addressLine1: Yup.string().required("Address Line 1 is required"),
+    addressLine2: Yup.string().required("Address Line 2 is required"),
     city: Yup.string().required("City is required"),
     state: Yup.string().required("State is required"),
     country: Yup.string().required("Country is required"),
@@ -252,9 +253,14 @@ const AddOutletPage = () => {
                 <InputField
                   label="Address Line 2"
                   name="addressLine2"
+                  required
                   placeholder="Area, landmark (optional)"
                   value={formik.values.addressLine2}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.addressLine2 && formik.errors.addressLine2
+                  }
                 />
               </div>
 

@@ -286,13 +286,6 @@ const SearchInput = memo(({ value, onChange, onClear }) => (
   </div>
 ));
 
-const FILTER_ORDER = [
-  FILTER_OPTIONS.ALL,
-  FILTER_OPTIONS.VEG,
-  FILTER_OPTIONS.NON_VEG,
-  FILTER_OPTIONS.EGG,
-];
-
 const FILTER_STYLES = {
   all: {
     border: "border-white/15",
@@ -326,7 +319,17 @@ const FILTER_LABELS = {
   egg: "Egg Only",
 };
 
-const FoodFilterButton = ({ value, onChange }) => {
+const FoodFilterButton = ({ value, onChange, availableTypes }) => {
+  const FILTER_ORDER = [
+    FILTER_OPTIONS.ALL,
+
+    ...(availableTypes?.veg ? [FILTER_OPTIONS.VEG] : []),
+
+    ...(availableTypes?.nonveg ? [FILTER_OPTIONS.NON_VEG] : []),
+
+    ...(availableTypes?.egg ? [FILTER_OPTIONS.EGG] : []),
+  ];
+
   const current = FILTER_STYLES[value];
 
   const currentIndex = FILTER_ORDER.indexOf(value);
@@ -337,7 +340,6 @@ const FoodFilterButton = ({ value, onChange }) => {
   };
 
   const isAll = value === FILTER_OPTIONS.ALL;
-  
 
   return (
     <Tooltip
@@ -453,6 +455,7 @@ function MenuContentScreen({
   onSelectItem,
   onQuickAdd,
   onChangeQty,
+  availableTypes,
 }) {
   const catScrollRef = useRef(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -514,6 +517,11 @@ function MenuContentScreen({
     activeCategory === "All" &&
     !search.trim() &&
     vegFilter === FILTER_OPTIONS.ALL;
+
+
+
+  const shouldShowFoodFilter =
+  Object.values(availableTypes || {}).filter(Boolean).length > 1;
 
   return (
     <div className="min-h-[100dvh] bg-[#FAF8F5] flex flex-col">
@@ -588,10 +596,13 @@ function MenuContentScreen({
               onClear={handleClearSearch}
             />
 
-            <FoodFilterButton
-              value={vegFilter}
-              onChange={(value) => onSettingsChange({ vegFilter: value })}
-            />
+            {shouldShowFoodFilter && (
+              <FoodFilterButton
+                value={vegFilter}
+                availableTypes={availableTypes}
+                onChange={(value) => onSettingsChange({ vegFilter: value })}
+              />
+            )}
 
             <ViewToggle
               currentView={viewMode}
