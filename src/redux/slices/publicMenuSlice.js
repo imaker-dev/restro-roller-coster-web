@@ -117,6 +117,7 @@ const publicMenuSlice = createSlice({
   reducers: {
     clearSessionState: (state) => {
       state.qrSessionToken = null;
+      state.currentSessionInfo = null;
       localStorage.removeItem(TOKEN_KEYS.QR_SESSION);
       toast.success("Session End successfully");
     },
@@ -148,7 +149,7 @@ const publicMenuSlice = createSlice({
         const token = action.payload.data.token;
         state.qrSessionToken = token;
         localStorage.setItem(TOKEN_KEYS.QR_SESSION, token);
-        toast.success("Session started successfully")
+        toast.success("Session started successfully");
       })
       .addCase(startSelfOrderSession.rejected, (state, action) => {
         state.isStartingSelfOrderSession = false;

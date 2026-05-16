@@ -130,7 +130,7 @@ function useCartManagement() {
 
   const handleAddFromSheet = useCallback((cartEntry) => {
     setCart((prev) => [...prev, cartEntry]);
-    toast.success(`${cartEntry.name} added`, "success");
+    // toast.success(`${cartEntry.name} added`, "success");
   }, []);
 
   return {
@@ -457,8 +457,8 @@ export default function PublicMenuPage() {
     }
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem(TOKEN_KEYS.QR_SESSION);
+  const handleLogout = async() => {
+    await dispatch(clearSessionState());
     setScreen(SCREENS.SESSION);
   };
 
