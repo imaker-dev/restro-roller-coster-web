@@ -50,38 +50,72 @@ const AllPrintersPage = () => {
     }
   }, [outletId]);
 
-  const handlePrintTest = async(row) => {
-    await handleResponse(dispatch(
-      testPrinter({ outletId, station: row?.station, printerId: row.id }),
-    ),(res) => {
-      setPrinterTestResult({
-        data: res.payload.data,
-        name: row.name,
-      });
-    })
-    
+  const handlePrintTest = async (row) => {
+    await handleResponse(
+      dispatch(
+        testPrinter({ outletId, station: row?.station, printerId: row.id }),
+      ),
+      (res) => {
+        setPrinterTestResult({
+          data: res.payload.data,
+          name: row.name,
+        });
+      },
+    );
   };
 
   const columns = [
+
     {
-      key: "printer",
-      label: "Printer",
-      render: (row) => (
-        <div className="flex flex-col max-w-[240px]">
-          <span className="font-semibold text-slate-800 truncate">
+  key: "printer",
+  label: "Printer",
+  render: (row) => {
+    const isNetwork =
+      row.connectionType === "network";
+
+    return (
+      <div className="flex flex-col max-w-[280px]">
+        {/* Printer Name */}
+        <div className="flex items-center gap-2">
+          <span className="truncate font-semibold text-slate-800">
             {row.name}
           </span>
 
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            <span className="font-mono">
-              {row.ipAddress}:{row.port}
-            </span>
-            <span>•</span>
-            <span className="capitalize">{row.printerType}</span>
-          </div>
+          <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-slate-600">
+            {isNetwork
+              ? "Network"
+              : "Windows"}
+          </span>
         </div>
-      ),
-    },
+
+        {/* Printer Details */}
+        <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+          {isNetwork ? (
+            <>
+              <span className="font-mono">
+                {row.ipAddress}
+              </span>
+
+              <span>:</span>
+
+              <span>{row.port}</span>
+            </>
+          ) : (
+            <span className="font-medium">
+              {row.printerName || "-"}
+            </span>
+          )}
+
+          <span>•</span>
+
+          <span className="capitalize">
+            {row.printerType}
+          </span>
+        </div>
+      </div>
+    );
+  },
+},
 
     {
       key: "station",
@@ -165,7 +199,8 @@ const AllPrintersPage = () => {
         handlePrintTest(row);
       },
       loading: (row) => row.id === printerTestingId,
-      disabled:printerTestingId
+      disabled: printerTestingId,
+      hidden: (row) => row.connectionType !== "network",
     },
   ];
 
@@ -228,11 +263,11 @@ const AllPrintersPage = () => {
       />
 
       <PrinterTestResultModal
-  isOpen={!!printerTestResult}
-  onClose={() => setPrinterTestResult(null)}
-  printerData={printerTestResult?.data}
-  printerName={printerTestResult?.name}
-/>
+        isOpen={!!printerTestResult}
+        onClose={() => setPrinterTestResult(null)}
+        printerData={printerTestResult?.data}
+        printerName={printerTestResult?.name}
+      />
     </>
   );
 };

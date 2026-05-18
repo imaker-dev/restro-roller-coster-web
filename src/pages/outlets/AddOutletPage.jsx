@@ -47,72 +47,78 @@ const AddOutletPage = () => {
     outletDetails,
   } = useSelector((state) => state.outlet);
 
-  const initialValues = useMemo(() => {
-    if (outletId && outletDetails) {
-      return {
-        name: outletDetails.name || "",
-        code: outletDetails.code || "",
-        legalName: outletDetails.legal_name || "",
-        outletType: outletDetails.outlet_type || "restaurant",
-
-        addressLine1: outletDetails.address_line1 || "",
-        addressLine2: outletDetails.address_line2 || "",
-        city: outletDetails.city || "",
-        state: outletDetails.state || "",
-        country: outletDetails.country || "India",
-        postalCode: outletDetails.postal_code || "",
-
-        phone: outletDetails.phone || "",
-        email: outletDetails.email || "",
-
-        gstin: outletDetails.gstin || "",
-        fssaiNumber: outletDetails.fssai_number || "",
-        panNumber: outletDetails.pan_number || "",
-
-        currencyCode: outletDetails.currency_code || "INR",
-        timezone: outletDetails.timezone || "Asia/Kolkata",
-
-        openingTime: outletDetails.opening_time
-          ? outletDetails.opening_time.slice(0, 5)
-          : "10:00",
-
-        closingTime: outletDetails.closing_time
-          ? outletDetails.closing_time.slice(0, 5)
-          : "23:00",
-
-        is24Hours: Boolean(outletDetails.is_24_hours),
-      };
-    }
-
-    // CREATE MODE
+const initialValues = useMemo(() => {
+  if (outletId && outletDetails) {
     return {
-      name: "",
-      code: "",
-      legalName: "",
-      outletType: "restaurant",
+      // BASIC INFO
+      name: outletDetails.name || "",
+      code: outletDetails.code || "",
+      legalName: outletDetails.legalName || "",
+      outletType: outletDetails.outletType || "restaurant",
 
-      addressLine1: "",
-      addressLine2: "",
-      city: "",
-      state: "",
-      country: "India",
-      postalCode: "",
+      // ADDRESS
+      addressLine1: outletDetails.address?.line1 || "",
+      addressLine2: outletDetails.address?.line2 || "",
+      city: outletDetails.address?.city || "",
+      state: outletDetails.address?.state || "",
+      country: outletDetails.address?.country || "India",
+      postalCode: outletDetails.address?.postalCode || "",
 
-      phone: "",
-      email: "",
+      // CONTACT
+      phone: outletDetails.contact?.phone || "",
+      email: outletDetails.contact?.email || "",
 
-      gstin: "",
-      fssaiNumber: "",
-      panNumber: "",
+      // LEGAL
+      gstin: outletDetails.contact?.gstin || "",
+      fssaiNumber: outletDetails.contact?.fssaiNumber || "",
+      panNumber: outletDetails.contact?.panNumber || "",
 
-      currencyCode: "INR",
-      timezone: "Asia/Kolkata",
+      // CONFIG
+      currencyCode: outletDetails.currencyCode || "INR",
+      timezone: outletDetails.timezone || "Asia/Kolkata",
 
-      openingTime: "10:00",
-      closingTime: "23:00",
-      is24Hours: false,
+      // OPERATING HOURS
+      openingTime: outletDetails.operatingHours?.openingTime
+        ? outletDetails.operatingHours.openingTime.slice(0, 5)
+        : "10:00",
+
+      closingTime: outletDetails.operatingHours?.closingTime
+        ? outletDetails.operatingHours.closingTime.slice(0, 5)
+        : "23:00",
+
+      is24Hours: Boolean(outletDetails.operatingHours?.is24Hours),
     };
-  }, [outletId, outletDetails]);
+  }
+
+  // CREATE MODE
+  return {
+    name: "",
+    code: "",
+    legalName: "",
+    outletType: "restaurant",
+
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    state: "",
+    country: "India",
+    postalCode: "",
+
+    phone: "",
+    email: "",
+
+    gstin: "",
+    fssaiNumber: "",
+    panNumber: "",
+
+    currencyCode: "INR",
+    timezone: "Asia/Kolkata",
+
+    openingTime: "10:00",
+    closingTime: "23:00",
+    is24Hours: false,
+  };
+}, [outletId, outletDetails]);
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Outlet name is required"),

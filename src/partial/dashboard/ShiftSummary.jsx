@@ -7,52 +7,52 @@ import {
   CheckCircle2,
   Circle,
   ClipboardList,
+  ChevronDown,
+  User,
+  SlidersHorizontal,
+  Clock,
 } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatNumber } from "../../utils/numberFormatter";
 import Shimmer from "../../layout/Shimmer";
 import { formatDate } from "../../utils/dateFormatter";
-import StatusBadge from "../../layout/StatusBadge";
 import NoDataFound from "../../layout/NoDataFound";
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function formatTime(dateStr) {
+  if (!dateStr) return null;
+  return new Date(dateStr).toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
 
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
 function ShiftSummarySkeleton() {
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
-        <div>
-          <Shimmer width="100px" height="12px" />
-          <Shimmer width="70px" height="9px" className="mt-1" />
-        </div>
-        <Shimmer width="50px" height="22px" rounded="lg" />
+        <Shimmer width="100px" height="13px" />
+        <Shimmer width="48px" height="22px" rounded="md" />
       </div>
-      <div className="p-4 space-y-3">
-        {[1, 2].map((i) => (
+      <div className="p-3 space-y-1.5">
+        {[1, 2, 3].map((i) => (
           <div
             key={i}
-            className="space-y-2.5 pb-3 border-b border-gray-100 last:border-0 last:pb-0"
+            className="rounded-xl border border-gray-100 px-3 py-2.5 flex items-center gap-3"
           >
-            <div className="flex items-center gap-2">
-              <Shimmer width="70px" height="12px" />
-              <Shimmer width="35px" height="9px" />
-              <Shimmer width="50px" height="9px" />
-              <Shimmer
-                width="35px"
-                height="16px"
-                rounded="full"
-                className="ml-auto"
-              />
+            <Shimmer width="8px" height="8px" rounded="full" />
+            <div className="flex-1 space-y-1">
+              <Shimmer width="90px" height="12px" />
+              <Shimmer width="120px" height="10px" />
             </div>
-            <div className="grid grid-cols-2 gap-2">
-              <Shimmer width="100%" height="52px" rounded="lg" />
-              <Shimmer width="100%" height="52px" rounded="lg" />
+            <div className="text-right space-y-1">
+              <Shimmer width="64px" height="13px" />
+              <Shimmer width="40px" height="10px" />
             </div>
-            <div className="grid grid-cols-3 gap-2">
-              {[1, 2, 3].map((j) => (
-                <Shimmer key={j} width="100%" height="28px" rounded="lg" />
-              ))}
-            </div>
+            <Shimmer width="14px" height="14px" rounded="sm" />
           </div>
         ))}
       </div>
@@ -63,55 +63,58 @@ function ShiftSummarySkeleton() {
 // ─── Range Summary Banner ─────────────────────────────────────────────────────
 function RangeSummaryBanner({ shifts, dateRange }) {
   const navigate = useNavigate();
-
   const openCount = shifts.filter((s) => s.status === "open").length;
   const closedCount = shifts.length - openCount;
 
   return (
     <div className="space-y-3">
-      {/* Date range header */}
-      <div className="flex items-center gap-2 text-[11px] font-semibold text-gray-500">
-        <Calendar size={12} className="text-green-600" strokeWidth={2} />
+      <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-500">
+        <Calendar size={11} className="text-green-600" strokeWidth={2} />
         <span>
           {formatDate(dateRange?.startDate, "long")} –{" "}
           {formatDate(dateRange?.endDate, "long")}
         </span>
       </div>
-
-      {/* Shift count cards */}
       <div className="grid grid-cols-3 gap-2">
-        <div className="bg-gray-50 rounded-xl p-3 text-center">
-          <p className="text-xl font-extrabold text-gray-900">
-            {shifts.length}
-          </p>
-          <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">
-            Total
-          </p>
-        </div>
-        <div className="bg-green-50 rounded-xl p-3 text-center">
-          <p className="text-xl font-extrabold text-green-700">{closedCount}</p>
-          <p className="text-[9px] font-bold text-green-400 uppercase tracking-wider mt-0.5">
-            Closed
-          </p>
-        </div>
-        <div className="bg-amber-50 rounded-xl p-3 text-center">
-          <p className="text-xl font-extrabold text-amber-600">{openCount}</p>
-          <p className="text-[9px] font-bold text-amber-400 uppercase tracking-wider mt-0.5">
-            Open
-          </p>
-        </div>
+        {[
+          {
+            label: "Total",
+            value: shifts.length,
+            cls: "bg-gray-50 text-gray-900",
+          },
+          {
+            label: "Closed",
+            value: closedCount,
+            cls: "bg-green-50 text-green-700",
+          },
+          {
+            label: "Open",
+            value: openCount,
+            cls: "bg-amber-50 text-amber-600",
+          },
+        ].map(({ label, value, cls }) => (
+          <div
+            key={label}
+            className={`rounded-xl p-2.5 text-center ${cls.split(" ")[0]}`}
+          >
+            <p className={`text-lg font-extrabold ${cls.split(" ")[1]}`}>
+              {value}
+            </p>
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">
+              {label}
+            </p>
+          </div>
+        ))}
       </div>
-
-      {/* CTA */}
       <button
         onClick={() => navigate("/shift-history", { state: { dateRange } })}
-        className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-primary-500 hover:bg-primary-600 rounded-xl transition-all group"
+        className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-primary-500 hover:bg-primary-600 rounded-xl transition-all group"
       >
-        <span className="text-[12px] font-bold text-white">
+        <span className="text-xs font-bold text-white">
           View All {shifts.length} Shifts
         </span>
         <ArrowUpRight
-          size={13}
+          size={12}
           className="text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
           strokeWidth={2.5}
         />
@@ -120,122 +123,220 @@ function RangeSummaryBanner({ shifts, dateRange }) {
   );
 }
 
-// ─── Single Shift Row ─────────────────────────────────────────────────────────
-function ShiftRow({ shift }) {
+// ─── Shift Accordion Row ──────────────────────────────────────────────────────
+function ShiftAccordionRow({ shift, isOpen, onToggle }) {
   const navigate = useNavigate();
   if (!shift) return null;
 
-  const isOpen = shift.status === "open";
+  const isShiftOpen = shift.status === "open";
   const { orderStats, collection } = shift;
+  const pb = collection?.paymentBreakdown || {};
+
+  const openTime = formatTime(shift.openingTime);
+  const closeTime = formatTime(shift.closingTime);
+  const timeStr = closeTime
+    ? `${openTime} – ${closeTime}`
+    : `${openTime} · ongoing`;
 
   return (
-    <div className="space-y-2.5 pb-3 border-b border-gray-100 last:border-0 last:pb-0">
-      {/* Shift Header */}
-      <div className="flex flex-wrap items-center gap-2">
-        <div className="flex items-center gap-0.5 shrink-0">
-          {isOpen ? (
-            <Circle size={7} className="text-amber-500 fill-amber-400" />
-          ) : (
-            <CheckCircle2
-              size={9}
-              className="text-green-500"
-              strokeWidth={2.5}
-            />
-          )}
+    <div
+      className={`rounded-xl border overflow-hidden transition-all duration-200 ${isOpen ? "border-gray-200 shadow-xs" : "border-gray-100"}`}
+    >
+      {/* ── Collapsed Row ── */}
+      <button
+        onClick={onToggle}
+        className="w-full flex items-center gap-2.5 px-3 py-2.5 text-left hover:bg-gray-50/60 transition-colors"
+      >
+        {/* Info */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-baseline gap-1.5">
+            {/* Status dot */}
+            <div className="shrink-0">
+              {isShiftOpen ? (
+                <Circle size={7} className="text-amber-400 fill-amber-400" />
+              ) : (
+                <CheckCircle2
+                  size={9}
+                  className="text-green-500"
+                  strokeWidth={2.5}
+                />
+              )}
+            </div>
+            <p className="text-[12.5px] font-bold text-gray-900 truncate leading-none">
+              {shift.floorName}
+            </p>
+            <span className="text-[10px] text-gray-400 shrink-0">
+              #{shift.id}
+            </span>
+          </div>
+          <div className="flex items-center gap-1 mt-0.5">
+            <User size={8} className="text-gray-400 shrink-0" strokeWidth={2} />
+            <span className="text-[10.5px] text-gray-400 truncate">
+              {shift.cashierName}
+            </span>
+            <span className="text-gray-300 shrink-0">·</span>
+            <span className="text-[10px] text-gray-400 shrink-0 truncate">
+              {timeStr}
+            </span>
+          </div>
         </div>
-        <div className="flex-1 min-w-0 flex flex-wrap items-center gap-x-1.5 gap-y-1">
-          <p className="text-[13px] font-extrabold text-gray-900">
-            {shift.floorName}
+
+        {/* Sales */}
+        <div className="text-right shrink-0">
+          <p className="text-[13px] font-extrabold text-emerald-600 tabular-nums leading-none">
+            {formatNumber(shift.totalSales, true)}
           </p>
-          <span className="text-[10px] font-medium text-gray-400">
-            #{shift.id}
-          </span>
-          <span className="text-[10px] font-medium text-gray-400">
-            · {shift.cashierName}
-          </span>
+          <p className="text-[10px] text-gray-400 mt-0.5">
+            {orderStats?.completedOrders || 0} orders
+          </p>
         </div>
-        <StatusBadge
-          value={isOpen}
-          trueText="OPEN"
-          falseText="CLOSED"
-          size="sm"
+
+        {/* Chevron */}
+        <ChevronDown
+          size={13}
+          strokeWidth={2.5}
+          className={`text-gray-400 shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
         />
-        <button
-          onClick={() => navigate(`/shift-history/details?shiftId=${shift.id}`)}
-          className="flex items-center gap-0.5 text-[10px] font-bold text-gray-500 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 transition-all px-2 py-1 rounded-md"
-        >
-          View
-          <ArrowUpRight size={10} strokeWidth={2.5} />
-        </button>
-      </div>
+      </button>
 
-      {/* Stats Grid - 2 columns */}
-      <div className="grid grid-cols-2 gap-2">
-        {/* Sales Card */}
-        <div className="bg-gray-50 rounded-xl p-2.5">
-          <div className="sm:flex sm:items-center sm:justify-between">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">
-              Sales
-            </p>
-            <div className="sm:text-right">
-              <span className="text-sm font-extrabold text-emerald-600">
-                {formatNumber(shift.totalSales, true)}
-              </span>
-              <span className="text-[9px] font-medium text-gray-400 ml-1.5">
-                {orderStats?.completedOrders || 0} orders
-              </span>
-            </div>
+      <div
+        className={`
+    overflow-hidden transition-all duration-300 ease-in-out
+    ${
+      isOpen
+        ? "max-h-[500px] opacity-100 border-t border-gray-100 mt-2"
+        : "max-h-0 opacity-0"
+    }
+  `}
+      >
+        <div className="px-3 pt-3 pb-3 space-y-2.5">
+          {/* Payment breakdown — 3 cols */}
+          <div className="grid grid-cols-3 gap-1.5">
+            {[
+              {
+                icon: Banknote,
+                label: "Cash",
+                amount: pb.cash || 0,
+                bg: "bg-amber-50",
+                color: "text-amber-600",
+              },
+              {
+                icon: CreditCard,
+                label: "Card",
+                amount: pb.card || 0,
+                bg: "bg-teal-50",
+                color: "text-teal-600",
+              },
+              {
+                icon: Smartphone,
+                label: "UPI",
+                amount: pb.upi || 0,
+                bg: "bg-indigo-50",
+                color: "text-indigo-500",
+              },
+            ].map(({ icon: Icon, label, amount, bg, color }) => (
+              <div key={label} className={`rounded-xl px-2 py-2 ${bg}`}>
+                <div className={`flex items-center gap-1 ${color}`}>
+                  <Icon size={9} strokeWidth={2} />
+                  <span className="text-[9.5px] font-bold uppercase tracking-wide">
+                    {label}
+                  </span>
+                </div>
+
+                <p className="text-[12px] font-extrabold text-gray-800 tabular-nums mt-1">
+                  {formatNumber(amount, true)}
+                </p>
+              </div>
+            ))}
           </div>
-        </div>
 
-        {/* Adjustments Card */}
-        <div className="bg-gray-50 rounded-xl p-2.5">
-          <div className="sm:flex sm:items-center sm:justify-between">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">
-              Adjustments
-            </p>
-            <div className="sm:text-right">
-              <span className="text-sm font-extrabold text-gray-600">
-                {formatNumber(collection?.totalAdjustment || 0, true)}
-              </span>
-              <span className="text-[9px] font-medium text-gray-400 ml-1.5">
-                {collection?.adjustmentCount || 0} adj
-              </span>
+          {/* Adjustment + Due — only when non-zero */}
+          {(collection?.totalAdjustment > 0 || collection?.totalDue > 0) && (
+            <div className="flex items-center gap-1.5">
+              {collection?.totalAdjustment > 0 && (
+                <div className="flex-1 flex items-center justify-between bg-orange-50 rounded-xl px-2.5 py-2">
+                  <div className="flex items-center gap-1">
+                    <SlidersHorizontal
+                      size={9}
+                      className="text-orange-400"
+                      strokeWidth={2}
+                    />
+                    <span className="text-[9.5px] font-bold text-orange-500 uppercase tracking-wide">
+                      Adj.
+                    </span>
+                    {collection?.adjustmentCount > 0 && (
+                      <span className="text-[9px] text-orange-400">
+                        ×{collection.adjustmentCount}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-[12px] font-extrabold text-gray-800 tabular-nums">
+                    {formatNumber(collection.totalAdjustment, true)}
+                  </span>
+                </div>
+              )}
+
+              {collection?.totalDue > 0 && (
+                <div className="flex-1 flex items-center justify-between bg-rose-50 rounded-xl px-2.5 py-2">
+                  <div className="flex items-center gap-1">
+                    <Clock size={9} className="text-rose-400" strokeWidth={2} />
+                    <span className="text-[9.5px] font-bold text-rose-500 uppercase tracking-wide">
+                      Due
+                    </span>
+                  </div>
+                  <span className="text-[12px] font-extrabold text-gray-800 tabular-nums">
+                    {formatNumber(collection.totalDue, true)}
+                  </span>
+                </div>
+              )}
             </div>
-          </div>
-        </div>
-      </div>
+          )}
 
-      {/* Payment Row */}
-      <div className="grid grid-cols-3 gap-2">
-        {/* Cash */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 bg-amber-50 rounded-xl px-2.5 py-2 border border-amber-100/50">
-          <span className="flex items-center gap-1 text-[9px] font-bold text-amber-500 uppercase tracking-wider">
-            <Banknote size={10} strokeWidth={2} /> Cash
-          </span>
-          <span className="text-[12px] font-extrabold text-gray-700">
-            {formatNumber(collection?.paymentBreakdown?.cash || 0, true)}
-          </span>
-        </div>
+          {/* Order types */}
+          {orderStats?.dineInOrders ||
+          orderStats?.takeawayOrders ||
+          orderStats?.deliveryOrders ? (
+            <div className="flex items-center gap-1.5">
+              {[
+                { label: "Dine-in", value: orderStats?.dineInOrders || 0 },
+                { label: "Takeaway", value: orderStats?.takeawayOrders || 0 },
+                { label: "Delivery", value: orderStats?.deliveryOrders || 0 },
+              ]
+                .filter(({ value }) => value > 0)
+                .map(({ label, value }) => (
+                  <div
+                    key={label}
+                    className="flex-1 bg-gray-50 rounded-xl px-2 py-1.5 text-center"
+                  >
+                    <p className="text-[12px] font-extrabold text-gray-800">
+                      {value}
+                    </p>
 
-        {/* Card */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 bg-teal-50 rounded-xl px-2.5 py-2 border border-teal-100/50">
-          <span className="flex items-center gap-1 text-[9px] font-bold text-teal-500 uppercase tracking-wider">
-            <CreditCard size={10} strokeWidth={2} /> Card
-          </span>
-          <span className="text-[12px] font-extrabold text-gray-700">
-            {formatNumber(collection?.paymentBreakdown?.card || 0, true)}
-          </span>
-        </div>
+                    <p className="text-[9px] font-semibold text-gray-400 uppercase tracking-wide">
+                      {label}
+                    </p>
+                  </div>
+                ))}
+            </div>
+          ) : null}
 
-        {/* UPI */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 bg-indigo-50 rounded-xl px-2.5 py-2 border border-indigo-100/50">
-          <span className="flex items-center gap-1 text-[9px] font-bold text-indigo-400 uppercase tracking-wider">
-            <Smartphone size={10} strokeWidth={2} /> UPI
-          </span>
-          <span className="text-[12px] font-extrabold text-gray-700">
-            {formatNumber(collection?.paymentBreakdown?.upi || 0, true)}
-          </span>
+          {/* View report */}
+          <button
+            onClick={() =>
+              navigate(`/shift-history/details?shiftId=${shift.id}`)
+            }
+            className="w-full flex items-center justify-center gap-1 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all group"
+          >
+            <span className="text-[11px] font-bold text-gray-500 group-hover:text-gray-800 transition-colors">
+              View Full Report
+            </span>
+
+            <ArrowUpRight
+              size={10}
+              strokeWidth={2.5}
+              className="text-gray-400 group-hover:text-gray-700 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"
+            />
+          </button>
         </div>
       </div>
     </div>
@@ -249,32 +350,31 @@ export default function ShiftSummary({
   dateRange,
 }) {
   const navigate = useNavigate();
+  const [openIndex, setOpenIndex] = useState(null);
 
   const isRangeView = useMemo(() => {
     if (!shifts?.length) return false;
-    const dates = shifts.map((s) => s.sessionDate);
-    return new Set(dates).size > 1;
+    return new Set(shifts.map((s) => s.sessionDate)).size > 1;
   }, [shifts]);
 
+  const handleToggle = (index) =>
+    setOpenIndex((prev) => (prev === index ? null : index));
+
   if (loading) return <ShiftSummarySkeleton />;
-  // if (!shifts?.length) return null;
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 border-b border-gray-100">
+      <div className="flex items-center justify-between gap-2 px-4 py-3 border-b border-gray-100">
         <div>
           <p className="text-[13px] font-black text-gray-900">Shift Summary</p>
-          {!isRangeView && shifts[0]?.sessionDate && (
-            <p className="text-[10px] font-medium text-gray-400 mt-0.5">
-              {formatDate(shifts[0].sessionDate, "long")}
-            </p>
-          )}
-          {isRangeView && (
-            <p className="text-[10px] font-medium text-gray-400 mt-0.5">
-              {shifts.length} shifts · date range
-            </p>
-          )}
+          <p className="text-[10.5px] font-medium text-gray-400 mt-0.5">
+            {isRangeView
+              ? `${shifts.length} shifts · date range`
+              : shifts[0]?.sessionDate
+                ? formatDate(shifts[0].sessionDate, "long")
+                : ""}
+          </p>
         </div>
         <button
           onClick={() =>
@@ -291,20 +391,25 @@ export default function ShiftSummary({
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-3">
         {!shifts?.length ? (
           <NoDataFound
             icon={ClipboardList}
             title="No shift data"
-            description="There aren't any shifts recorded for this period"
+            description="No shifts recorded for this period"
             size="sm"
           />
         ) : isRangeView ? (
           <RangeSummaryBanner shifts={shifts} dateRange={dateRange} />
         ) : (
-          <div className="space-y-3">
-            {shifts.map((shift) => (
-              <ShiftRow key={shift.id} shift={shift} />
+          <div className="space-y-1.5">
+            {shifts.map((shift, index) => (
+              <ShiftAccordionRow
+                key={shift.id}
+                shift={shift}
+                isOpen={openIndex === index}
+                onToggle={() => handleToggle(index)}
+              />
             ))}
           </div>
         )}

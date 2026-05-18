@@ -426,7 +426,7 @@ export default function SetupGuidePage() {
   const goPrev = () => setActiveStep((p) => Math.max(p - 1, 1));
 
   return (
-    <div className="min-h-screen bg-slate-50 flex font-sans max-w-9xl mx-auto">
+    <div className="min-h-screen bg-slate-50 flex">
       <Sidebar
         activeStep={activeStep}
         setActiveStep={setActiveStep}
