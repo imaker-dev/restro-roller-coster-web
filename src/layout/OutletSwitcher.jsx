@@ -182,7 +182,7 @@ const OutletSwitcher = () => {
         {desktopOpen && (
           <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl border border-gray-100 shadow-xl shadow-black/[0.08] z-50 overflow-hidden">
             {/* Header */}
-            <div className="px-4 pt-4 pb-3 border-b border-gray-100">
+            <div className="px-4 pt-4 border-b border-gray-100">
               <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-3">
                 Switch Outlet
               </p>

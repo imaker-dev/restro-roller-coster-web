@@ -83,7 +83,7 @@ const bulkUploadSlice = createSlice({
       .addCase(validateBulkUploadFile.fulfilled, (state, action) => {
         state.isValidating = false;
         state.validationData = action.payload.data;
-        toast.success(action.payload.message);
+        toast.success("File validated successfully!");
       })
       .addCase(validateBulkUploadFile.rejected, (state, action) => {
         state.isValidating = false;

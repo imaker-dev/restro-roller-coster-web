@@ -123,8 +123,6 @@ function Sidebar({
               const parentAllowed = hasAccess({
                 userRole,
                 userPermissions,
-                userId,
-                path: item.path,
                 roles: item.roles,
                 permissions: item.permissions,
                 public: item.public,
@@ -136,8 +134,6 @@ function Sidebar({
                 hasAccess({
                   userRole,
                   userPermissions,
-                  userId,
-                  path: child.path,
                   roles: child.roles,
                   permissions: child.permissions,
                   public: child.public,
@@ -150,8 +146,6 @@ function Sidebar({
             return hasAccess({
               userRole,
               userPermissions,
-              userId,
-              path: item.path,
               roles: item.roles,
               permissions: item.permissions,
               public: item.public,
