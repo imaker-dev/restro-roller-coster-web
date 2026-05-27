@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import PageHeader from "../../layout/PageHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllItems } from "../../redux/slices/itemSlice";
-import { useQueryParams } from "../../hooks/useQueryParams";
 import SmartTable from "../../components/SmartTable";
 import { Edit2, Eye, Plus, RotateCcw } from "lucide-react";
 import LightboxMedia from "../../components/LightboxMedia";
@@ -19,31 +18,27 @@ import { formatText } from "../../utils/utils";
 import { FOOD_TYPE_OPTIONS } from "../../constants/selectOptions";
 import { ROUTE_PATHS } from "../../config/paths";
 import { formatNumber } from "../../utils/numberFormatter";
+import { useDataTable } from "../../hooks/useDataTable";
 
 const AllItemsPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { outletId } = useSelector((state) => state.auth);
-  const { categoryId: urlCategoryId } = useQueryParams();
+  const { query, updateQuery } = useDataTable({
+    page: 1,
+    limit: 10,
+  });
 
-  // const [filters, setFilters] = useState({});
-  const [filters, setFilters] = useState(() => ({
-    categoryId: urlCategoryId || "",
-  }));
-
-  useEffect(() => {
-    if (urlCategoryId) {
-      setFilters((prev) => ({
-        ...prev,
-        categoryId: urlCategoryId,
-      }));
-    }
-  }, [urlCategoryId]);
-
-  const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const {
+    page,
+    limit,
+    search,
+    categoryId,
+    itemType,
+    serviceType,
+    includeInactive,
+  } = query;
 
   const { allItems, loading } = useSelector((state) => state.item);
   const { data, pagination } = allItems || {};
@@ -51,15 +46,14 @@ const AllItemsPage = () => {
   const { data: categoryData } = allCategories || {};
 
   const fetchItems = () => {
-    const { itemType, serviceType, categoryId, includeInactive } =
-      filters || {};
-
     dispatch(
       fetchAllItems({
         outletId,
-        search: searchTerm,
-        page: currentPage,
-        limit: itemsPerPage,
+
+        search,
+        page: Number(page),
+        limit: Number(limit),
+
         categoryId,
         itemType,
         serviceType,
@@ -70,120 +64,129 @@ const AllItemsPage = () => {
 
   useEffect(() => {
     fetchItems();
-  }, [urlCategoryId, outletId, searchTerm, currentPage, itemsPerPage, filters]);
+  }, [
+    outletId,
+    search,
+    page,
+    limit,
+    categoryId,
+    itemType,
+    serviceType,
+    includeInactive,
+  ]);
 
   useEffect(() => {
-    if (!allCategories) {
-      dispatch(fetchAllCategories({ outletId }));
-    }
+    dispatch(fetchAllCategories({ outletId }));
   }, [outletId]);
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm, itemsPerPage, urlCategoryId]);
+const columns = [
+  {
+    key: "name",
+    label: "Item",
+    render: (row) => (
+      <div className="flex items-start gap-3 min-w-0">
+        <LightboxMedia
+          src={row.image_url}
+          alt={row.name}
+          caption={row.name}
+          className="h-10 w-10 rounded-lg flex-shrink-0"
+        />
 
-  const columns = [
-    {
-      key: "name",
-      label: "Item",
-      sortable: true,
-      render: (row) => (
-        <div className="flex items-start gap-3">
-          {/* Image */}
-          <div className="h-11 w-11 rounded-lg overflow-hidden bg-slate-100 shrink-0">
-            <LightboxMedia
-              src={row.image_url}
-              alt={row.name}
-              caption={row.name}
-            />
-          </div>
-
-          {/* Info */}
-          <div className="flex flex-col">
-            <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex flex-col min-w-0">
+          <div className="flex items-start gap-2">
+            <div className="mt-0.5 flex-shrink-0">
               <FoodTypeIcon type={row.item_type} />
-              <span className="font-semibold text-slate-800">{row.name}</span>
-
-              {Number(row.is_bestseller) === 1 && (
-                <span className="px-2 py-0.5 text-[10px] rounded-full bg-amber-100 text-amber-700 font-semibold">
-                  Bestseller
-                </span>
-              )}
             </div>
 
-            <span className="text-[11px] text-slate-400 mt-1">
-              SKU: {row.sku} • {row.has_variants ? "Variants" : "Single"}
-            </span>
-          </div>
-        </div>
-      ),
-    },
+            <div className="min-w-0 flex flex-col">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="font-semibold text-slate-800 truncate max-w-[320px] block">
+                  {row.name}
+                </span>
 
-    {
-      key: "category_name",
-      label: "Category",
-      sortable: true,
-      render: (row) => (
-        <span className="text-slate-700 font-medium">{row.category_name}</span>
-      ),
-    },
+                {Number(row.is_bestseller) === 1 && (
+                  <span className="px-2 py-0.5 text-[10px] rounded-full bg-amber-100 text-amber-700 font-semibold whitespace-nowrap">
+                    Bestseller
+                  </span>
+                )}
+              </div>
 
-    {
-      key: "pricing",
-      label: "Pricing",
-      sortable: true,
-      sortValue: (row) => Number(row.base_price),
-      render: (row) => (
-        <div className="flex flex-col">
-          <span className="font-semibold text-slate-800">
-            {formatNumber(row.base_price, true)}
-          </span>
-
-          <span className="text-xs text-slate-500">
-            Tax: {Number(row.tax_rate || 0).toFixed(2)}% • {row.tax_group_name}
-          </span>
-        </div>
-      ),
-    },
-
-    {
-      key: "meta",
-      label: "Station",
-      sortable: false,
-      render: (row) => (
-        <div className="flex flex-col text-sm gap-1">
-          {/* Kitchen Station */}
-          {row.kitchen_station_name ? (
-            <div className="flex items-center gap-2">
-              <span className="text-slate-700 font-medium">
-                {row.kitchen_station_name}
+              <span className="text-[11px] text-slate-400 mt-1">
+                SKU: {row.sku} •{" "}
+                {row.has_variants ? "Variants" : "Single"}
               </span>
             </div>
-          ) : (
-            <span className="text-xs text-slate-400">No kitchen assigned</span>
-          )}
-        </div>
-      ),
-    },
-
-    {
-      key: "availability",
-      label: "Availability",
-      sortable: true,
-      sortValue: (row) => Number(row.is_available),
-      render: (row) => (
-        <div className="flex flex-col gap-1">
-          <div className="w-fit">
-            <StatusBadge
-              value={Number(row.is_active)}
-              trueText="Available"
-              falseText="Unavailable"
-            />
           </div>
         </div>
-      ),
-    },
-  ];
+      </div>
+    ),
+  },
+
+  {
+    key: "category_name",
+    label: "Category",
+    render: (row) => (
+      <div className="max-w-[180px]">
+        <span className="text-slate-700 font-medium break-words">
+          {row.category_name}
+        </span>
+      </div>
+    ),
+  },
+
+  {
+    key: "pricing",
+    label: "Pricing",
+    render: (row) => (
+      <div className="flex flex-col min-w-[120px]">
+        <span className="font-semibold text-slate-800">
+          {formatNumber(row.base_price, true)}
+        </span>
+
+        <span className="text-xs text-slate-500 break-words">
+          Tax: {Number(row.tax_rate || 0).toFixed(2)}% •{" "}
+          {row.tax_group_name}
+        </span>
+      </div>
+    ),
+  },
+
+  {
+    key: "meta",
+    label: "Station",
+    render: (row) => (
+      <div className="flex flex-col text-sm gap-1 min-w-[120px]">
+        {row.kitchen_station_name ? (
+          <div className="flex items-center gap-2">
+            <span className="text-slate-700 font-medium break-words">
+              {row.kitchen_station_name}
+            </span>
+          </div>
+        ) : (
+          <span className="text-xs text-slate-400">
+            No kitchen assigned
+          </span>
+        )}
+      </div>
+    ),
+  },
+
+  {
+    key: "availability",
+    label: "Availability",
+    render: (row) => (
+      <div className="flex flex-col gap-1 min-w-[120px]">
+        <div className="w-fit">
+          <StatusBadge
+            value={Number(row.is_active)}
+            trueText="Available"
+            falseText="Unavailable"
+          />
+        </div>
+      </div>
+    ),
+  },
+];
 
   const rowActions = [
     {
@@ -220,7 +223,7 @@ const AllItemsPage = () => {
     categoryData?.map((cat) => ({
       id: String(cat.id),
       label: cat.name,
-      value: String(cat.id), // ✅ FIX
+      value: String(cat.id),
     })) || [];
 
   const SERVICE_TYPE_OPTIONS = Object.values(SERVICE_TYPES).map((status) => ({
@@ -273,12 +276,28 @@ const AllItemsPage = () => {
         {/* Search Bar */}
         <SearchBar
           placeholder="Search items..."
-          onSearch={(value) => setSearchTerm(value)}
+          value={search || ""}
+          onSearch={(value) =>
+            updateQuery({
+              search: value,
+              page: 1,
+            })
+          }
         />
         <SidebarFilter
           filterGroups={menuFilterGroups}
-          filters={filters}
-          onApplyFilters={setFilters}
+          filters={{
+            categoryId,
+            itemType,
+            serviceType,
+            includeInactive,
+          }}
+          onApplyFilters={(filters) =>
+            updateQuery({
+              ...filters,
+              page: 1,
+            })
+          }
         />
       </div>
 
@@ -295,16 +314,18 @@ const AllItemsPage = () => {
 
       <Pagination
         totalItems={pagination?.total}
-        currentPage={currentPage}
-        pageSize={itemsPerPage}
+        currentPage={Number(page)}
+        pageSize={Number(limit)}
         totalPages={pagination?.totalPages}
-        onPageChange={(page) => setCurrentPage(page)}
         maxPageNumbers={5}
         showPageSizeSelector={true}
-        onPageSizeChange={(size) => {
-          setCurrentPage(1);
-          setItemsPerPage(size);
-        }}
+        onPageChange={(page) => updateQuery({ page })}
+        onPageSizeChange={(limit) =>
+          updateQuery({
+            limit,
+            page: 1,
+          })
+        }
       />
     </div>
   );

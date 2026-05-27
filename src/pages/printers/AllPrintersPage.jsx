@@ -17,6 +17,7 @@ import { fetchAllStations } from "../../redux/slices/stationSlice";
 import StatCard from "../../components/StatCard";
 import { formatText } from "../../utils/utils";
 import PrinterTestResultModal from "../../partial/printers/PrinterTestResultModal";
+import InfoCard from "../../components/InfoCard";
 
 const AllPrintersPage = () => {
   const dispatch = useDispatch();
@@ -65,57 +66,47 @@ const AllPrintersPage = () => {
   };
 
   const columns = [
-
     {
-  key: "printer",
-  label: "Printer",
-  render: (row) => {
-    const isNetwork =
-      row.connectionType === "network";
+      key: "printer",
+      label: "Printer",
+      render: (row) => {
+        const isNetwork = row.connectionType === "network";
 
-    return (
-      <div className="flex flex-col max-w-[280px]">
-        {/* Printer Name */}
-        <div className="flex items-center gap-2">
-          <span className="truncate font-semibold text-slate-800">
-            {row.name}
-          </span>
-
-          <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-slate-600">
-            {isNetwork
-              ? "Network"
-              : "Windows"}
-          </span>
-        </div>
-
-        {/* Printer Details */}
-        <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-500">
-          {isNetwork ? (
-            <>
-              <span className="font-mono">
-                {row.ipAddress}
+        return (
+          <div className="flex flex-col max-w-[280px]">
+            {/* Printer Name */}
+            <div className="flex items-center gap-2">
+              <span className="truncate font-semibold text-slate-800">
+                {row.name}
               </span>
 
-              <span>:</span>
+              <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-slate-600">
+                {isNetwork ? "Network" : "Windows"}
+              </span>
+            </div>
 
-              <span>{row.port}</span>
-            </>
-          ) : (
-            <span className="font-medium">
-              {row.printerName || "-"}
-            </span>
-          )}
+            {/* Printer Details */}
+            <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+              {isNetwork ? (
+                <>
+                  <span className="font-mono">{row.ipAddress}</span>
 
-          <span>•</span>
+                  <span>:</span>
 
-          <span className="capitalize">
-            {row.printerType}
-          </span>
-        </div>
-      </div>
-    );
-  },
-},
+                  <span>{row.port}</span>
+                </>
+              ) : (
+                <span className="font-medium">{row.printerName || "-"}</span>
+              )}
+
+              <span>•</span>
+
+              <span className="capitalize">{row.printerType}</span>
+            </div>
+          </div>
+        );
+      },
+    },
 
     {
       key: "station",
@@ -240,6 +231,11 @@ const AllPrintersPage = () => {
           isRefreshing={loading}
         />
 
+        <InfoCard
+          type="info"
+          title="Printer Setup Information"
+          description="Printer configuration is only required for external Network, USB, or Bluetooth printers. If your POS device already has a built-in printer, or printing is handled directly from the mobile/tablet device, you can skip this setup."
+        />
         <SmartTable
           title="Printers"
           totalcount={printers?.length}

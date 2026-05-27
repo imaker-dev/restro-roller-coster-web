@@ -4,7 +4,7 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import { Play, ImageOff } from "lucide-react";
 
 const VIDEO_EXTENSIONS = ["mp4", "webm", "ogg"];
-const PLACEHOLDER_SRC = "/Images/placeholder-media.jpg"; // optional
+const PLACEHOLDER_SRC = "/Images/food-placeholder.webp"; // optional
 
 const isVideo = (url) => {
   if (!url || typeof url !== "string") return false;

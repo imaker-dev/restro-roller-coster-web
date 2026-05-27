@@ -88,11 +88,13 @@ function useCartManagement() {
       const existing = prev.findIndex(
         (c) => c.itemId === item.id && !c.variantId && !c.addons?.length,
       );
+
       if (existing >= 0) {
         return prev.map((c, i) =>
           i === existing ? { ...c, quantity: c.quantity + 1 } : c,
         );
       }
+
       return [
         ...prev,
         {
@@ -102,6 +104,12 @@ function useCartManagement() {
           variantName: null,
           quantity: 1,
           unitPrice: item.price,
+
+          // GST fields
+          taxRate: Number(item.taxRate || 0),
+          taxGroupId: item.taxGroupId || null,
+          taxInclusive: item.taxInclusive || false,
+
           specialInstructions: null,
           addons: [],
         },
@@ -109,6 +117,7 @@ function useCartManagement() {
     });
 
     toast.success(`${item.name} added`, "success");
+
     return { shouldOpenDetail: false };
   }, []);
 
@@ -129,8 +138,17 @@ function useCartManagement() {
   }, []);
 
   const handleAddFromSheet = useCallback((cartEntry) => {
-    setCart((prev) => [...prev, cartEntry]);
-    // toast.success(`${cartEntry.name} added`, "success");
+    setCart((prev) => [
+      ...prev,
+      {
+        ...cartEntry,
+
+        //  Ensure GST fields always exist
+        taxRate: Number(cartEntry.taxRate || 0),
+        taxGroupId: cartEntry.taxGroupId || null,
+        taxInclusive: cartEntry.taxInclusive || false,
+      },
+    ]);
   }, []);
 
   return {
@@ -457,7 +475,7 @@ export default function PublicMenuPage() {
     }
   }, []);
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     await dispatch(clearSessionState());
     setScreen(SCREENS.SESSION);
   };

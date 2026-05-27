@@ -243,12 +243,14 @@ const AddItemPage = () => {
       (v) => v.name?.trim() && Number(v.price) > 0,
     );
 
-    if (validVariants.length > 0 && values.hasVariants) {
+    if (values.hasVariants) {
       payload.variants = validVariants.map((v, i) => ({
         name: v.name.trim(),
         price: Number(v.price),
         isDefault: i === 0 || Boolean(v.isDefault),
       }));
+    } else if (itemId) {
+      payload.variants = [];
     }
 
     // SINGLE IMAGE

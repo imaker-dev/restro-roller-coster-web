@@ -52,8 +52,9 @@ function ItemDetailSheet({ item, cartItems, onClose, onAddToCart }) {
     });
   };
 
-  const handleAdd = () => {
-    const addonList = Object.entries(selectedAddons).flatMap(([gid, opts]) =>
+const handleAdd = () => {
+  const addonList = Object.entries(selectedAddons).flatMap(
+    ([gid, opts]) =>
       opts.map((o) => ({
         addonId: o.id,
         addonGroupId: Number(gid),
@@ -61,19 +62,50 @@ function ItemDetailSheet({ item, cartItems, onClose, onAddToCart }) {
         price: o.price,
         quantity: 1,
       })),
-    );
-    onAddToCart({
-      itemId: item.id,
-      variantId: selectedVariant?.id ?? null,
-      name: item.name,
-      variantName: selectedVariant?.name ?? null,
-      quantity: qty,
-      unitPrice: basePrice + addonTotal,
-      specialInstructions: note.trim() || null,
-      addons: addonList,
-    });
-    onClose();
-  };
+  );
+
+  // Use variant tax if exists
+  const finalTaxRate = Number(
+    selectedVariant?.taxRate ??
+      item.taxRate ??
+      0,
+  );
+
+  const finalTaxGroupId =
+    selectedVariant?.taxGroupId ??
+    item.taxGroupId ??
+    null;
+
+  onAddToCart({
+    itemId: item.id,
+
+    variantId: selectedVariant?.id ?? null,
+
+    name: item.name,
+
+    variantName:
+      selectedVariant?.name ?? null,
+
+    quantity: qty,
+
+    unitPrice: basePrice + addonTotal,
+
+    // GST fields
+    taxRate: finalTaxRate,
+
+    taxGroupId: finalTaxGroupId,
+
+    taxInclusive:
+      item.taxInclusive || false,
+
+    specialInstructions:
+      note.trim() || null,
+
+    addons: addonList,
+  });
+
+  onClose();
+};
 
   return (
     <div

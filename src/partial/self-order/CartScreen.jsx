@@ -1,13 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // CART SCREEN
 
-import {
-  ChevronLeft,
-  Minus,
-  Plus,
-  ShoppingBag,
-  Trash2,
-} from "lucide-react";
+import { ChevronLeft, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { formatNumber } from "../../utils/numberFormatter";
 import FoodTypeIcon from "../common/FoodTypeIcon";
 import toast from "react-hot-toast";
@@ -31,11 +25,42 @@ function CartScreen({
   token,
   loading = false,
 }) {
+  console.log(cart);
   const dispatch = useDispatch();
   const [specialNote, setSpecialNote] = useState("");
 
   const subtotal = cart.reduce((s, i) => s + i.unitPrice * i.quantity, 0);
-  const taxes = Math.round(subtotal * 0.05);
+
+  // GST Grouping
+  const gstGroups = cart.reduce((acc, item) => {
+    const rate = Number(item.taxRate || 0);
+
+    // Skip no GST items
+    if (rate <= 0) return acc;
+
+    const taxableAmount = item.unitPrice * item.quantity;
+    const taxAmount = (taxableAmount * rate) / 100;
+
+    if (!acc[rate]) {
+      acc[rate] = {
+        rate,
+        taxableAmount: 0,
+        taxAmount: 0,
+      };
+    }
+
+    acc[rate].taxableAmount += taxableAmount;
+    acc[rate].taxAmount += taxAmount;
+
+    return acc;
+  }, {});
+
+  // Total GST
+  const taxes = Object.values(gstGroups).reduce(
+    (sum, group) => sum + group.taxAmount,
+    0,
+  );
+
   const total = subtotal + taxes;
 
   const handleRemove = (idx) => {
@@ -244,13 +269,30 @@ function CartScreen({
                       {formatNumber(subtotal, true)}
                     </span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-[#3A3A3C]">GST (5%)</span>
-                    <span className="font-semibold text-[#1C1C1E]">
-                      {formatNumber(taxes, true)}
-                    </span>
-                  </div>
-                  <div className="h-px bg-[#F2F2F7] my-1" />
+
+                  {/* GST Groups */}
+                  {Object.values(gstGroups).map((group) => (
+                    <div
+                      key={group.rate}
+                      className="flex justify-between text-sm"
+                    >
+                      <span className="text-[#3A3A3C]">
+                        GST ({group.rate}%)
+                      </span>
+
+                      <span className="font-semibold text-[#1C1C1E]">
+                        {formatNumber(group.taxAmount, true)}
+                      </span>
+                    </div>
+                  ))}
+
+                  {Object.keys(gstGroups).length > 0 && (
+                    <p className="text-[11px] text-[#8E8E93] leading-relaxed mt-1">
+                      Taxes are applied as per item-specific GST rates.
+                    </p>
+                  )}
+
+                  <div className="h-px bg-[#F2F2F7] my-2" />
                   <div className="flex justify-between">
                     <span className="font-bold text-[#1C1C1E]">Total</span>
                     <span className="font-bold text-primary-500 text-base">
@@ -272,7 +314,7 @@ function CartScreen({
                   {loading ? (
                     <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   ) : (
-                    <CurrencyIcon size={16}/>
+                    <CurrencyIcon size={16} />
                   )}
                   {loading ? "Placing Order..." : "Place Order"}
                 </div>

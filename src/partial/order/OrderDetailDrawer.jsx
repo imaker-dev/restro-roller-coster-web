@@ -17,41 +17,6 @@ import { formatNumber } from "../../utils/numberFormatter";
 import OrderBadge from "./OrderBadge";
 import Drawer from "../../components/Drawer";
 
-// ─── Item Status Config ───────────────────────────────────────────────────────
-const ITEM_STATUS = {
-  ready: {
-    label: "Ready",
-    icon: CheckCircle2,
-    color: "text-emerald-600",
-    bg: "bg-emerald-50",
-    ring: "ring-emerald-200",
-    dot: "bg-emerald-400",
-  },
-  sent_to_kitchen: {
-    label: "In Kitchen",
-    icon: Flame,
-    color: "text-orange-500",
-    bg: "bg-orange-50",
-    ring: "ring-orange-200",
-    dot: "bg-orange-400",
-  },
-  served: {
-    label: "Served",
-    icon: CheckCircle2,
-    color: "text-sky-600",
-    bg: "bg-sky-50",
-    ring: "ring-sky-200",
-    dot: "bg-sky-400",
-  },
-  pending: {
-    label: "Pending",
-    icon: Loader2,
-    color: "text-slate-400",
-    bg: "bg-slate-50",
-    ring: "ring-slate-200",
-    dot: "bg-slate-300",
-  },
-};
 
 // ─── Elapsed time helper ──────────────────────────────────────────────────────
 function elapsed(d) {
@@ -233,8 +198,6 @@ function DrawerBody({ table }) {
               {/* Items list */}
               <div className="divide-y divide-slate-50 bg-white">
                 {items.map((item, idx) => {
-                  const st = ITEM_STATUS[item.status] || ITEM_STATUS.pending;
-                  const StatusIcon = st.icon;
 
                   return (
                     <div

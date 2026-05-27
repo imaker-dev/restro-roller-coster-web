@@ -109,24 +109,24 @@ const AllOrdersPage = () => {
       color: "blue",
       icon: ShoppingBag,
     },
-    {
-      title: "Total Amount",
-      value: formatNumber(summary?.totalAmount, true),
-      color: "indigo",
-      icon: CURRENCY.ICON,
-    },
+    // {
+    //   title: "Total Amount",
+    //   value: formatNumber(summary?.totalAmount, true),
+    //   color: "indigo",
+    //   icon: CURRENCY.ICON,
+    // },
     {
       title: "Completed Amount",
       value: formatNumber(summary?.completedAmount, true),
-      color: "green",
+      color: "emerald",
       icon: CheckCircle,
     },
-    {
-      title: "Cancelled Orders",
-      value: formatNumber(summary?.cancelledCount),
-      color: "red",
-      icon: XCircle,
-    },
+    // {
+    //   title: "Cancelled Orders",
+    //   value: formatNumber(summary?.cancelledCount),
+    //   color: "red",
+    //   icon: XCircle,
+    // },
     {
       title: "Dine-In Orders",
       value: formatNumber(summary?.dineInCount),
@@ -139,12 +139,12 @@ const AllOrdersPage = () => {
       color: "cyan",
       icon: Package,
     },
-    {
-      title: "Delivery Orders",
-      value: formatNumber(summary?.deliveryCount),
-      color: "sky",
-      icon: Truck,
-    },
+    // {
+    //   title: "Delivery Orders",
+    //   value: formatNumber(summary?.deliveryCount),
+    //   color: "sky",
+    //   icon: Truck,
+    // },
     {
       title: "Avg Order Value",
       value: formatNumber(summary?.avgOrderValue, true),
@@ -159,12 +159,12 @@ const AllOrdersPage = () => {
       color: "violet",
       icon: Ban,
     },
-    {
-      title: "NC Amount",
-      value: formatNumber(summary?.ncAmount, true),
-      color: "rose",
-      icon: CURRENCY.ICON,
-    },
+    // {
+    //   title: "NC Amount",
+    //   value: formatNumber(summary?.ncAmount, true),
+    //   color: "rose",
+    //   icon: CURRENCY.ICON,
+    // },
   ];
 
   const handleExportOrdersReport = async () => {
@@ -287,7 +287,7 @@ const AllOrdersPage = () => {
         />
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
         {stats.map((card, i) => (
           <StatCard
             key={i}
@@ -297,6 +297,7 @@ const AllOrdersPage = () => {
             icon={card.icon}
             variant="v9"
             loading={loading}
+            mode="solid"
           />
         ))}
       </div>

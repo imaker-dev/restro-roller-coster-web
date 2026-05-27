@@ -280,12 +280,21 @@ function CurrentOrderStatusScreen({
                   {formatNumber(activeOrder?.subtotal, true)}
                 </span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-[#3A3A3C]">Tax</span>
-                <span className="font-medium text-[#1C1C1E]">
-                  {formatNumber(activeOrder?.taxAmount, true)}
-                </span>
-              </div>
+              {Number(activeOrder?.taxAmount || 0) > 0 && (
+                <div className="space-y-1">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[#3A3A3C]">Tax</span>
+
+                    <span className="font-medium text-[#1C1C1E]">
+                      {formatNumber(activeOrder?.taxAmount, true)}
+                    </span>
+                  </div>
+
+                  <p className="text-[11px] text-[#8E8E93] leading-relaxed">
+                    Taxes are applied as per item-specific tax rates.
+                  </p>
+                </div>
+              )}
               {activeOrder?.specialInstructions && (
                 <div className="bg-[#FAF8F5] rounded-lg p-3">
                   <span className="text-[11px] font-medium text-[#8E8E93] block mb-1">

@@ -102,52 +102,48 @@ const PrinterModal = ({
 
     validationSchema,
 
-onSubmit: async (values, { resetForm }) => {
-  const payload = {
-    outletId: values.outlet_id,
-    name: values.name,
-    station_id: Number(values.station_id),
+    onSubmit: async (values, { resetForm }) => {
+      const payload = {
+        outletId: values.outlet_id,
+        name: values.name,
+        station_id: Number(values.station_id),
 
-    printer_type: "thermal",
+        printer_type: "thermal",
 
-    connection_type: values.connection_type,
+        connection_type: values.connection_type,
 
-    is_active: Boolean(values.is_active),
+        is_active: Boolean(values.is_active),
 
-    // Default empty values
-    ip_address: "",
-    port: "",
-    printer_name: "",
-  };
+        // Default empty values
+        ip_address: "",
+        port: "",
+        printer_name: "",
+      };
 
-  // Network Printer
-  if (values.connection_type === "network") {
-    payload.ip_address = values.ip_address;
-    payload.port = Number(values.port);
-  }
+      // Network Printer
+      if (values.connection_type === "network") {
+        payload.ip_address = values.ip_address;
+        payload.port = Number(values.port);
+      }
 
-  // Windows Printer
-  if (
-    values.connection_type ===
-    "windows_printer"
-  ) {
-    payload.printer_name =
-      values.printer_name;
-  }
+      // Windows Printer
+      if (values.connection_type === "windows_printer") {
+        payload.printer_name = values.printer_name;
+      }
 
-  if (isEditMode) {
-    await onSubmit({
-      id: Number(printer.id),
-      values: payload,
-      resetForm,
-    });
-  } else {
-    await onSubmit({
-      values: payload,
-      resetForm,
-    });
-  }
-},
+      if (isEditMode) {
+        await onSubmit({
+          id: Number(printer.id),
+          values: payload,
+          resetForm,
+        });
+      } else {
+        await onSubmit({
+          values: payload,
+          resetForm,
+        });
+      }
+    },
   });
 
   return (
@@ -260,12 +256,9 @@ onSubmit: async (values, { resetForm }) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   error={formik.touched.port && formik.errors.port}
+                  helperText={"Most thermal printers use port 9100."}
                 />
               </div>
-
-              <p className="text-xs text-slate-500">
-                Most thermal printers use port 9100.
-              </p>
             </div>
           )}
 
@@ -291,11 +284,10 @@ onSubmit: async (values, { resetForm }) => {
                 error={
                   formik.touched.printer_name && formik.errors.printer_name
                 }
+                helperText={
+                  "Use the exact printer name installed on the Windows machine."
+                }
               />
-
-              <p className="text-xs text-slate-500">
-                Use the exact printer name installed on the Windows machine.
-              </p>
             </div>
           )}
         </div>
