@@ -192,6 +192,7 @@ const AllOutletsPage = () => {
       label: "View",
       icon: Eye,
       // onClick: (row) => setSelectedOutlet(row),
+      roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
       onClick: (row) =>
         navigate(`${ROUTE_PATHS.OUTLET_DETAILS}?outletId=${row.id}`),
     },
@@ -208,6 +209,7 @@ const AllOutletsPage = () => {
       label: "Edit",
       icon: Edit2,
       color: "blue",
+      roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
       onClick: (row) =>
         navigate(`${ROUTE_PATHS.OUTLET_ADD}?outletId=${row.id}`),
     },
@@ -215,7 +217,7 @@ const AllOutletsPage = () => {
       label: "Delete",
       icon: Trash2,
       color: "red",
-      roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
+      roles: [ROLES.MASTER],
       onClick: (row) =>
         navigate(`${ROUTE_PATHS.OUTLET_DELETE}?outletId=${row.id}`),
     },
