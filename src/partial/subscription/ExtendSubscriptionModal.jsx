@@ -2,7 +2,7 @@ import React from "react";
 import ModalBasic from "../../components/ModalBasic";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Loader2, Calendar } from "lucide-react";
+import { Loader2, Calendar, Building2 } from "lucide-react";
 import { InputField } from "../../components/fields/InputField";
 import InfoCard from "../../components/InfoCard";
 import { formatDate } from "../../utils/dateFormatter";
@@ -25,7 +25,7 @@ const ExtendSubscriptionModal = ({
 }) => {
   const formik = useFormik({
     initialValues: {
-      days: 30,
+      days: "",
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
@@ -62,12 +62,31 @@ const ExtendSubscriptionModal = ({
       >
         {/* Subscription Info */}
         {subscription && (
-          <InfoCard
-            size="sm"
-            type="info"
-            title="Subscription Details"
-            description={`Extending subscription for ${subscription.outlet_name || "N/A"}. Current end date: ${formatDate(subscription.subscription_end, "long")}`}
-          />
+          <div className="bg-white border border-slate-200 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Building2 className="h-4 w-4 text-slate-600" />
+              <h3 className="text-sm font-semibold text-slate-900">
+                {subscription.outlet_name || "Outlet"}
+              </h3>
+            </div>
+            <div className="flex items-center gap-4 text-sm">
+              <div className="flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5 text-slate-400" />
+                <span className="text-slate-500">Start:</span>
+                <span className="text-slate-900 font-medium">
+                  {formatDate(subscription.subscription_start, "long") || "N/A"}
+                </span>
+              </div>
+              <div className="text-slate-300">|</div>
+              <div className="flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5 text-slate-400" />
+                <span className="text-slate-500">End:</span>
+                <span className="text-slate-900 font-medium">
+                  {formatDate(subscription.subscription_end, "long") || "N/A"}
+                </span>
+              </div>
+            </div>
+          </div>
         )}
 
         {/* Days to Extend */}
@@ -140,7 +159,7 @@ const ExtendSubscriptionModal = ({
 
           <button
             type="submit"
-            disabled={loading || !formik.isValid || !formik.dirty}
+            disabled={loading || !formik.isValid}
             className="btn bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 flex items-center gap-2"
           >
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
