@@ -390,7 +390,7 @@ const MySubscriptionPage = () => {
                   )}
 
                   {/* Price summary */}
-                  <div className="flex items-center justify-between bg-gray-50 border border-slate-100 rounded-xl px-4 py-3 mb-4">
+                  {/* <div className="flex items-center justify-between bg-gray-50 border border-slate-100 rounded-xl px-4 py-3 mb-4">
                     <div>
                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">
                         Renewal amount
@@ -416,16 +416,16 @@ const MySubscriptionPage = () => {
                         incl. GST
                       </p>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* CTA */}
-                  <button
+                  {/* <button
                     onClick={() => setOverlayOpen(true)}
                     className="w-full flex items-center justify-center gap-2 py-3.5 bg-slate-900 hover:bg-slate-800 disabled:opacity-60 disabled:cursor-not-allowed active:scale-[0.98] text-white text-[13px] font-black rounded-2xl transition-all"
                   >
                     <RefreshCw size={13} />
                     Renew Subscription
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
@@ -436,7 +436,7 @@ const MySubscriptionPage = () => {
               <ActiveHeroCard d={d} />
 
               {/* Payment info */}
-              <MetricPanel icon={ReceiptText} title="Payment Details">
+              {/* <MetricPanel icon={ReceiptText} title="Payment Details">
                 <InfoRow
                   icon={IndianRupee}
                   label="Base Amount"
@@ -469,10 +469,10 @@ const MySubscriptionPage = () => {
                   label="Paid At"
                   value={formatDate(d.paid_at, "longTime")}
                 />
-              </MetricPanel>
+              </MetricPanel> */}
 
               {/* Next renewal pricing */}
-              {d.nextRenewalPricing && (
+              {/* {d.nextRenewalPricing && (
                 <MetricPanel
                   icon={RotateCcw}
                   title="Next Renewal Pricing"
@@ -521,7 +521,7 @@ const MySubscriptionPage = () => {
                     </div>
                   )}
                 </MetricPanel>
-              )}
+              )} */}
 
               {/* Subscription meta */}
               <MetricPanel title="Subscription Info" icon={Info}>

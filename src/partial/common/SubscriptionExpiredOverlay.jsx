@@ -1,7 +1,15 @@
 // components/SubscriptionExpiredOverlay.jsx
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AlertTriangle, Info, LogOut, Clock, CreditCard } from "lucide-react";
+import {
+  LogOut,
+  Clock,
+  CreditCard,
+  PhoneCall,
+  ArrowRight,
+  Info,
+  AlertCircle,
+} from "lucide-react";
 import { clearLoginState } from "../../redux/slices/authSlice";
 import UserAvatar from "../../components/UserAvatar";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +18,6 @@ import { ROUTE_PATHS } from "../../config/paths";
 const SubscriptionExpiredOverlay = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { meData } = useSelector((state) => state.auth);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -40,119 +47,129 @@ const SubscriptionExpiredOverlay = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex items-center justify-center transition-all duration-300 ${
+      className={`fixed inset-0 z-[9999] flex items-end sm:items-center justify-center sm:p-4 transition-all duration-300 ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
     >
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-zinc-950/60 backdrop-blur-xs"
         onClick={handleClose}
       />
 
-      {/* Modal */}
+      {/* Sheet */}
       <div
-        className={`relative w-full max-w-md transform transition-all duration-300 ${
-          isVisible ? "scale-100 translate-y-0" : "scale-95 translate-y-4"
+        className={`relative w-full sm:max-w-[400px] transform transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          isVisible
+            ? "translate-y-0 opacity-100 sm:scale-100"
+            : "translate-y-full sm:translate-y-2 sm:scale-[0.98] sm:opacity-0"
         }`}
       >
-        <div className="overflow-hidden rounded-lg bg-white shadow-2xl ring-1 ring-black/5">
-          {/* Top accent bar */}
-          <div className="h-1 w-full bg-gradient-to-r from-red-400 via-rose-500 to-orange-400" />
+        {/* Drag pill — mobile only */}
+        <div className="sm:hidden absolute top-3 left-1/2 -translate-x-1/2 w-8 h-[3px] rounded-full bg-zinc-300 z-10" />
 
-          {/* Header */}
-          <div className="px-6 pt-7 pb-5 text-center">
-            {/* Icon */}
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50 ring-1 ring-red-100">
-              <AlertTriangle
-                className="h-7 w-7 text-red-500"
-                strokeWidth={1.75}
-              />
-            </div>
-
-            {/* Badge */}
-            <div className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 ring-1 ring-red-100">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-red-500" />
-              <span className="text-[11px] font-semibold uppercase tracking-widest text-red-600">
-                Access Restricted
+        <div className="overflow-hidden rounded-t-[28px] sm:rounded-[20px] bg-white shadow-[0_-2px_40px_rgba(0,0,0,0.08),0_40px_80px_rgba(0,0,0,0.2)]">
+          {/* ── HEADER ── */}
+          <div className="p-4 border-b border-zinc-100">
+            {/* Status badge */}
+            <div className="inline-flex items-center gap-1.5 bg-red-50 border border-red-100 rounded-full pl-2 pr-3 py-1 mb-5">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+              <span className="text-[10.5px] font-semibold text-red-600 tracking-wide uppercase">
+                Subscription Expired
               </span>
             </div>
 
-            <h2 className="text-[22px] font-bold tracking-tight text-gray-900">
-              Subscription Expired
+            {/* Icon + text perfectly aligned */}
+            <h2 className="text-[21px] font-bold text-zinc-900 tracking-tight leading-tight mb-3">
+              Your access has been suspended
             </h2>
-            <p className="mt-1.5 text-sm leading-relaxed text-gray-500">
-              Your plan has lapsed. Please renew to restore full access to all
-              features.
+
+            <p className="text-[13px] text-zinc-400 leading-relaxed">
+              Renew your plan to instantly restore full access to your workspace
+              and all features.
             </p>
           </div>
 
-          {/* Divider */}
-          <div className="mx-6 border-t border-gray-100" />
-
-          {/* User card */}
-          {meData && (
-            <div className="mx-6 mt-4">
-              <div className="flex items-center gap-3 rounded-xl bg-gray-50 px-4 py-3 ring-1 ring-gray-100">
+          {/* ── USER + INFO ── */}
+          <div className="p-4 space-y-3 border-b border-zinc-100">
+            {meData && (
+              <div className="flex items-center gap-3">
                 <UserAvatar name={meData.name} size="lg" />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-gray-900">
+                  <p className="truncate text-[13.5px] font-semibold text-zinc-800">
                     {meData.name}
                   </p>
-                  <div className="mt-0.5 flex items-center gap-1.5">
-                    {meData.roles?.[0] && (
-                      <span className="text-xs text-gray-400">
-                        {meData.roles[0].name}
-                      </span>
-                    )}
-                    {meData.roles?.[0] && meData.email && (
-                      <span className="text-gray-300">·</span>
-                    )}
+                  <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
                     {meData.email && (
-                      <span className="truncate text-xs text-gray-400">
+                      <span className="truncate text-[11.5px] text-zinc-400">
                         {meData.email}
                       </span>
                     )}
                   </div>
                 </div>
-                {/* Expired pill */}
-                {/* <div className="flex flex-shrink-0 items-center gap-1 rounded-md bg-red-50 px-2 py-1 ring-1 ring-red-100">
-                  <Clock className="h-3 w-3 text-red-400" strokeWidth={2} />
-                  <span className="text-[10px] font-semibold text-red-500">
-                    Expired
-                  </span>
-                </div> */}
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Actions */}
-          <div className="space-y-2.5 px-6 pt-4 pb-5">
+            {/* Franchise note */}
+            <div className="flex items-start gap-2.5 bg-zinc-50 rounded-xl border border-zinc-100 px-3.5 py-3">
+              <PhoneCall
+                size={13}
+                strokeWidth={2}
+                className="text-zinc-400 mt-0.5 flex-shrink-0"
+              />
+              <p className="text-[12px] text-zinc-500 leading-relaxed">
+                <span className="font-semibold text-zinc-700">
+                  Contact your franchise owner
+                </span>{" "}
+                to renew your subscription and restore access right away.
+              </p>
+            </div>
+          </div>
+
+          {/* ── ACTIONS ── */}
+          <div className="p-4 space-y-2.5">
             <button
               onClick={() => {
                 handleClose();
                 navigate(ROUTE_PATHS.MY_SUBSCRIPTION);
               }}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary-500 px-4 py-3 text-sm font-semibold text-white transition-all duration-150 hover:bg-primary-600 active:scale-[0.98]"
+              className="group w-full flex items-center gap-3 rounded-[14px] bg-zinc-900 hover:bg-zinc-800 px-5 py-3.5 text-[13.5px] font-semibold text-white transition-all duration-200 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2"
             >
-              <CreditCard className="h-4 w-4" strokeWidth={2} />
-              Renew Plan
+              <CreditCard
+                className="h-[15px] w-[15px] opacity-60 flex-shrink-0"
+                strokeWidth={2}
+              />
+              <span>Renew Plan</span>
+              <ArrowRight
+                size={14}
+                strokeWidth={2}
+                className="ml-auto opacity-30 transition-all duration-200 group-hover:opacity-80 group-hover:translate-x-0.5"
+              />
             </button>
 
             <button
               onClick={handleClose}
-              className="w-full rounded-xl px-4 py-2.5 text-sm font-medium text-gray-400 transition-all duration-150 hover:bg-gray-50 hover:text-gray-600 active:scale-[0.98]"
+              className="w-full rounded-[14px] px-5 py-3 text-[13.5px] font-medium text-zinc-400 hover:text-zinc-700 hover:bg-zinc-50 transition-all duration-150 active:scale-[0.98] focus:outline-none"
             >
               I'll renew later
             </button>
           </div>
-          
-          {/* Footer */}
-          <div className="flex items-center justify-center gap-2 border-t border-gray-100 bg-gray-50 px-6 py-3.5">
-            <Info className="h-3.5 w-3.5 flex-shrink-0 text-gray-300" />
-            <span className="text-xs text-gray-400">
-              Renew your plan to continue using all features
-            </span>
+
+          {/* ── FOOTER ── */}
+          <div className="flex items-center justify-between px-6 py-3.5 border-t border-zinc-100">
+            <div className="flex items-center gap-1.5">
+              <Info className="h-3 w-3 text-zinc-300 flex-shrink-0" />
+              <span className="text-[11px] text-zinc-400">
+                Renew to continue using all features
+              </span>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-1.5 text-[11.5px] font-medium text-zinc-400 hover:text-zinc-700 transition-colors focus:outline-none"
+            >
+              <LogOut size={11} strokeWidth={2} />
+              Sign out
+            </button>
           </div>
         </div>
       </div>
