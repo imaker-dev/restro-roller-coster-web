@@ -270,7 +270,7 @@ const OutletDetails = () => {
       <MetricPanel
         icon={CreditCard}
         title="Subscription"
-        right={<SubscriptionBadge status={sub?.status} />}
+        right={<SubscriptionBadge type="status" value={sub?.status} />}
         noPad
       >
         <div className="p-5">

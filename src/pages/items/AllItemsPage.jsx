@@ -79,114 +79,127 @@ const AllItemsPage = () => {
     dispatch(fetchAllCategories({ outletId }));
   }, [outletId]);
 
-const columns = [
-  {
-    key: "name",
-    label: "Item",
-    render: (row) => (
-      <div className="flex items-start gap-3 min-w-0">
-        <LightboxMedia
-          src={row.image_url}
-          alt={row.name}
-          caption={row.name}
-          className="h-10 w-10 rounded-lg flex-shrink-0"
-        />
+  const columns = [
+    {
+      key: "name",
+      label: "Item",
+      render: (row) => (
+        <div className="flex items-start gap-3 min-w-0">
+          <LightboxMedia
+            src={row.image_url}
+            alt={row.name}
+            caption={row.name}
+            className="h-10 w-10 rounded-lg flex-shrink-0"
+          />
 
-        <div className="flex flex-col min-w-0">
-          <div className="flex items-start gap-2">
-            <div className="mt-0.5 flex-shrink-0">
-              <FoodTypeIcon type={row.item_type} />
-            </div>
-
-            <div className="min-w-0 flex flex-col">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-semibold text-slate-800 truncate max-w-[320px] block">
-                  {row.name}
-                </span>
-
-                {Number(row.is_bestseller) === 1 && (
-                  <span className="px-2 py-0.5 text-[10px] rounded-full bg-amber-100 text-amber-700 font-semibold whitespace-nowrap">
-                    Bestseller
-                  </span>
-                )}
+          <div className="flex flex-col min-w-0">
+            <div className="flex items-start gap-2">
+              <div className="mt-0.5 flex-shrink-0">
+                <FoodTypeIcon type={row.item_type} />
               </div>
 
-              <span className="text-[11px] text-slate-400 mt-1">
-                SKU: {row.sku} •{" "}
-                {row.has_variants ? "Variants" : "Single"}
-              </span>
+              <div className="min-w-0 flex flex-col">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-semibold text-slate-800 truncate max-w-[320px] block">
+                    {row.name}
+                  </span>
+
+                  {Number(row.is_bestseller) === 1 && (
+                    <span className="px-2 py-0.5 text-[10px] rounded-full bg-amber-100 text-amber-700 font-semibold whitespace-nowrap">
+                      Bestseller
+                    </span>
+                  )}
+                </div>
+                <div className="mt-1 flex items-center flex-wrap gap-2">
+                  <span className="text-[11px] text-slate-400">
+                    SKU: {row.sku}
+                  </span>
+
+                  {Number(row.has_variants) === 1 && (
+                    <span className="text-[11px] font-medium text-slate-500">
+                      • Variants
+                    </span>
+                  )}
+
+                  {Number(row.has_addons) === 1 && (
+                    <span className="text-[11px] font-medium text-slate-500">
+                      • Add-ons
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    ),
-  },
+      ),
+    },
 
-  {
-    key: "category_name",
-    label: "Category",
-    render: (row) => (
-      <div className="max-w-[180px]">
-        <span className="text-slate-700 font-medium break-words">
-          {row.category_name}
-        </span>
-      </div>
-    ),
-  },
-
-  {
-    key: "pricing",
-    label: "Pricing",
-    render: (row) => (
-      <div className="flex flex-col min-w-[120px]">
-        <span className="font-semibold text-slate-800">
-          {formatNumber(row.base_price, true)}
-        </span>
-
-        <span className="text-xs text-slate-500 break-words">
-          Tax: {Number(row.tax_rate || 0).toFixed(2)}% •{" "}
-          {row.tax_group_name}
-        </span>
-      </div>
-    ),
-  },
-
-  {
-    key: "meta",
-    label: "Station",
-    render: (row) => (
-      <div className="flex flex-col text-sm gap-1 min-w-[120px]">
-        {row.kitchen_station_name ? (
-          <div className="flex items-center gap-2">
-            <span className="text-slate-700 font-medium break-words">
-              {row.kitchen_station_name}
-            </span>
-          </div>
-        ) : (
-          <span className="text-xs text-slate-400">
-            No kitchen assigned
+    {
+      key: "category_name",
+      label: "Category",
+      render: (row) => (
+        <div className="max-w-[180px]">
+          <span className="text-slate-700 font-medium break-words">
+            {row.category_name}
           </span>
-        )}
-      </div>
-    ),
-  },
-
-  {
-    key: "availability",
-    label: "Availability",
-    render: (row) => (
-      <div className="flex flex-col gap-1 min-w-[120px]">
-        <div className="w-fit">
-          <StatusBadge
-            value={Number(row.is_active)}
-            trueText="Available"
-            falseText="Unavailable"
-          />
         </div>
-      </div>
-    ),
-  },
-];
+      ),
+    },
+
+    {
+      key: "pricing",
+      label: "Pricing",
+      render: (row) => (
+        <div className="flex flex-col min-w-[120px]">
+          <span className="font-semibold text-slate-800">
+            {formatNumber(row.base_price, true)}
+          </span>
+
+          {row.tax_rate != null ? (
+            <span className="text-xs text-slate-500 break-words">
+              Tax: {Number(row.tax_rate).toFixed(2)}% • {row.tax_group_name}
+            </span>
+          ) : (
+            <span className="text-xs text-slate-400">No tax</span>
+          )}
+        </div>
+      ),
+    },
+
+    {
+      key: "meta",
+      label: "Station",
+      render: (row) => (
+        <div className="flex flex-col text-sm gap-1 min-w-[120px]">
+          {row.kitchen_station_name ? (
+            <div className="flex items-center gap-2">
+              <span className="text-slate-700 font-medium break-words">
+                {row.kitchen_station_name}
+              </span>
+            </div>
+          ) : (
+            <span className="text-xs text-slate-400">No kitchen assigned</span>
+          )}
+        </div>
+      ),
+    },
+
+    {
+      key: "availability",
+      label: "Availability",
+      render: (row) => (
+        <div className="flex flex-col gap-1 min-w-[120px]">
+          <div className="w-fit">
+            <StatusBadge
+              value={Number(row.is_active)}
+              trueText="Available"
+              falseText="Unavailable"
+            />
+          </div>
+        </div>
+      ),
+    },
+  ];
 
   const rowActions = [
     {

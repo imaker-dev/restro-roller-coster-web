@@ -23,10 +23,10 @@ import ModalBasic from "../../components/ModalBasic";
 import RegistrationActionModal from "../../partial/registration-request/RegistrationActionModal";
 import RegistrationStatusBadge from "../../partial/registration-request/RegistrationStatusBadge";
 import ActivateSubscriptionModal from "../../partial/registration-request/ActivateSubscriptionModal";
-import PlanBadge from "../../partial/registration-request/PlanBadge";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "../../config/paths";
 import RegistrationDetailsDrawer from "../../partial/registration-request/RegistrationDetailsDrawer";
+import SubscriptionBadge from "../../partial/subscription/SubscriptionBadge";
 
 const AllRegistrationRequestPage = () => {
   const dispatch = useDispatch();
@@ -115,7 +115,9 @@ const AllRegistrationRequestPage = () => {
       key: "plan",
       label: "Plan",
       sortable: true,
-      render: (row) => <PlanBadge plan={row.plan_interest} />,
+      render: (row) => (
+        <SubscriptionBadge type="plan" value={row.plan_interest} />
+      ),
     },
 
     {

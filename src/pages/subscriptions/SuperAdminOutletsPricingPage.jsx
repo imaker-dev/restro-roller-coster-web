@@ -53,7 +53,7 @@ const SuperAdminOutletsPricingPage = () => {
     {
       key: "status",
       label: "Status",
-      render: (row) => <SubscriptionBadge status={row.status} />,
+      render: (row) => <SubscriptionBadge type="status" value={row.status} />,
     },
     {
       key: "period",

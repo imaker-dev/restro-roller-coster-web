@@ -6,6 +6,7 @@ import { Loader2, Calendar, Building2 } from "lucide-react";
 import { InputField } from "../../components/fields/InputField";
 import InfoCard from "../../components/InfoCard";
 import { formatDate } from "../../utils/dateFormatter";
+import SubscriptionBadge from "./SubscriptionBadge";
 
 const validationSchema = Yup.object({
   days: Yup.number()
@@ -60,30 +61,40 @@ const ExtendSubscriptionModal = ({
         autoComplete="off"
         className="p-4 space-y-4"
       >
-        {/* Subscription Info */}
         {subscription && (
-          <div className="bg-white border border-slate-200 rounded-lg p-4">
-            <div className="flex items-center gap-2 mb-3">
-              <Building2 className="h-4 w-4 text-slate-600" />
-              <h3 className="text-sm font-semibold text-slate-900">
-                {subscription.outlet_name || "Outlet"}
-              </h3>
-            </div>
-            <div className="flex items-center gap-4 text-sm">
-              <div className="flex items-center gap-1.5">
-                <Calendar className="h-3.5 w-3.5 text-slate-400" />
-                <span className="text-slate-500">Start:</span>
-                <span className="text-slate-900 font-medium">
-                  {formatDate(subscription.subscription_start, "long") || "N/A"}
-                </span>
+          <div className="rounded-xl border border-slate-200 bg-white p-3">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2 min-w-0">
+                <Building2 className="h-4 w-4 text-slate-400 shrink-0" />
+                <h3 className="text-sm font-semibold text-slate-900 truncate">
+                  {subscription.outlet_name || "Outlet"}
+                </h3>
               </div>
-              <div className="text-slate-300">|</div>
-              <div className="flex items-center gap-1.5">
-                <Calendar className="h-3.5 w-3.5 text-slate-400" />
-                <span className="text-slate-500">End:</span>
-                <span className="text-slate-900 font-medium">
+
+              <SubscriptionBadge type="status" value={subscription.status} />
+            </div>
+
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <div className="rounded-md bg-slate-50 px-2.5 py-2">
+                <div className="flex items-center gap-1 text-[11px] text-slate-500">
+                  <Calendar className="h-3 w-3 text-emerald-500" />
+                  <span className="uppercase tracking-wide">Start</span>
+                </div>
+
+                <p className="mt-1 text-sm font-medium text-slate-900">
+                  {formatDate(subscription.subscription_start, "long") || "N/A"}
+                </p>
+              </div>
+
+              <div className="rounded-md bg-slate-50 px-2.5 py-2">
+                <div className="flex items-center gap-1 text-[11px] text-slate-500">
+                  <Calendar className="h-3 w-3 text-rose-500" />
+                  <span className="uppercase tracking-wide">End</span>
+                </div>
+
+                <p className="mt-1 text-sm font-medium text-slate-900">
                   {formatDate(subscription.subscription_end, "long") || "N/A"}
-                </span>
+                </p>
               </div>
             </div>
           </div>

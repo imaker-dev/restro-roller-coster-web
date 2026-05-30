@@ -171,7 +171,7 @@ function CenteredModal({
           {cancelText}
         </button>
         <button
-          onClick={() => !loading && onConfirm()}
+          onClick={() => onConfirm?.()}
           disabled={loading}
           className={`flex flex-[1.2] items-center justify-center gap-2 font-bold tracking-[-0.01em] text-white transition-all hover:-translate-y-px active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 disabled:translate-y-0 ${sz.okBtn} ${cfg.btn}`}
         >
@@ -259,7 +259,7 @@ function MinimalModal({
           {cancelText}
         </button>
         <button
-          onClick={() => !loading && onConfirm()}
+          onClick={() => onConfirm?.()}
           disabled={loading}
           className={`flex flex-1 items-center justify-center gap-1.5 font-bold text-white transition-all hover:-translate-y-px active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 disabled:translate-y-0 ${sz.mnBtn} ${cfg.btn}`}
         >
@@ -313,22 +313,47 @@ export default function ModalAction({
 
   // outside click dismiss
   useEffect(() => {
-    const fn = ({ target }) => {
-      if (!isOpen || modalRef.current?.contains(target)) return;
+    const handleOutsideClick = ({ target }) => {
+      if (!isOpen || loading || !modalRef.current) return;
+
+      if (modalRef.current.contains(target)) return;
+
       onClose();
     };
-    document.addEventListener("mousedown", fn);
-    return () => document.removeEventListener("mousedown", fn);
-  }, [isOpen, onClose]);
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isOpen, loading, onClose]);
 
   // ESC dismiss
   useEffect(() => {
-    const fn = ({ key }) => {
-      if (isOpen && key === "Escape") onClose();
+    const handleEscape = ({ key }) => {
+      if (!isOpen || loading) return;
+
+      if (key === "Escape") {
+        onClose();
+      }
     };
-    document.addEventListener("keydown", fn);
-    return () => document.removeEventListener("keydown", fn);
-  }, [isOpen, onClose]);
+
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen, loading, onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
   const shared = {
     id,

@@ -12,7 +12,7 @@ import TokenTypeBadge from "../../partial/registration-request/TokenTypeBadge";
 import { ArrowUpCircle } from "lucide-react";
 import ModalAction from "../../components/ModalAction";
 import { handleResponse } from "../../utils/helpers";
-import PlanBadge from "../../partial/registration-request/PlanBadge";
+import SubscriptionBadge from "../../partial/subscription/SubscriptionBadge";
 
 const TokenActivationLogsPage = () => {
   const dispatch = useDispatch();
@@ -71,7 +71,9 @@ const TokenActivationLogsPage = () => {
       key: "plan",
       label: "Plan",
       sortable: true,
-      render: (row) => <PlanBadge plan={row.plan_interest} />,
+      render: (row) => (
+        <SubscriptionBadge type="plan" value={row.plan} size="sm" />
+      ),
     },
 
     {

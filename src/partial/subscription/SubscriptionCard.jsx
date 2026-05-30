@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { formatDate } from "../../utils/dateFormatter";
 import { formatNumber } from "../../utils/numberFormatter";
-import SubscriptionBadge, { SUBSCRIPTION_VARIANTS } from "./SubscriptionBadge";
+import SubscriptionBadge from "./SubscriptionBadge";
 import CurrencyIcon from "../../components/CurrencyIcon";
 
 const daysLeft = (end) => {
@@ -20,26 +20,14 @@ const daysLeft = (end) => {
   return diff;
 };
 
-const getStatus = (status) => {
-  if (!status) {
-    return SUBSCRIPTION_VARIANTS.default;
-  }
-
-  return SUBSCRIPTION_VARIANTS[status] || SUBSCRIPTION_VARIANTS.default;
-};
-
 // ─── Subscription Card ────────────────────────────────────────────────────────
 function SubscriptionCard({ sub }) {
-  const meta = getStatus(sub.status);
   const left = daysLeft(sub.subscription_end);
   const urgent = left !== null && left <= 30 && left >= 0;
   const expired = left !== null && left < 0;
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden hover:border-slate-300 hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-0.5 transition-all duration-200 flex flex-col">
-      {/* Status bar */}
-      <div className={`h-1 w-full bg-gradient-to-r ${meta.bar}`} />
-
       <div className="p-5 flex flex-col gap-4 flex-1">
         {/* ── Header ── */}
         <div className="flex items-start justify-between gap-3">
@@ -61,7 +49,7 @@ function SubscriptionCard({ sub }) {
           </div>
 
           {/* Status pill */}
-          <SubscriptionBadge status={sub.status} />
+          <SubscriptionBadge type="status" value={sub.status} />
         </div>
 
         {/* ── Contact row ── */}

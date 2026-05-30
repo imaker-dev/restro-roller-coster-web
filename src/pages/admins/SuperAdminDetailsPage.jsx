@@ -144,7 +144,7 @@ const SuperAdminDetailsPage = () => {
 
         return (
           <div className="flex flex-col">
-            <SubscriptionBadge status={plan.status} size="sm" />
+            <SubscriptionBadge type="status" value={plan.status} size="sm" />
 
             {plan?.end_date && (
               <span className="text-[11px] text-slate-500 mt-1">

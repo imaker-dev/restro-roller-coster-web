@@ -135,7 +135,7 @@ function ActiveHeroCard({ d }) {
               ID #{d.outlet_id}
             </p>
           </div>
-          <SubscriptionBadge status={d.status} />
+          <SubscriptionBadge type="status" value={d.status} />
         </div>
 
         {/* 3 stat tiles */}
@@ -223,7 +223,7 @@ function ExpiredHeroCard({ d }) {
               </p>
             </div>
           </div>
-          <SubscriptionBadge status={d.status} />
+          <SubscriptionBadge type="status" value={d.status} />
         </div>
       </div>
     </div>
@@ -357,7 +357,7 @@ const MySubscriptionPage = () => {
                       </div>
                     </div>
 
-                    <SubscriptionBadge status={d.status} />
+                    <SubscriptionBadge type="status" value={d.status} />
                   </div>
 
                   {/* Status Message */}

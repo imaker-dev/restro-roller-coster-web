@@ -121,7 +121,7 @@ const AllSubscriptionsListPage = () => {
     {
       key: "status",
       label: "Status",
-      render: (row) => <SubscriptionBadge status={row.status} size="sm" />,
+      render: (row) => <SubscriptionBadge type="status" value={row.status} size="sm" />,
     },
 
     /* ---------------- SUBSCRIPTION PERIOD ---------------- */

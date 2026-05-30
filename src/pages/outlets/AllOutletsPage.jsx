@@ -138,7 +138,7 @@ const AllOutletsPage = () => {
 
         return (
           <div className="flex flex-col gap-1 min-w-[170px]">
-            <SubscriptionBadge status={plan.status} size="sm" />
+            <SubscriptionBadge type="status" value={plan.status} size="sm" />
 
             {plan.end_date && (
               <div className="text-xs text-slate-600">
@@ -174,16 +174,6 @@ const AllOutletsPage = () => {
           </span>
         </div>
       ),
-    },
-
-    /* ===============================
-     STATUS
-  =============================== */
-    {
-      key: "is_active",
-      label: "Status",
-      sortable: true,
-      render: (row) => <StatusBadge value={row.is_active} />,
     },
   ];
 

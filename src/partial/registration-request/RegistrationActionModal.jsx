@@ -1,7 +1,7 @@
 import React from "react";
 import ModalBasic from "../../components/ModalBasic";
 import { CheckCircle, XCircle, Edit2, Loader2 } from "lucide-react";
-import PlanBadge from "./PlanBadge";
+import SubscriptionBadge from "../subscription/SubscriptionBadge";
 
 const RegistrationActionModal = ({
   actionState,
@@ -65,7 +65,7 @@ const RegistrationActionModal = ({
 
                 <span className="inline-flex items-center gap-1 text-xs">
                   <span className="text-slate-400">Plan:</span>
-                  <PlanBadge plan={row.plan_interest} />
+                  <SubscriptionBadge type="plan" value={row.plan_interest} />
                 </span>
               </div>
             </div>

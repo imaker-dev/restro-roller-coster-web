@@ -279,7 +279,7 @@ const AddItemPage = () => {
         enableReinitialize
       >
         {(formik) => (
-          <Form className="space-y-8" autoComplete="off">
+          <Form className="space-y-6" autoComplete="off">
             {/* PRODUCT INFO */}
             <AccordionSection title="Product Info" icon={Info}>
               <div className="space-y-4">

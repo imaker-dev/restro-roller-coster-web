@@ -76,7 +76,7 @@ const OutletsSubscriptionPricingPage = () => {
       render: (row) => {
         return (
           <div className="flex flex-col">
-            <SubscriptionBadge status={row.subscription?.status} size="sm" />
+            <SubscriptionBadge type="status" value={row.subscription?.status} size="sm" />
 
             <span className="text-[10px] text-slate-400 mt-1">
               {row.subscription?.pricingSource

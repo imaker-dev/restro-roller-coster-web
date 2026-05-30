@@ -14,9 +14,9 @@ import {
   Clock,
   Hash,
 } from "lucide-react";
-import PlanBadge from "./PlanBadge";
 import RegistrationStatusBadge from "./RegistrationStatusBadge";
 import { formatDate } from "../../utils/dateFormatter";
+import SubscriptionBadge from "../subscription/SubscriptionBadge";
 
 const InfoRow = ({ icon: Icon, label, value, monospace = false }) => (
   <div className="flex items-start gap-3 group">
@@ -108,7 +108,7 @@ const RegistrationDetailsDrawer = ({ isOpen, onClose, outlet }) => {
                   <FileText className="h-3.5 w-3.5 text-slate-500" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <PlanBadge plan={outlet.plan_interest} />
+                  <SubscriptionBadge type="plan" value={outlet.plan_interest} />
                   <p className="text-[11px] text-slate-400 mt-1">
                     Subscription Plan
                   </p>
