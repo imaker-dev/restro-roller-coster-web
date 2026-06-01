@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { Loader2 } from "lucide-react";
 import { InputField } from "../../components/fields/InputField";
 import InfoCard from "../../components/InfoCard";
+import SubscriptionBadge from "../subscription/SubscriptionBadge";
 
 const validationSchema = Yup.object({
   restaurant: Yup.string()
@@ -31,10 +32,11 @@ const ActivateSubscriptionModal = ({
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      outletId:request?.outlet_id || "",
+      outletId: request?.outlet_id || "",
       restaurant: request?.restaurant_name || "",
       email: request?.email || "",
       phone: request?.phone || "",
+      plan: request?.plan_interest || "",
       password: "",
       notify_whatsapp: true,
       notify_email: true,
@@ -50,15 +52,35 @@ const ActivateSubscriptionModal = ({
       <form
         onSubmit={formik.handleSubmit}
         autoComplete="off"
-        className="p-5 space-y-5"
+        className="p-4 space-y-4"
       >
-        {/* Header Info */}
         <InfoCard
           size="sm"
           type="info"
           title="Subscription Activation"
           description="Create login credentials for this restaurant and activate its subscription access."
         />
+
+        <div className="relative overflow-hidden rounded-lg border border-primary-200 bg-white px-4 py-3 shadow-sm">
+          <div className="absolute inset-y-0 left-0 w-1 bg-primary-500" />
+
+          <div className="flex items-center justify-between pl-2">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-primary-600">
+                Selected Plan
+              </p>
+              <p className="text-xs text-slate-500">
+                Subscription activation plan
+              </p>
+            </div>
+
+            <SubscriptionBadge
+              type="plan"
+              value={formik.values.plan}
+              size="sm"
+            />
+          </div>
+        </div>
 
         {/* Restaurant */}
         <InputField

@@ -6,14 +6,21 @@ import {
   fetchSettingsByCategory,
   updateSetting,
 } from "../../redux/slices/settingSlice";
-import { Info, CheckCircle, ToggleLeft, Text } from "lucide-react";
+import {
+  Info,
+  CheckCircle,
+  ToggleLeft,
+  Text,
+  Pencil,
+  List,
+} from "lucide-react";
 import { EditSettingModal } from "../../partial/setting/EditSettingModal";
-import { SettingConfirmationModal } from "../../partial/setting/SettingConfirmationModal";
 import { handleResponse } from "../../utils/helpers";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import { formatText } from "../../utils/utils";
 import InfoCard from "../../components/InfoCard";
 import MetricPanel from "../../partial/report/daily-sales-report/MetricPanel";
+import ModalAction from "../../components/ModalAction";
 
 /* ============================= */
 /*        MAIN PAGE              */
@@ -110,7 +117,7 @@ const SettingDetailsPage = () => {
         />
 
         {/* Settings Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Configuration Settings - Main */}
           <div className="lg:col-span-2 space-y-4">
             {settingsArray.filter((s) => s.type !== "boolean").length > 0 && (
@@ -150,18 +157,11 @@ const SettingDetailsPage = () => {
           {/* Summary Sidebar */}
           <div className="space-y-4">
             {/* Active Features */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center">
-                  <CheckCircle size={16} className="text-emerald-600" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-900">
-                    Active Features
-                  </h3>
-                  <p className="text-xs text-gray-500">Currently enabled</p>
-                </div>
-              </div>
+            <MetricPanel
+              icon={CheckCircle}
+              title={"Active Features"}
+              desc={"Currently enabled"}
+            >
               <div className="space-y-2">
                 {groupedSettings.enabled.length > 0 ? (
                   groupedSettings.enabled.map((setting) => (
@@ -181,7 +181,7 @@ const SettingDetailsPage = () => {
                   </p>
                 )}
               </div>
-            </div>
+            </MetricPanel>
 
             {/* Info Card */}
             <InfoCard
@@ -193,10 +193,7 @@ const SettingDetailsPage = () => {
             />
 
             {/* Summary Stats */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-              <h3 className="text-sm font-semibold text-gray-900 mb-4">
-                Summary
-              </h3>
+            <MetricPanel icon={List} title={"Summary"}>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-gray-600">Total Settings</span>
@@ -219,7 +216,7 @@ const SettingDetailsPage = () => {
                   </span>
                 </div>
               </div>
-            </div>
+            </MetricPanel>
           </div>
         </div>
       </div>
@@ -233,11 +230,34 @@ const SettingDetailsPage = () => {
         loading={isUpdatingSettings}
       />
 
-      <SettingConfirmationModal
+      {/* <SettingConfirmationModal
         isOpen={confirmOpen}
         setting={selectedSetting}
         onClose={() => setConfirmOpen(false)}
         onConfirm={handleToggleConfirm}
+        loading={isUpdatingSettings}
+      /> */}
+
+      <ModalAction
+        theme={selectedSetting?.value ? "danger" : "success"}
+        isOpen={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={() => {
+          if (!selectedSetting) return;
+
+          const newValue = !selectedSetting.value;
+          handleToggleConfirm(selectedSetting.key, newValue);
+        }}
+        title={`${
+          selectedSetting?.value ? "Disable" : "Enable"
+        } ${formatText(selectedSetting?.key)}`}
+        description={`You are about to ${
+          selectedSetting?.value ? "disable" : "enable"
+        } this setting. This change will take effect immediately${
+          selectedSetting?.description
+            ? ` and may impact ${selectedSetting.description.toLowerCase()}`
+            : "."
+        }`}
         loading={isUpdatingSettings}
       />
     </>
@@ -293,16 +313,31 @@ const SettingRow = ({ setting, onEdit, onToggle }) => {
         ) : (
           <button
             disabled={!setting.isEditable}
-            onClick={() => onEdit && onEdit(setting)}
-            className={`px-4 py-2 text-sm font-medium rounded-lg border transition-all ${
+            onClick={() => onEdit?.(setting)}
+            className={`group flex items-center gap-2 rounded-lg border px-3 py-2 transition-all ${
               setting.isEditable
-                ? "border-gray-200 hover:border-primary-400 hover:bg-primary-50 text-gray-800 hover:text-primary-700"
-                : "border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed"
+                ? "border-slate-200 bg-white hover:border-primary-300 hover:bg-primary-50"
+                : "border-slate-200 bg-slate-50 text-slate-400 cursor-not-allowed"
             }`}
           >
-            <span className="font-semibold">{String(setting.value)}</span>
+            <span
+              className={`text-sm font-semibold ${
+                !setting.value && setting.value !== 0
+                  ? "text-slate-400 italic"
+                  : "text-slate-900"
+              }`}
+            >
+              {setting.value || setting.value === 0 ? setting.value : "Not Set"}
+              {(setting.value || setting.value === 0) &&
+                isPercentageField &&
+                "%"}
+            </span>
 
-            {isPercentageField && <span className="ml-1 text-xs">%</span>}
+            {setting.isEditable && (
+              <div className="flex h-5 w-5 items-center justify-center rounded-md text-slate-400 group-hover:text-primary-600">
+                <Pencil size={12} />
+              </div>
+            )}
           </button>
         )}
       </div>
