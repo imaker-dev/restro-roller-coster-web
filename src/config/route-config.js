@@ -113,6 +113,9 @@ import AddMasterMenuPage from "../pages/items/AddMasterMenuPage";
 import SuperAdminDetailsPage from "../pages/admins/SuperAdminDetailsPage";
 import AllTransactionsPage from "../pages/transactions/AllTransactionsPage";
 import TransactionDetailsPage from "../pages/transactions/TransactionDetailsPage";
+import FranchiseListingPage from "../pages/franchise/FranchiseListingsPage";
+import FranchiseListingFormPage from "../pages/franchise/FranchiseListingFormPage";
+import FranchiseInquiriesPage from "../pages/franchise/FranchiseInquiriesPage";
 
 const routeConfig = [
   {
@@ -253,6 +256,12 @@ const routeConfig = [
   // Payments
   { path: ROUTE_PATHS.ALL_TRANSACTIONS, element: AllTransactionsPage, roles: [ROLES.MASTER] },
   { path: ROUTE_PATHS.TRANSACTION_DETAILS, element: TransactionDetailsPage, roles: [ROLES.MASTER] },
+
+
+  // Franchise Listing
+  { path: ROUTE_PATHS.FRANCHISE_LISTINGS, element: FranchiseListingPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
+  { path: ROUTE_PATHS.FRANCHISE_LISTINGS_ADD, element: FranchiseListingFormPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
+  { path: ROUTE_PATHS.FRANCHISE_INQUIRIES, element: FranchiseInquiriesPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
 
   // System
   { path: ROUTE_PATHS.ALL_SETTINGS, element: AllSettingsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN] },

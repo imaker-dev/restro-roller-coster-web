@@ -43,6 +43,7 @@ import superAdminDashboardSlice from "./redux/slices/superAdminDashboardSlice";
 import subscriptionSlice from "./redux/slices/subscriptionSlice";
 import paymentSlice from "./redux/slices/paymentSlice";
 import transactionSlice from "./redux/slices/transactionSlice";
+import franchiseListingSlice from "./redux/slices/franchiseListingSlice";
 
 const reducer = {
   auth: authSlice,
@@ -89,6 +90,7 @@ const reducer = {
   subscription: subscriptionSlice,
   payment: paymentSlice,
   transaction: transactionSlice,
+  franchise:franchiseListingSlice,
 };
 
 const store = configureStore({

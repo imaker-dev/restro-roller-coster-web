@@ -471,6 +471,19 @@ export const navConfig = [
   },
 
   {
+    title: "Growth",
+    roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
+    items: [
+      {
+        name: "Franchise Listings",
+        icon: LayoutGrid,
+        path: ROUTE_PATHS.FRANCHISE_LISTINGS,
+        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
+      },
+    ],
+  },
+
+  {
     title: "System",
     roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
     items: [

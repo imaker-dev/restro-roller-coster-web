@@ -108,9 +108,9 @@ export const ROUTE_PATHS = {
   USER_DETAILS: "/users/details",
   USER_ADD: "/users/add",
 
-ALL_SUPER_ADMINS: "/franchise-partners",
-SUPER_ADMIN_DETAILS: "/franchise-partners/details",
-SUPER_ADMIN_ADD: "/franchise-partners/add",
+  ALL_SUPER_ADMINS: "/franchise-partners",
+  SUPER_ADMIN_DETAILS: "/franchise-partners/details",
+  SUPER_ADMIN_ADD: "/franchise-partners/add",
 
   REGISTRATION_REQUESTS: "/registration-requests",
   REGISTRATION_REQUESTS_ADD: "/registration-requests/add",
@@ -129,6 +129,11 @@ SUPER_ADMIN_ADD: "/franchise-partners/add",
   // Transactions
   ALL_TRANSACTIONS: "/transactions",
   TRANSACTION_DETAILS: "/transactions/details",
+
+  // Franchise 
+  FRANCHISE_LISTINGS: "/franchise-listings",
+  FRANCHISE_LISTINGS_ADD: "/franchise-listings/add",
+  FRANCHISE_INQUIRIES: "/franchise-inquiries",
 
   // System
   ALL_SETTINGS: "/settings",

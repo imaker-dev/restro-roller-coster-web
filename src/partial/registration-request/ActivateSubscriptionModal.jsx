@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import { InputField } from "../../components/fields/InputField";
 import InfoCard from "../../components/InfoCard";
 import SubscriptionBadge from "../subscription/SubscriptionBadge";
+import { SelectField } from "../../components/fields/SelectField";
 
 const validationSchema = Yup.object({
   restaurant: Yup.string()
@@ -17,10 +18,18 @@ const validationSchema = Yup.object({
 
   phone: Yup.string().required("Phone is required").min(8, "Too short"),
 
+  plan: Yup.string().required("Plan is required"),
+
   password: Yup.string()
     .required("Password is required")
     .min(6, "Minimum 6 characters"),
 });
+
+const PLAN_OPTIONS = [
+  { value: "free", label: "Free" },
+  { value: "pro", label: "Pro" },
+  { value: "offline_annual", label: "Offline Annual" },
+];
 
 const ActivateSubscriptionModal = ({
   isOpen,
@@ -31,6 +40,7 @@ const ActivateSubscriptionModal = ({
 }) => {
   const formik = useFormik({
     enableReinitialize: true,
+    validateOnMount: true,
     initialValues: {
       outletId: request?.outlet_id || "",
       restaurant: request?.restaurant_name || "",
@@ -60,27 +70,6 @@ const ActivateSubscriptionModal = ({
           title="Subscription Activation"
           description="Create login credentials for this restaurant and activate its subscription access."
         />
-
-        <div className="relative overflow-hidden rounded-lg border border-primary-200 bg-white px-4 py-3 shadow-sm">
-          <div className="absolute inset-y-0 left-0 w-1 bg-primary-500" />
-
-          <div className="flex items-center justify-between pl-2">
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-primary-600">
-                Selected Plan
-              </p>
-              <p className="text-xs text-slate-500">
-                Subscription activation plan
-              </p>
-            </div>
-
-            <SubscriptionBadge
-              type="plan"
-              value={formik.values.plan}
-              size="sm"
-            />
-          </div>
-        </div>
 
         {/* Restaurant */}
         <InputField
@@ -116,6 +105,17 @@ const ActivateSubscriptionModal = ({
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.phone && formik.errors.phone}
+        />
+
+        <SelectField
+          label="Subscription Plan"
+          name="plan"
+          required
+          value={formik.values.plan}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          options={PLAN_OPTIONS}
+          error={formik.touched.plan && formik.errors.plan}
         />
 
         {/* Password */}
