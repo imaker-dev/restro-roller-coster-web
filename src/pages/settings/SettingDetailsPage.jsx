@@ -30,6 +30,7 @@ const SettingDetailsPage = () => {
   const dispatch = useDispatch();
   const { category } = useQueryParams();
 
+  const { outletId } = useSelector((state) => state.auth);
   const { settingDetails, isFetchingSettingsDetails, isUpdatingSettings } =
     useSelector((state) => state.setting);
 
@@ -38,14 +39,14 @@ const SettingDetailsPage = () => {
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const fetchSettings = () => {
-    dispatch(fetchSettingsByCategory(category));
+    dispatch(fetchSettingsByCategory({ category, outletId }));
   };
 
   useEffect(() => {
     if (category) {
       fetchSettings();
     }
-  }, [category, dispatch]);
+  }, [category, outletId, dispatch]);
 
   const settingsArray = useMemo(() => {
     if (!settingDetails?.settings) return [];
@@ -79,13 +80,14 @@ const SettingDetailsPage = () => {
   };
 
   const handleToggleConfirm = async (key, newValue) => {
-    await handleResponse(
-      dispatch(updateSetting({ key, value: newValue })),
-      () => {
-        clearSettingsStates();
-        fetchSettings();
-      },
-    );
+    const values = {
+      outletId,
+      settings: { [key]: newValue },
+    };
+    await handleResponse(dispatch(updateSetting({ category, values })), () => {
+      clearSettingsStates();
+      fetchSettings();
+    });
   };
 
   const handleEditRequest = (setting) => {
@@ -94,13 +96,14 @@ const SettingDetailsPage = () => {
   };
 
   const handleEditSave = async (key, newValue) => {
-    await handleResponse(
-      dispatch(updateSetting({ key, value: newValue })),
-      () => {
-        clearSettingsStates();
-        fetchSettings();
-      },
-    );
+    const values = {
+      outletId,
+      settings: { [key]: newValue },
+    };
+    await handleResponse(dispatch(updateSetting({ category, values })), () => {
+      clearSettingsStates();
+      fetchSettings();
+    });
   };
 
   if (isFetchingSettingsDetails) {

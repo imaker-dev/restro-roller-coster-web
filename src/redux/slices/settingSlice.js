@@ -11,15 +11,15 @@ export const fetchAllSettingsCategories = createAsyncThunk(
 );
 export const fetchSettingsByCategory = createAsyncThunk(
   "/fetch/settings/categories/category",
-  async (category) => {
-    const res = await SettingServices.getSettingByCategoryApi(category);
+  async ({category,outletId}) => {
+    const res = await SettingServices.getSettingByCategoryApi(category,outletId);
     return res.data;
   },
 );
 export const updateSetting = createAsyncThunk(
   "/update/setting",
-  async ({ key, value }) => {
-    const res = await SettingServices.updateSettingApi(key, value);
+  async ({ category, values }) => {
+    const res = await SettingServices.updateSettingApi(category, values);
     return res.data;
   },
 );

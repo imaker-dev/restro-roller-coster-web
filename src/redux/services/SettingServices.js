@@ -8,10 +8,10 @@ export default false
         getAllSettingsCategoriesApi: () => {
             return Api.get("/settings/categories");
         },
-        getSettingByCategoryApi:(category) => {
-            return Api.get(`/settings/category/${category}`)
+        getSettingByCategoryApi:(category,outletId) => {
+            return Api.get(`/settings/category/${category}?outletId=${outletId}`);
         },
-        updateSettingApi:(key,value) => {
-            return Api.put(`/settings/${key}`,{value})
+        updateSettingApi:(category, values) => {
+            return Api.put(`/settings/category/${category}`,values)
         }
     };
