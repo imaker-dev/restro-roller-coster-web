@@ -14,6 +14,7 @@ const errorPatterns = {
     "Invalid access token",
     "Invalid or expired token",
     "The user belonging to this token no longer exists",
+    "Access token expired",
   ],
   [ERROR_TYPES.SUBSCRIPTION]: [
     "Your subscription has expired. Please renew to continue using the system.",
