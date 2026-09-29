@@ -187,25 +187,25 @@ export const navConfig = [
 
   {
     title: "Taxes",
-    roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
+    roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
     items: [
       {
         name: "Tax Types",
         icon: ReceiptText,
         path: ROUTE_PATHS.ALL_TAX_TYPES,
-        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
+        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
       },
       {
         name: "Tax Components",
         icon: Percent,
         path: ROUTE_PATHS.ALL_TAX_COMPONENTS,
-        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
+        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
       },
       {
         name: "Tax Groups",
         icon: Layers,
         path: ROUTE_PATHS.ALL_TAX_GROUPS,
-        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
+        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
       },
     ],
   },
@@ -389,7 +389,7 @@ export const navConfig = [
         name: "Users & Staff",
         icon: Users,
         path: ROUTE_PATHS.ALL_USERS,
-        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER],
+        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
       },
       {
         name: "Outlet Pricing",
@@ -472,26 +472,26 @@ export const navConfig = [
 
   {
     title: "Growth",
-    roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
+    roles: [ROLES.MASTER],
     items: [
       {
         name: "Franchise Listings",
         icon: LayoutGrid,
         path: ROUTE_PATHS.FRANCHISE_LISTINGS,
-        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
+        roles: [ROLES.MASTER],
       },
     ],
   },
 
   {
     title: "System",
-    roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
+    roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
     items: [
       {
         name: "Settings",
         icon: Settings,
         path: ROUTE_PATHS.ALL_SETTINGS,
-        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN, ROLES.ADMIN],
+        roles: [ROLES.MASTER, ROLES.SUPER_ADMIN],
       },
     ],
   },

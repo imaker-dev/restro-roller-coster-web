@@ -216,10 +216,10 @@ const routeConfig = [
   { path: ROUTE_PATHS.MENU_ITEMS_BULK_ADD_SUMMARY, element: BulkUploadSummaryPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.ALL_ADDONS_GROUPS, element: AllAddonsGroup, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.ALL_ADDONS_ITEMS, element: AllAddonItemsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
-  { path: ROUTE_PATHS.ALL_TAX_TYPES, element: AllTaxTypesPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN] },
-  { path: ROUTE_PATHS.ALL_TAX_COMPONENTS, element: AllTaxComponentsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN] },
-  { path: ROUTE_PATHS.ALL_TAX_GROUPS, element: AllTaxGroupsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN] },
-  { path: ROUTE_PATHS.TAX_GROUPS_DETAILS, element: TaxGroupDetailsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN] },
+  { path: ROUTE_PATHS.ALL_TAX_TYPES, element: AllTaxTypesPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ] },
+  { path: ROUTE_PATHS.ALL_TAX_COMPONENTS, element: AllTaxComponentsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ] },
+  { path: ROUTE_PATHS.ALL_TAX_GROUPS, element: AllTaxGroupsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ] },
+  { path: ROUTE_PATHS.TAX_GROUPS_DETAILS, element: TaxGroupDetailsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ] },
 
   // Operations
   { path: ROUTE_PATHS.ALL_STATIONS, element: AllStationsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
@@ -228,7 +228,7 @@ const routeConfig = [
   { path: ROUTE_PATHS.FLOORS_TABLES, element: AllTablesPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.ALL_TABLE_QR, element: TablesQrPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.FLOORS_SECTIONS_TABLES, element: AllTablesPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
-  { path: ROUTE_PATHS.ALL_USERS, element: AllUsersPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
+  { path: ROUTE_PATHS.ALL_USERS, element: AllUsersPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN,] },
   { path: ROUTE_PATHS.USER_DETAILS, element: UserDetailsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.ALL_SUPER_ADMINS, element: AllSuperAdminsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
   { path: ROUTE_PATHS.SUPER_ADMIN_DETAILS, element: SuperAdminDetailsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.MANAGER] },
@@ -259,13 +259,13 @@ const routeConfig = [
 
 
   // Franchise Listing
-  { path: ROUTE_PATHS.FRANCHISE_LISTINGS, element: FranchiseListingPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
-  { path: ROUTE_PATHS.FRANCHISE_LISTINGS_ADD, element: FranchiseListingFormPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
-  { path: ROUTE_PATHS.FRANCHISE_INQUIRIES, element: FranchiseInquiriesPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN] },
+  { path: ROUTE_PATHS.FRANCHISE_LISTINGS, element: FranchiseListingPage, roles: [ROLES.MASTER] },
+  { path: ROUTE_PATHS.FRANCHISE_LISTINGS_ADD, element: FranchiseListingFormPage, roles: [ROLES.MASTER] },
+  { path: ROUTE_PATHS.FRANCHISE_INQUIRIES, element: FranchiseInquiriesPage, roles: [ROLES.MASTER] },
 
   // System
-  { path: ROUTE_PATHS.ALL_SETTINGS, element: AllSettingsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN] },
-  { path: ROUTE_PATHS.SETTING_DETAILS, element: SettingDetailsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ROLES.ADMIN] },
+  { path: ROUTE_PATHS.ALL_SETTINGS, element: AllSettingsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ] },
+  { path: ROUTE_PATHS.SETTING_DETAILS, element: SettingDetailsPage, roles: [ROLES.MASTER,ROLES.SUPER_ADMIN, ] },
   { path: ROUTE_PATHS.SUPPORT_CHAT, element: SupportChatPage, roles: [ROLES.MASTER] },
   { path: ROUTE_PATHS.ALL_VERSIONS, element: AllVersionsPage, roles: [ROLES.MASTER] },
   { path: ROUTE_PATHS.VERSION_ADD, element: AddVersionPage, roles: [ROLES.MASTER] },
