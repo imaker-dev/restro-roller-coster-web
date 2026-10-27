@@ -63,41 +63,65 @@ const AllOutletsPage = () => {
       label: "Outlet",
       sortable: true,
       render: (row) => (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 min-w-0">
           <div className="flex items-center gap-2">
-            <Building2 className="w-4 h-4 text-slate-400" />
+            <Building2 className="w-4 h-4 text-slate-400 shrink-0" />
             <span className="font-semibold text-slate-800 truncate">
               {row.name}
             </span>
           </div>
 
-          {row.legal_name && (
-            <span className="text-xs text-slate-500 truncate">
-              {row.legal_name}
-            </span>
-          )}
+          <div className="flex items-center gap-2 pl-6 min-w-0 text-[11px]">
+            {row.id && (
+              <span className="text-slate-400 font-mono shrink-0">
+                ID: {row.id}
+              </span>
+            )}
+
+            {row.id && row.legal_name && (
+              <span className="text-slate-300">•</span>
+            )}
+
+            {row.legal_name && (
+              <span className="text-xs text-slate-500 truncate">
+                {row.legal_name}
+              </span>
+            )}
+          </div>
         </div>
       ),
     },
 
-    /* ===============================
-     LOCATION
-  =============================== */
     {
       key: "location",
       label: "Location",
       sortable: true,
-      render: (row) => (
-        <div className="flex items-start gap-2 text-slate-700 max-w-[220px]">
-          <MapPin className="w-4 h-4 text-slate-400 mt-0.5 shrink-0" />
-          <div className="flex flex-col text-sm leading-tight">
-            <span>{row.city || "-"}</span>
-            <span className="text-xs text-slate-500">
-              {row.state || ""} {row.country ? `• ${row.country}` : ""}
+      render: (row) => {
+        const address = [row.address_line1, row.address_line2]
+          .filter(Boolean)
+          .join(", ");
+
+        const location = [row.city, row.state, row.postal_code]
+          .filter(Boolean)
+          .join(", ");
+
+        return (
+          <div className="max-w-[260px] min-w-0 flex flex-col gap-1">
+            <span
+              className="text-sm text-slate-700 leading-snug line-clamp-2"
+              title={[address, location, row.country]
+                .filter(Boolean)
+                .join(", ")}
+            >
+              {address || "-"}
+            </span>
+
+            <span className="text-xs text-slate-500 truncate">
+              {[location, row.country].filter(Boolean).join(" • ") || "-"}
             </span>
           </div>
-        </div>
-      ),
+        );
+      },
     },
 
     /* ===============================
@@ -137,7 +161,7 @@ const AllOutletsPage = () => {
         }
 
         return (
-          <div className="flex flex-col gap-1 min-w-[170px]">
+          <div className="flex flex-col gap-1 ">
             <SubscriptionBadge type="status" value={plan.status} size="sm" />
 
             {plan.end_date && (
